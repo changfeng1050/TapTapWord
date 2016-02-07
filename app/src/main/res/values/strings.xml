@@ -1,0 +1,158 @@
+<resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="app_name">单词忍者</string>
+    <string name="hello">Hello world!</string>
+    <string name="user_name">Word Ninja\nSpy into words for you</string>
+    <string name="drawer_open">Menu Opened</string>
+    <string name="drawer_close">Menu Closed</string>
+    <string name="menu_template">Menu %d</string>
+    <string name="menu_turn_tap_watching_on_off">开启/关闭忍者监听</string>
+    <string name="menu_recent_words">最近单词</string>
+    <string name="menu_words">已归档</string>
+    <string name="menu_settings">设置</string>
+    <string name="menu_help">帮助</string>
+    <string name="menu_share">分享</string>
+    <string name="menu_contact_us">联系我们</string>
+    <string name="menu_about">关于</string>
+    <string name="requesting_result_from_internet">正在进行在线查询，请稍候…</string>
+    <string name="hint_please_input_your_note">在这里输入笔记</string>
+    <string name="about">Powered by changfeng\nchangfeng1050@hotmail.com</string>
+    <string name="check_box_add_to_words">归档</string>
+    <string name="button_save_word">保存</string>
+    <string name="button_cancel">取消</string>
+    <string name="title_activity_recent_word">RecentWordActivity</string>
+    <string name="title_no_recent_words">没有未归档的单词</string>
+    <string name="description_no_recent_words">赶紧去添加单词吧\n开玩笑的啦，还是去玩乐一会吧</string>
+    <string name="title_no_archived_words">生词本没有单词</string>
+    <string name="description_no_archived_words">赶紧去添加单词吧</string>
+    <string name="text_view_archive">添加到生词本</string>
+    <string name="title_reset_preferences">Reset preferences</string>
+    <string name="reset_all_data">Reset all data</string>
+    <string name="message_reset_all_data">你所有的数据将被清除</string>
+    <string name="reset_all_preference">Reset all preferences</string>
+    <string name="message_reset_all_preferences">你所有的设置将被清除</string>
+
+    <string name="title_translate_select">翻译结果</string>
+    <string name="youdao_dict">有道词典</string>
+    <string name="web_explain">网络释义</string>
+    <string name="youdao_translate">有道翻译</string>
+    <string name="baidu_translate">百度翻译</string>
+
+
+    <string name="title_backup_and_restore">备份与恢复</string>
+    <string name="backup">备份</string>
+    <string name="message_backup_data">将备份你的数据。</string>
+    <string name="message_data_backupped">数据备份成功！</string>
+    <string name="message_data_backupped_failed">数据备份失败</string>
+    <string name="restore">恢复</string>
+    <string name="message_restore_data">将恢复你的数据，现有的数据将被覆盖</string>
+    <string name="message_data_restored">数据恢复成功！</string>
+    <string name="message_data_restored_failed">数据恢复失败</string>
+    <string name="clear_backup_data">清除备份数据</string>
+    <string name="message_clear_backup_data">将清除你的所有备份数据</string>
+    <string name="message_all_backup_data_cleared">所有备份数据清除成功</string>
+
+    <string name="filename_no_backup_file_found">没有找到备份数据</string>
+    <string name="filepath_no_backup_file_found">""</string>
+
+    <string name="share_subject">分享单词忍者</string>
+    <string name="share_text">Hi，朋友们，我正在使用单词忍者！它可以在读文章或者网页的时候，选中需要翻译的单词之后复制，直接返回翻译结果！Enjoy it！</string>
+
+    <string name="mail_address">changfeng1050@hotmail.com</string>
+    <string name="mail_subject">单词忍者的反馈</string>
+    <string name="mail_text">changfeng1050, 你好！ 我正在使用单词忍者，我想要反馈…</string>
+
+
+    <string name="action_settings">设置</string>
+    <string name="action_delete">删除</string>
+    <string name="action_archive">归档</string>
+    <string name="action_unarchive">取消归档</string>
+    <string name="action_select_all">全选</string>
+    <string name="action_share">分享</string>
+    <string name="title_activity_about">关于</string>
+
+    <string name="message_archive_success">归档成功</string>
+    <string name="message_archive_failed">归档失败</string>
+
+    <string name="message_delete_success">删除成功</string>
+    <string name="message_delete_failed">删除失败</string>
+
+    <string name="message_unarchive_success">取消归档成功</string>
+    <string name="message_unarchive_failed">取消归档失败</string>
+
+    <string name="message_edit_success">编辑成功</string>
+    <string name="message_edit_failed">编辑失败</string>
+
+    <string name="title_welcome">欢迎使用单词忍者</string>
+    <string name="description_welcome">阅读英文时，请随时召唤单词忍者，刺探单词释义\n\n使用之前请阅读以下使用说明</string>
+    <string name="title_tutorOne">1.打开任意阅读APP</string>
+    <string name="title_tutorTwo">2.选中不熟悉的单词</string>
+    <string name="title_tutorThree">3.复制单词</string>
+    <string name="title_tutorFour">4.查阅单词的网络释义</string>
+    <string name="title_tutorFive">5.在单词忍者中查看单词</string>
+
+    <string name="word_ninja_name">Ninja</string>
+    <string name="word_ninja_ph_am">"'nɪndʒə"</string>
+    <string name="word_ninja_ph_en">"'nɪndʒə"</string>
+    <string name="word_ninja_means">n.\n忍者（受过日本传统打斗和轻功训练的人）\nn.\n请将忍者监听打开，以便忍者在你阅读的时候窃取单词</string>
+
+    <string name="word_recent_name">recent</string>
+    <string name="word_recent_ph_am">"'risənt"</string>
+    <string name="word_recent_ph_en">"'riːs(ə)nt"</string>
+    <string name="word_recent_means">adj.\n最近的；新近的;\nadj.\n这里存放单词忍者窃取的单词</string>
+
+    <string name="word_word_name">word</string>
+    <string name="word_word_ph_am">"wɜrd"</string>
+    <string name="word_word_ph_en">"wɜː(r)d"</string>
+    <string name="word_word_means">n.\n词；单词；字；消息\nv.\n措辞；用词\nint.\n说得对 \nn.\n单词忍者窃取的单词都会保存在这里，你可以对长按单词卡片进行删除或者归档</string>
+
+    <string name="word_archive_name">archive</string>
+    <string name="word_archive_ph_am">"'ɑr.kaɪv"</string>
+    <string name="word_archive_ph_en">"'ɑː(r)kaɪv"</string>
+    <string name="word_archive_means">n\n档案；档案馆；档案室\n\v.把…存档；把…归档；将（不常用消息）存档\nv.\n长按单词卡片进行归档</string>
+
+    <string name="word_unarchive_name">unarchive</string>
+    <string name="word_unarchive_ph_am">"ʌn'ɑː(r)kaɪv"</string>
+    <string name="word_unarchive_ph_en">"ʌn'ɑː(r)kaɪv"</string>
+    <string name="word_unarchive_means">n.\n取消存档；反归档\nv.\n长按单词卡片，然后按右上角“取消归档”，可将单词移到最近单词</string>
+
+    <string name="word_delete2_name">delete</string>
+    <string name="word_delete2_ph_am">"dɪ'lit"</string>
+    <string name="word_delete2_ph_en">"dɪ'liːt"</string>
+    <string name="word_delete2_means">v.\n删去；删除\nv.\n长按单词卡片进行删除</string>
+
+    <string name="word_delete_name">delete</string>
+    <string name="word_delete_ph_am">"dɪ'lit"</string>
+    <string name="word_delete_ph_en">"dɪ'lit"</string>
+    <string name="word_delete_means">v.\n删去；删除\nv.\n长按单词卡片，然后按右上角“删除”进行删除</string>
+
+    <string name="msg_not_support_other_language">抱歉，单词忍者暂时无法窃取英文以外的情报</string>
+
+    <string name="uri_download_wandoujia">http://www.wandoujia.com/apps/com.example.changfeng.taptapword</string>
+
+    <string name="msg_no_email_apps_found">没有找到邮箱应用，你可以到应用市场下载邮箱应用</string>
+
+    <string name="new_word">添加单词</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_word">WordActivity</string>
+    <string name="title_activity_file_list">FileListActivity</string>
+    <string name="title_activity_consult_word">ConsultWord</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="youdao_error_code_success">成功</string>
+    <string name="youdao_error_code_text_too_long">文本过长，请不要选择超过200个词！</string>
+    <string name="youdao_error_code_cannot_translate_proper">不能进行有效翻译，请重试！</string>
+    <string name="youdao_error_code_not_supported_language">不支持的翻译，现在暂时只支持英文翻译中文！</string>
+    <string name="youdao_error_code_invalid_key">我们的KEY无效了，请反馈给我们，我们会尽快修复，不耽误亲的学习！拜托！！</string>
+    <string name="youdao_error_code_no_result_in_dict">无词典结果！</string>
+
+    <string name="button_ok">确定</string>
+
+    <string name="developer_mail_address">changfeng1050@hotmail.com</string>
+
+</resources>
