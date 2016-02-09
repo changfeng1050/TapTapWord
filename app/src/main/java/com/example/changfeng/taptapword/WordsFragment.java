@@ -44,7 +44,6 @@ public class WordsFragment extends Fragment {
 
     private static final String TAG = "WordsFragment";
 
-    private static final int REQUEST_WORD = 2;
     private Word currentWord;
     private ArrayList<Word> selectedWords;
     private ArrayList<Word> mArchivedWords = new ArrayList<>();
@@ -64,7 +63,7 @@ public class WordsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "OnCreateView() called");
         View view = inflater.inflate(R.layout.material_list_view, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         mArchivedWords = WordManger.get(getActivity()).getArchivedWords();
         materialListView.addOnItemTouchListener(new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -80,16 +79,13 @@ public class WordsFragment extends Fragment {
                         cardItemView.setBackgroundColor(Color.WHITE);
                     } else {
                         selectedWords.add(mArchivedWords.get(i));
-                        cardItemView.setBackgroundColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+                        cardItemView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     }
                 } else {
                     currentWord = mArchivedWords.get(i);
                     Intent intent = new Intent(getActivity(), WordActivity.class);
                     intent.putExtra(WordActivity.EXTRA_WORD_NAME, currentWord.getName());
-                    intent.putExtra(WordActivity.EXTRA_WORD_PHONE, currentWord.getFormatPhones());
-                    intent.putExtra(WordActivity.EXTRA_WORD_MEANS, currentWord.getMeans());
-                    intent.putExtra(WordActivity.EXTRA_WORD_ARCHIVED, currentWord.isArchived());
-                    startActivityForResult(intent, REQUEST_WORD);
+                    startActivity(intent);
                 }
             }
 
@@ -101,7 +97,7 @@ public class WordsFragment extends Fragment {
                     selectedWords = new ArrayList<>();
                     if (!mArchivedWords.isEmpty()) {
                         selectedWords.add(mArchivedWords.get(i));
-                        cardItemView.setBackgroundColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+                        cardItemView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     }
                 }
             }
@@ -160,7 +156,7 @@ public class WordsFragment extends Fragment {
                 default:
                     return false;
             }
-            return  true;
+            return true;
         }
 
         @Override
@@ -171,33 +167,6 @@ public class WordsFragment extends Fragment {
         }
     };
 
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.d(TAG, "OnActivityResult() called" + " requestCode:" + requestCode + " resultCode:" + resultCode);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-
-        if (requestCode == REQUEST_WORD) {
-            currentWord.setName(data.getStringExtra(WordActivity.EXTRA_WORD_NAME));
-            currentWord.setArchived(data.getBooleanExtra(WordActivity.EXTRA_WORD_ARCHIVED, false));
-            currentWord.setMeans(data.getStringExtra(WordActivity.EXTRA_WORD_MEANS));
-            String phone = data.getStringExtra(WordActivity.EXTRA_WORD_PHONE).trim();
-
-            String amPhone = phone.substring(phone.indexOf('[') + 1, phone.indexOf(']'));
-            String emPhone = phone.substring(phone.lastIndexOf('[') + 1, phone.lastIndexOf(']'));
-            currentWord.setAmPhone(amPhone);
-            currentWord.setEnPhone(emPhone);
-
-            WordManger.get(getActivity()).updateWord(currentWord);
-            if (!currentWord.isArchived()) {
-                mArchivedWords.remove(currentWord);
-            }
-
-            showToast(getString(R.string.message_edit_success), Toast.LENGTH_SHORT);
-        }
-
-    }
 
     private void updateListView() {
         materialListView.removeAllViews();
@@ -210,33 +179,31 @@ public class WordsFragment extends Fragment {
             card.setTag("SIMPLE_CARD");
             card.setDismissible(true);
             card.setBackgroundColor(Color.WHITE);
-            card.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
-            card.setDescriptionColor(Color.parseColor(MainActivity.WORD_TEXT_COLOR));
+            card.setTitleColor(getResources().getColor(R.color.colorGreen));
+            card.setDescriptionColor(getResources().getColor(R.color.colorGrey));
             materialListView.add(card);
         } else {
             for (Word word : mArchivedWords) {
                 SimpleCard card = new SmallImageCard(getActivity());
                 card.setTitle(word.getName());
                 StringBuilder description = new StringBuilder();
-                if (!word.getAmPhone().isEmpty()) {
-                    description.append(word.getFormatAmPhone());
+                if (!word.getFormatPhones().isEmpty()) {
+                    description.append(word.getFormatPhones());
                 }
-                if (!word.getEnPhone().isEmpty()) {
-                    description.append(word.getFormatEnPhone());
-                }
-                description.append("\n\n");
 
                 if (!word.getMeans().isEmpty()) {
-                    description.append(word.getMeans());
+                    description.append("\n\n").append(word.getMeans());
                 }
 
-                card.setDescription(description.toString());
+                if (!description.toString().isEmpty()) {
+                    card.setDescription(description.toString());
+                }
 
                 card.setTag("SIMPLE_CARD");
                 card.setDismissible(false);
                 card.setBackgroundColor(Color.WHITE);
-                card.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
-                card.setDescriptionColor(Color.parseColor(MainActivity.WORD_TEXT_COLOR));
+                card.setTitleColor(getResources().getColor(R.color.colorGreen));
+                card.setDescriptionColor(getResources().getColor(R.color.colorGrey));
                 materialListView.add(card);
             }
         }
@@ -277,9 +244,10 @@ public class WordsFragment extends Fragment {
         if (mArchivedWords.isEmpty()) {
             return;
         }
-        materialListView.setBackgroundColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        materialListView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
 
     }
+
     private void showToast(String message, int duration) {
         Toast.makeText(getActivity(), message, duration).show();
     }

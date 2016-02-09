@@ -25,7 +25,7 @@ public class WordManger {
 
     private WordManger(Context appContext) {
         mAppContext = appContext;
-        mHelper = new DatabaseHelper(mAppContext, dataBase, null, 1);
+        mHelper = new DatabaseHelper(mAppContext, dataBase, null, 3);
     }
 
     public static WordManger get(Context context) {
@@ -59,6 +59,10 @@ public class WordManger {
         }
     }
 
+    public void saveWord(Word word) {
+
+    }
+
     public DatabaseHelper.WordCursor queryWords() {
         return mHelper.queryWords();
     }
@@ -73,6 +77,14 @@ public class WordManger {
 
     public ArrayList<Word> getUnarchivedWords() {
         return mHelper.loadUnarchivedWords();
+    }
+
+    public Word getWord(String name) {
+        try {
+            return mHelper.getWord(name).get(0);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void replaceWord(Word word) {

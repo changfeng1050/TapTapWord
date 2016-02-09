@@ -8,7 +8,7 @@ import java.util.List;
 public class YoudaoResult {
     public static final String TAG = "YoudaoResult";
 
-//    errorCode：
+    //    errorCode：
 // 　0 ­ 正常
 // 　20 ­ 要翻译的文本过长
 // 　30 ­ 无法进行有效的翻译
@@ -97,8 +97,7 @@ public class YoudaoResult {
     }
 
 
-
-    public static class Basic{
+    public static class Basic {
         private String phonetic;
         private String uk_phonetic;
         private String us_phonetic;
@@ -128,7 +127,7 @@ public class YoudaoResult {
 
             }
             result.append("\n");
-            for (String explain :explains) {
+            for (String explain : explains) {
                 result.append("\n").append(explain);
             }
             return result.toString();
@@ -146,14 +145,12 @@ public class YoudaoResult {
         public List<String> getValues() {
             return value;
         }
+
         public String toString() {
             StringBuilder result = new StringBuilder();
             result.append(key).append(" ");
             for (int i = 0; i < value.size(); i++) {
-                if (i != 0) {
-                    result.append(";");
-                }
-                result.append(value.get(i));
+                result.append(value.get(i) + ";");
             }
             return result.toString();
         }
@@ -164,7 +161,7 @@ public class YoudaoResult {
             return "";
         }
         if (basic != null) {
-            return  "有道词典\n" + basic.toString();
+            return "有道词典\n" + basic.toString();
         } else {
             return "";
         }
@@ -218,32 +215,52 @@ public class YoudaoResult {
         if (!webInterpretationResult.isEmpty()) {
             result.append("\n\n").append(webInterpretationResult);
         }
-        if (!translateResult.isEmpty()){
+        if (!translateResult.isEmpty()) {
             result.append("\n\n").append(translateResult);
         }
 
         return result.toString();
     }
 
-    public String getParsedExplains() throws NullPointerException {
-        StringBuilder explainString = new StringBuilder();
-        for (int i = 0; i < basic.getExplains().size(); i++) {
-            if (i != 0) {
-                explainString.append(";");
+    public String getParsedExplains() {
+        try {
+            StringBuilder explainString = new StringBuilder();
+            for (int i = 0; i < basic.getExplains().size(); i++) {
+                if (i != 0) {
+                    explainString.append("\n");
+                }
+                explainString.append(basic.getExplains().get(i) + ";");
             }
-            explainString.append(basic.getExplains().get(i));
+            return explainString.toString();
+        } catch (NullPointerException e) {
+            return "";
         }
-        return explainString.toString();
+
     }
 
-    public String getParseWebTranslate() throws NullPointerException {
-        StringBuilder webTranslate = new StringBuilder();
-        for (int i = 0; i < translation.size(); i++) {
-            if (i != 0) {
-                webTranslate.append(";");
+    public String getParseWebTranslate() {
+        try {
+            StringBuilder webTranslate = new StringBuilder();
+            for (int i = 0; i < web.size(); i++) {
+                if (i != 0) {
+                    webTranslate.append("\n");
+                }
+                webTranslate.append(web.get(i));
             }
-            webTranslate.append(translation.get(i));
+            return webTranslate.toString();
+        } catch (NullPointerException e) {
+            return "";
         }
-        return  webTranslate.toString();
+    }
+
+    public String getFormatPhones() {
+        StringBuilder phone = new StringBuilder();
+        if (getUsPhonetic() != null && !getUsPhonetic().isEmpty()) {
+            phone.append("美:[" + getUsPhonetic() + "] ");
+        }
+        if (getUkPhonetic() != null && !getUkPhonetic().isEmpty()) {
+            phone.append("英:[" + getUsPhonetic() + "]");
+        }
+        return phone.toString();
     }
 }

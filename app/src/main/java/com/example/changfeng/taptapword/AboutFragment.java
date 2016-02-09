@@ -37,9 +37,9 @@ public class AboutFragment extends Fragment {
         WelcomeCard card1 = new WelcomeCard(getActivity());
 
         card1.setTitle("单词忍者");
-        card1.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        card1.setTitleColor(getResources().getColor(R.color.colorGreen));
         card1.setDescription("Spy into words for you!\nversion " + getVersion() + "\n\nPowered by changfeng\nEmail:changfeng1050@hotmail.com");
-        card1.setDescriptionColor(Color.parseColor(MainActivity.WORD_TEXT_COLOR));
+        card1.setDescriptionColor(getResources().getColor(R.color.colorGrey));
         materialListView.add(card1);
 
         return view;

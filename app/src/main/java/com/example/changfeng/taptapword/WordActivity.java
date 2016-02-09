@@ -2,42 +2,70 @@ package com.example.changfeng.taptapword;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
-public class WordActivity extends Activity implements View.OnClickListener {
+public class WordActivity extends Activity {
 
-    private static final String TAG ="WordActivity";
+    private static final String TAG = "WordActivity";
 
     public static final String EXTRA_WORD_NAME = "word_name";
-    public static final String EXTRA_WORD_PHONE = "phone";
-    public static final String EXTRA_WORD_MEANS = "means";
-    public static final String EXTRA_WORD_ARCHIVED = "archived";
 
     @Bind(R.id.word_name)
     TextView wordNameEditText;
+
+    @Bind(R.id.date_time)
+    TextView dateTimeTextView;
+
     @Bind(R.id.archive)
     CheckBox archiveCheckBox;
+
+    @Bind(R.id.phone_label)
+    TextView phoneLabelTextView;
+
     @Bind(R.id.phone)
-    TextView phoneEditText;
+    TextView phoneTextView;
+
+    @Bind(R.id.means_label)
+    TextView meansLabelTextView;
     @Bind(R.id.means)
-    TextView meansEditText;
-    @Bind(R.id.cancel)
-    Button cancelButton;
-    @Bind(R.id.save)
-    Button saveButton;
+    TextView meansTextView;
 
+    @Bind(R.id.web_explains_label)
+    TextView webExpainsLabelTextView;
+    @Bind(R.id.web_explains)
+    TextView webExplainsTextView;
 
+    @Bind(R.id.note_label)
+    TextView noteLabelTextView;
+    @Bind(R.id.note)
+    EditText noteEditText;
+
+    @OnClick(R.id.cancel)
+    void quit(View v) {
+        finish();
+    }
+
+    @OnClick(R.id.save)
+    void save(View v) {
+        updateWord();
+        WordManger.get(this).updateWord(word);
+        showToast(getString(R.string.message_save_success));
+        finish();
+    }
+
+    Word word;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,42 +74,39 @@ public class WordActivity extends Activity implements View.OnClickListener {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
+        String wordName = intent.getStringExtra(EXTRA_WORD_NAME);
+        word = WordManger.get(this).getWord(wordName);
+        if (word != null) {
+            wordNameEditText.setText(word.getName());
 
-        wordNameEditText.setText(intent.getStringExtra(EXTRA_WORD_NAME));
-        wordNameEditText.setPadding(10, 20, 20, 10);
-        wordNameEditText.setTextColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+            dateTimeTextView.setText(String.format("%04d-%02d-%02d %02d:%02d:%02d", word.getYear(), word.getMonth(), word.getDate(), word.getHour(), word.getMinute(), word.getMinute()));
 
-        archiveCheckBox.setChecked(intent.getBooleanExtra(EXTRA_WORD_ARCHIVED, true));
+            archiveCheckBox.setChecked(word.isArchived());
 
-        phoneEditText.setText(intent.getStringExtra(EXTRA_WORD_PHONE));
-        phoneEditText.setPadding(30, 20, 20, 10);
-        phoneEditText.setTextColor(Color.parseColor(MainActivity.WORD_TEXT_COLOR));
+            phoneTextView.setText(word.getFormatPhones());
 
-        meansEditText.setText(intent.getStringExtra(EXTRA_WORD_MEANS));
-        meansEditText.setPadding(30, 20, 20, 10);
-        meansEditText.setTextColor(Color.parseColor(MainActivity.WORD_TEXT_COLOR));
+            meansTextView.setText(word.getMeans());
 
-        cancelButton.setOnClickListener(this);
-        saveButton.setOnClickListener(this);
+            webExplainsTextView.setText(word.getWebExplains());
 
-    }
+            noteEditText.setText(word.getNote());
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.cancel:
-                setResult(Activity.RESULT_CANCELED);
-                finish();
-                break;
-            case R.id.save:
-                setResults();
-                finish();
-                break;
-            default:
-                break;
+            if (word.getFormatPhones().isEmpty()) {
+                phoneLabelTextView.setVisibility(View.GONE);
+                phoneTextView.setVisibility(View.GONE);
+            }
+
+            if (word.getMeans() == null || word.getMeans().isEmpty()) {
+                meansLabelTextView.setVisibility(View.GONE);
+                meansTextView.setVisibility(View.GONE);
+            }
+
+            if (word.getWebExplains() == null || word.getWebExplains().isEmpty()) {
+                webExpainsLabelTextView.setVisibility(View.GONE);
+                webExplainsTextView.setVisibility(View.GONE);
+            }
         }
     }
-
 
 
     @Override
@@ -106,12 +131,14 @@ public class WordActivity extends Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setResults() {
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_WORD_NAME, wordNameEditText.getText().toString());
-        intent.putExtra(EXTRA_WORD_PHONE, phoneEditText.getText().toString());
-        intent.putExtra(EXTRA_WORD_MEANS, meansEditText.getText().toString());
-        intent.putExtra(EXTRA_WORD_ARCHIVED, archiveCheckBox.isChecked());
-        setResult(Activity.RESULT_OK, intent);
+    private void updateWord() {
+        boolean archived = archiveCheckBox.isChecked();
+        word.setArchived(archived);
+        word.setMeans(meansTextView.getText().toString());
+        word.setNote(noteEditText.getText().toString());
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -5,12 +5,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClipboardService extends Service {
@@ -65,8 +62,8 @@ public class ClipboardService extends Service {
         }
 
         // 判断是否有数字
-        Pattern digitPattern = Pattern.compile("[0-9]{2,}");
-        if (digitPattern.matcher(word).find()) {
+        Pattern digitPattern = Pattern.compile("[\\+\\-=0-9.\\(\\)<>\\|\\[\\]\\s\\\\!\\?@#\\$%\\^&\\*,\\./~`]+");
+        if (digitPattern.matcher(word).matches()) {
             return false;
         }
         // 判断是是否是网址
@@ -74,10 +71,9 @@ public class ClipboardService extends Service {
         if (httpPattern.matcher(word).find()) {
             return false;
         }
-
-        // 判断是否不包含特殊字符
-        Pattern specialPattern = Pattern.compile("[`~!@#$%^&*()+=|{}':;',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]");
-        return !specialPattern.matcher(word).matches();
+        return true;
+//        Pattern specialPattern = Pattern.compile("[`~!@#$%^&*()+=|{}':;',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]");
+//        return !specialPattern.matcher(word).matches();
     }
 
 

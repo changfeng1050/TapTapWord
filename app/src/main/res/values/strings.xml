@@ -13,12 +13,14 @@
     <string name="menu_words">已归档</string>
     <string name="menu_settings">设置</string>
     <string name="menu_help">帮助</string>
+    <string name="menu_rate">评价</string>
     <string name="menu_share">分享</string>
     <string name="menu_contact_us">联系我们</string>
     <string name="menu_about">关于</string>
     <string name="requesting_result_from_internet">正在进行在线查询，请稍候…</string>
     <string name="hint_please_input_your_note">在这里输入笔记</string>
-    <string name="about">Powered by changfeng\nchangfeng1050@hotmail.com</string>
+    <string name="title_about">关于单词忍者</string>
+    <string name="message_about">Powered by changfeng\nchangfeng1050@hotmail.com</string>
     <string name="check_box_add_to_words">归档</string>
     <string name="button_save_word">保存</string>
     <string name="button_cancel">取消</string>
@@ -27,7 +29,8 @@
     <string name="description_no_recent_words">赶紧去添加单词吧\n开玩笑的啦，还是去玩乐一会吧</string>
     <string name="title_no_archived_words">生词本没有单词</string>
     <string name="description_no_archived_words">赶紧去添加单词吧</string>
-    <string name="text_view_archive">添加到生词本</string>
+
+    <string name="text_view_archive">归档</string>
     <string name="title_reset_preferences">Reset preferences</string>
     <string name="reset_all_data">Reset all data</string>
     <string name="message_reset_all_data">你所有的数据将被清除</string>
@@ -84,6 +87,9 @@
 
     <string name="message_edit_success">编辑成功</string>
     <string name="message_edit_failed">编辑失败</string>
+
+    <string name="message_save_success">保存成功</string>
+    <string name="message_save_failed">保存失败</string>
 
     <string name="title_welcome">欢迎使用单词忍者</string>
     <string name="description_welcome">阅读英文时，请随时召唤单词忍者，刺探单词释义\n\n使用之前请阅读以下使用说明</string>
@@ -143,6 +149,11 @@
     <string name="title_activity_file_list">FileListActivity</string>
     <string name="title_activity_consult_word">ConsultWord</string>
 
+    <string name="label_phones">发音</string>
+    <string name="label_means">释义</string>
+    <string name="label_web_explains">网络释义</string>
+    <string name="label_note">笔记</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="youdao_error_code_success">成功</string>
     <string name="youdao_error_code_text_too_long">文本过长，请不要选择超过200个词！</string>
@@ -151,7 +162,16 @@
     <string name="youdao_error_code_invalid_key">我们的KEY无效了，请反馈给我们，我们会尽快修复，不耽误亲的学习！拜托！！</string>
     <string name="youdao_error_code_no_result_in_dict">无词典结果！</string>
 
+    <string name="message_cannot_find_app_market">抱歉，未能找到已安装的应用市场，建议先下载应用市场！</string>
+    <string name="message_failed_install_shortcut">安装桌面快捷方式失败！</string>
+    <string name="title_rate">对单词忍者进行评价</string>
+    <string name="message_rate">亲，评价一下呗</string>
+
     <string name="button_ok">确定</string>
+    <string name="button_yes">好</string>
+    <string name="button_no">不</string>
+    <string name="button_add_note">+</string>
+    <string name="button_add_word">+</string>
 
     <string name="developer_mail_address">changfeng1050@hotmail.com</string>
 

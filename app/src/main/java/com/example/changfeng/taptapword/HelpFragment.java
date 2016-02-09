@@ -32,13 +32,13 @@ public class HelpFragment extends Fragment {
 //
         WelcomeCard welcomeCard = new WelcomeCard(getActivity());
         welcomeCard.setTitle(getString(R.string.title_welcome));
-        welcomeCard.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        welcomeCard.setTitleColor(getResources().getColor(R.color.colorGreen));
         welcomeCard.setDescription(R.string.description_welcome);
         materialListView.add(welcomeCard);
 
         SmallImageCard titleOne = new SmallImageCard(getActivity());
         titleOne.setTitle(getString(R.string.title_tutorOne));
-        titleOne.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        titleOne.setTitleColor(getResources().getColor(R.color.colorGreen));
         materialListView.add(titleOne);
 
         BigImageCard tutorOne = new BigImageCard(getActivity());
@@ -47,7 +47,7 @@ public class HelpFragment extends Fragment {
 
         SmallImageCard titleTwo = new SmallImageCard(getActivity());
         titleTwo.setTitle(getString(R.string.title_tutorTwo));
-        titleTwo.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        titleTwo.setTitleColor(getResources().getColor(R.color.colorGreen));
         materialListView.add(titleTwo);
 
         BigImageCard tutorTwo = new BigImageCard(getActivity());
@@ -56,7 +56,7 @@ public class HelpFragment extends Fragment {
 
         SmallImageCard titleThree = new SmallImageCard(getActivity());
         titleThree.setTitle(getString(R.string.title_tutorThree));
-        titleThree.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        titleThree.setTitleColor(getResources().getColor(R.color.colorGreen));
         materialListView.add(titleThree);
 
         BigImageCard tutorThree = new BigImageCard(getActivity());
@@ -65,7 +65,7 @@ public class HelpFragment extends Fragment {
 
         SmallImageCard titleFour = new SmallImageCard(getActivity());
         titleFour.setTitle(getString(R.string.title_tutorFour));
-        titleFour.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        titleFour.setTitleColor(getResources().getColor(R.color.colorGreen));
         materialListView.add(titleFour);
 
         BigImageCard tutorFour = new BigImageCard(getActivity());
@@ -74,7 +74,7 @@ public class HelpFragment extends Fragment {
 
         SmallImageCard titleFive = new SmallImageCard(getActivity());
         titleFive.setTitle(getString(R.string.title_tutorFive));
-        titleFive.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        titleFive.setTitleColor(getResources().getColor(R.color.colorGreen));
         materialListView.add(titleFive);
 
         BigImageCard tutorFive = new BigImageCard(getActivity());

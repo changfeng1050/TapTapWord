@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,24 +12,158 @@
 
         <TextView
             android:id="@+id/word_name"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:lines="1"
-            android:textColor="#03a9f4"
-            android:textSize="30sp"
+            android:padding="10dp"
             android:text="@string/app_name"
-            />
+            android:textColor="@color/colorGreen"
+            android:textSize="30sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#4caf50"/>
+            android:background="@color/colorGreen" />
 
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/date_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:paddingBottom="5dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="10dp"
+            android:layout_gravity="end"
+
+            android:text=""
+            android:textColor="@color/colorLightGreen"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:paddingBottom="5dp"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
+            android:paddingTop="10dp"
+            android:text="@string/text_view_archive"
+            android:textColor="@color/colorLightGreen"
+            android:textSize="15sp" />
+
+        <CheckBox
+            android:id="@+id/archive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/colorLightGreen"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/phone_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text="@string/label_phones"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text=""
+        android:textColor="@color/colorGreen"/>
+
+    <TextView
+        android:id="@+id/means_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text="@string/label_means"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/means"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text=""
+        android:textColor="@color/colorGreen"/>
+
+    <TextView
+        android:id="@+id/web_explains_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text="@string/label_web_explains"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/web_explains"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text=""
+        android:textColor="@color/colorGreen"/>
+
+    <TextView
+        android:id="@+id/note_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text="@string/label_note"
+        android:textColor="@color/colorAccent" />
+
+    <EditText
+        android:id="@+id/note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:paddingBottom="5dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        android:paddingTop="5dp"
+        android:text=""
+        android:textColor="@color/colorGreen"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,53 +171,26 @@
         android:gravity="right">
 
         <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="right|center"
-            android:text="@string/text_view_archive"
-            android:textSize="15sp"
-            android:padding="10dp"/>
-
-        <CheckBox
-            android:id="@+id/archive"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textSize="15sp"/>
-
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""/>
-
-    <TextView
-        android:id="@+id/means"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right">
-
-        <Button
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_cancel" />
+            android:paddingBottom="5dp"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:paddingTop="5dp"
+            android:text="@string/button_cancel"
+            android:textColor="@color/colorPrimary"/>
 
-        <Button
+        <TextView
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_save_word"/>
+            android:paddingBottom="5dp"
+            android:paddingEnd="30dp"
+            android:paddingStart="30dp"
+            android:paddingTop="10dp"
+            android:text="@string/button_save_word"
+            android:textColor="@color/colorPrimary"/>
 
 
     </LinearLayout>

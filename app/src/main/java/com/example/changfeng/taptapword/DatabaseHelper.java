@@ -3,12 +3,14 @@ package com.example.changfeng.taptapword;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 /**
@@ -17,9 +19,6 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
-
-    private static final String DB_NAME = "WORDS";
-    private static final int VERSION = 1;
 
     private static final String TABLE_WORD = "Word";
     private static final String COLUMN_WORD_ID = "_id";
@@ -35,6 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_HOUR = "hour";
     private static final String COLUMN_MINUTE = "minute";
     private static final String COLUMN_SECOND = "second";
+    private static final String COLUMN_NOTE = "note";
+    private static final String COLUMN_WEB_EXPLAINS = "web_explains";
 
 
     public static final String CREATE_WORD = "create table " + TABLE_WORD + "(" +
@@ -50,7 +51,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COLUMN_DATE + " integer," +
             COLUMN_HOUR + " integer," +
             COLUMN_MINUTE + " integer," +
-            COLUMN_SECOND + " integer)";
+            COLUMN_SECOND + " integer," +
+            COLUMN_NOTE + " text," +
+            COLUMN_WEB_EXPLAINS + " text)";
 
     private Context mContent;
 
@@ -67,11 +70,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exist " + TABLE_WORD);
-        onCreate(db);
+        switch (oldVersion) {
+            case 1:
+                db.execSQL("alter table " + TABLE_WORD + " add column " + COLUMN_NOTE + " text");
+            case 2:
+                db.execSQL("alter table " + TABLE_WORD + " add column " + COLUMN_WEB_EXPLAINS + " text");
+            default:
+        }
     }
 
-    public long insertWord (Word word) {
+    public long insertWord(Word word) {
         return getWritableDatabase().insert(TABLE_WORD, null, getContentValues(word));
     }
 
@@ -89,15 +97,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_HOUR, word.getHour());
         cv.put(COLUMN_MINUTE, word.getMinute());
         cv.put(COLUMN_SECOND, word.getSecond());
+        cv.put(COLUMN_NOTE, word.getNote());
+        cv.put(COLUMN_WEB_EXPLAINS, word.getWebExplains());
 
         return cv;
     }
 
     public WordCursor queryWords() {
-        Cursor wrapped = getReadableDatabase().query(TABLE_WORD, null, null,null,null,null, null);
+        Cursor wrapped = getReadableDatabase().query(TABLE_WORD, null, null, null, null, null, null);
         Log.d(TAG, wrapped.getColumnCount() + " " + wrapped.getColumnNames());
         return new WordCursor(wrapped);
     }
+
 
 
     private ArrayList<Word> getWords(Cursor cursor) {
@@ -122,6 +133,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 word.setHour(cursor.getInt(cursor.getColumnIndex(COLUMN_HOUR)));
                 word.setMinute(cursor.getInt(cursor.getColumnIndex(COLUMN_MINUTE)));
                 word.setSecond(cursor.getInt(cursor.getColumnIndex(COLUMN_SECOND)));
+                word.setNote(cursor.getString(cursor.getColumnIndex(COLUMN_NOTE)));
+                word.setWebExplains(cursor.getString(cursor.getColumnIndex(COLUMN_WEB_EXPLAINS)));
+
                 words.add(word);
             } while (cursor.moveToPrevious());
         }
@@ -129,17 +143,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Word> loadUnarchivedWords() {
-        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, "archive=?", new String[] {"0"},null,null, null);
+        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, "archive=?", new String[]{"0"}, null, null, null);
         return getWords(cursor);
     }
 
     public ArrayList<Word> loadArchivedWords() {
-        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, "archive=?", new String[] {"1"},null,null, null);
+        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, "archive=?", new String[]{"1"}, null, null, null);
         return getWords(cursor);
     }
 
     public ArrayList<Word> loadWords() {
-        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, null,null,null,null, null);
+        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, null, null, null, null, null);
+        return getWords(cursor);
+    }
+
+    public ArrayList<Word> getWord(String name) {
+        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, COLUMN_NAME+"=?", new String[]{name}, null, null, null);
         return getWords(cursor);
     }
 
@@ -148,7 +167,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteWord(Word word) {
-        getWritableDatabase().delete(TABLE_WORD, COLUMN_WORD_ID + " = ?", new String[] {String.valueOf(word.getId())});
+        getWritableDatabase().delete(TABLE_WORD, COLUMN_WORD_ID + " = ?", new String[]{String.valueOf(word.getId())});
     }
 
     public void replaceWord(Word word) {
@@ -156,15 +175,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteExistingWords(Word word) {
-        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, COLUMN_NAME +"=?", new String[] {word.getName()},null,null, null);
+        Cursor cursor = getReadableDatabase().query(TABLE_WORD, null, COLUMN_NAME + "=?", new String[]{word.getName()}, null, null, null);
         if (cursor.moveToLast()) {
             do {
-               getWritableDatabase().delete(TABLE_WORD, COLUMN_NAME +"=?", new String[] {word.getName()});
+                getWritableDatabase().delete(TABLE_WORD, COLUMN_NAME + "=?", new String[]{word.getName()});
             } while (cursor.moveToPrevious());
         }
 
     }
-    public static class WordCursor extends CursorWrapper{
+
+    public static class WordCursor extends CursorWrapper {
 
         public WordCursor(Cursor c) {
             super(c);
@@ -194,6 +214,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             word.setHour(getInt(getColumnIndex(COLUMN_HOUR)));
             word.setMinute(getInt(getColumnIndex(COLUMN_MINUTE)));
             word.setSecond(getInt(getColumnIndex(COLUMN_SECOND)));
+            word.setNote(getString(getColumnIndex(COLUMN_NOTE)));
+            word.setWebExplains(getString(getColumnIndex(COLUMN_WEB_EXPLAINS)));
 
             return word;
         }

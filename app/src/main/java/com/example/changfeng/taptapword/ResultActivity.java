@@ -2,18 +2,22 @@ package com.example.changfeng.taptapword;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import java.util.Calendar;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class ResultActivity extends Activity {
@@ -27,7 +31,7 @@ public class ResultActivity extends Activity {
     private static final int STATE_ORIGIN = 1;
     private static final int STATE_LOWERCASE = 2;
 
-    private TextView translateResultTextView;
+//    private TextView translateResultTextView;
 
     private String word_name;
     private String ph_en;
@@ -43,24 +47,44 @@ public class ResultActivity extends Activity {
 
     private SharedPreferences sharedPreferences;
 
+    @Bind(R.id.translate_result)
+    TextView translateResultTextView;
+    @Bind(R.id.add_note)
+    TextView addNoteTextView;
+    @Bind(R.id.note_edit_text)
+    EditText noteEditText;
+
+    @OnClick(R.id.add_note)
+    void showNoteEditText(View v) {
+        if (noteEditText != null) {
+            noteEditText.setVisibility(View.VISIBLE);
+        }
+        addNoteTextView.setVisibility(View.GONE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_result);
-
-        translateResultTextView = (TextView) findViewById(R.id.translate_result);
+        ButterKnife.bind(this);
 
         clip = getIntent().getStringExtra(ClipboardService.clipboardText);
 
         result = "";
         state = STATE_ORIGIN;
         sendRequestWithHttpClient(clip, "en", "zh");
-        sharedPreferences = getSharedPreferences(SettingsFragment.SHARED_PREFERENCE_NAME, MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
+        saveWord();
         super.onDestroy();
     }
 
@@ -71,7 +95,7 @@ public class ResultActivity extends Activity {
             switch (msg.what) {
                 case MSG_WHAT_YOUDAO_DICT_RESULT:
                     if (state == STATE_ORIGIN) {
-                        translateResultTextView.setTextColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+                        translateResultTextView.setTextColor(getResources().getColor(R.color.colorGreen));
                         if (youdaoResult == null && baiduResult == null) {
                             translateResultTextView.setText("没有找到结果");
                             return;
@@ -88,37 +112,37 @@ public class ResultActivity extends Activity {
 
                         }
                         try {
-                            if (sharedPreferences.getBoolean(SettingsFragment.SHARED_PREFERENCE_YOUDAO_DICT, false)) {
+                            if (sharedPreferences.getBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, true)) {
                                 if (youdaoResult != null && youdaoResult.getParsedExplains() != null && !youdaoResult.getParsedExplains().isEmpty()) {
                                     result.append("\n\n").append(youdaoResult.getParsedExplains());
                                 }
                             }
-                        } catch (Exception e){
+                        } catch (Exception e) {
 
                         }
 
                         try {
-                            if (sharedPreferences.getBoolean(SettingsFragment.SHARED_PREFERENCE_WEB_EXPLAIN, false)) {
-                                if (youdaoResult != null && youdaoResult.getWeb() != null && ! youdaoResult.getWeb().isEmpty()) {
-                                    result.append("\n\n").append(youdaoResult.getWeb());
+                            if (sharedPreferences.getBoolean(SharedPref.PREFERENCE_WEB_EXPLAIN, true)) {
+                                if (youdaoResult != null && youdaoResult.getWeb() != null && !youdaoResult.getWeb().isEmpty()) {
+                                    result.append("\n\n").append(youdaoResult.getParseWebTranslate());
                                 }
                             }
-                        } catch (Exception e){
+                        } catch (Exception e) {
 
                         }
 
                         try {
-                            if (sharedPreferences.getBoolean(SettingsFragment.SHARED_PREFERENCE_YOUDAO_TRANSLATE, false)) {
+                            if (sharedPreferences.getBoolean(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, true)) {
                                 if (youdaoResult != null && youdaoResult.getTranslateResult() != null && !youdaoResult.getTranslateResult().isEmpty()) {
                                     result.append("\n\n").append(youdaoResult.getTranslateResult());
                                 }
                             }
-                        } catch (Exception e){
+                        } catch (Exception e) {
 
                         }
 
                         try {
-                            if (sharedPreferences.getBoolean(SettingsFragment.SHARED_PREFERENCE_YOUDAO_TRANSLATE, false)) {
+                            if (sharedPreferences.getBoolean(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, true)) {
                                 if (baiduResult != null && baiduResult.getResult() != null && !baiduResult.getResult().isEmpty()) {
                                     result.append("\n\n").append(baiduResult.getResult());
                                 }
@@ -128,8 +152,11 @@ public class ResultActivity extends Activity {
                         }
 
                         translateResultTextView.setText(result.toString());
+                        if (!result.toString().isEmpty()) {
+                            addNoteTextView.setVisibility(View.VISIBLE);
+                            addNoteTextView.setTextColor(getResources().getColor(R.color.colorGreen));
+                        }
                         saveWord();
-
                     }
                     break;
                 default:
@@ -137,7 +164,6 @@ public class ResultActivity extends Activity {
             }
         }
     };
-
 
 
     private void sendRequestWithHttpClient(final String query, final String from, final String to) {
@@ -179,6 +205,9 @@ public class ResultActivity extends Activity {
             return;
         }
         word.setArchived(false);
+        word.setNote(noteEditText.getText().toString());
+        word.setWebExplains(youdaoResult.getParseWebTranslate());
+
         Calendar c = Calendar.getInstance();
         word.setYear(c.get(Calendar.YEAR));
         word.setMonth(c.get(Calendar.MONTH) + 1);
@@ -189,7 +218,6 @@ public class ResultActivity extends Activity {
 
         WordManger.get(getApplicationContext()).insertWord(word);
     }
-
 
 
     void showToast(String info) {

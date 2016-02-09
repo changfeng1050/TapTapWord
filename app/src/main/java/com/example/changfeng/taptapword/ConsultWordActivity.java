@@ -17,10 +17,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class ConsultWordActivity extends Activity implements View.OnClickListener {
+
+public class ConsultWordActivity extends Activity {
 
     private static final String TAG = "ConsultWordActivity";
 
@@ -28,11 +34,30 @@ public class ConsultWordActivity extends Activity implements View.OnClickListene
 
     private static final String NO_RESULT = "无法找到结果！";
     private static final int STATE_ORIGIN = 1;
-    private EditText wordEditText;
+
     private int state;
     YoudaoResult youdaoResult;
     String query;
     Gson gson = new Gson();
+
+    @Bind(R.id.word_edit_text)
+    EditText wordEditText;
+
+    @Bind(R.id.result_text_view)
+    TextView resultTextView;
+
+    @OnClick(R.id.add_new_word)
+    void addNewWord(View view) {
+        resultTextView.setText("");
+        resultTextView.setVisibility(View.GONE);
+        String word = wordEditText.getText().toString();
+        if (isEnglishWord(word)) {
+            state = STATE_ORIGIN;
+            sendRequestWithHttpClient(word, "en", "zh");
+        } else {
+            showToast(getResources().getString(R.string.msg_not_support_other_language));
+        }
+    }
 
     private Handler handler = new Handler() {
 
@@ -48,7 +73,17 @@ public class ConsultWordActivity extends Activity implements View.OnClickListene
                         }
                         StringBuilder result = new StringBuilder();
                         result.append(query);
-                        result.append("\n").append(youdaoResult.getDictResult());
+                        if (!youdaoResult.getFormatPhones().isEmpty()) {
+                            result.append("\n\n").append(youdaoResult.getFormatPhones());
+                        }
+
+                        if (!youdaoResult.getParsedExplains().isEmpty()) {
+                            result.append("\n\n").append(youdaoResult.getParsedExplains());
+                        }
+
+                        if (!youdaoResult.getParseWebTranslate().isEmpty()) {
+                            result.append("\n\n").append(youdaoResult.getParseWebTranslate());
+                        }
 
                         resultTextView.setText(result.toString());
                         saveWord();
@@ -59,40 +94,15 @@ public class ConsultWordActivity extends Activity implements View.OnClickListene
             }
         }
     };
-    private TextView resultTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_consult_word);
-
-        ImageButton addButton = (ImageButton) findViewById(R.id.add_new_word_button);
-        addButton.setOnClickListener(this);
-        wordEditText = (EditText) findViewById(R.id.word_edit_text);
-
-        resultTextView = (TextView) findViewById(R.id.result_text_view);
-
+        ButterKnife.bind(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.add_new_word_button:
-                resultTextView.setText("");
-                resultTextView.setVisibility(View.GONE);
-                String word = wordEditText.getText().toString();
-                if (isEnglishWord(word)) {
-                    state = STATE_ORIGIN;
-                    sendRequestWithHttpClient(word, "en", "zh");
-                } else {
-                    showToast(getResources().getString(R.string.msg_not_support_other_language));
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -129,11 +139,9 @@ public class ConsultWordActivity extends Activity implements View.OnClickListene
                     e.printStackTrace();
                     youdaoResult = null;
                 }
-//                if (youdaoResult != null && !youdaoResult.getParsedExplains().equals(query) && !youdaoResult.getParseWebTranslate().equals(query)) {
                 Message message = new Message();
                 message.what = MSG_WHAT_YOUDAO_DICT_RESULT;
                 handler.sendMessage(message);
-//                }
             }
         }).start();
     }
@@ -154,6 +162,7 @@ public class ConsultWordActivity extends Activity implements View.OnClickListene
     }
 
     private void saveWord() {
+
         Word word = new Word();
         word.setLanguage("English");
         word.setName(query);
@@ -165,6 +174,8 @@ public class ConsultWordActivity extends Activity implements View.OnClickListene
             return;
         }
         word.setArchived(false);
+        word.setWebExplains(youdaoResult.getParseWebTranslate());
+
         Calendar c = Calendar.getInstance();
         word.setYear(c.get(Calendar.YEAR));
         word.setMonth(c.get(Calendar.MONTH) + 1);

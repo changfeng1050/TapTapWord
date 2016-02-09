@@ -3,7 +3,9 @@ package com.example.changfeng.taptapword;
 import android.app.ActivityManager;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -25,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.Bind;
@@ -37,8 +40,6 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "MainActivity";
     private static final String FRAGMENT_TAG = "CURRENT_FRAGMENT";
-    public static final String SELECTED_COLOR = "#4caf50";
-    public static final String WORD_TEXT_COLOR = "#293835";
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -70,42 +71,91 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(!prefs.getBoolean("first_time", false)) {
+        if (!prefs.getBoolean(SharedPref.FIRST_TIME, false)) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("first_time", true);
+            editor.putBoolean(SharedPref.FIRST_TIME, true);
+
+            editor.putBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, true);
+            editor.putBoolean(SharedPref.PREFERENCE_WEB_EXPLAIN, true);
+            editor.putBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, true);
+            editor.putBoolean(SharedPref.PREFERENCE_DAIDU_TRANSLATE, true);
+
             editor.apply();
 
             setupFragment(new HelpFragment());
+
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH) + 1;
+            int date = c.get(Calendar.DAY_OF_MONTH);
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+            int second = c.get(Calendar.SECOND);
 
             Word word = new Word();
             word.setName(getString(R.string.word_word_name));
             word.setAmPhone(getString(R.string.word_word_ph_am));
             word.setEnPhone(getString(R.string.word_word_ph_en));
             word.setMeans(getString(R.string.word_word_means));
+            word.setArchived(false);
+            word.setYear(year);
+            word.setMonth(month);
+            word.setDate(date);
+            word.setHour(hour);
+            word.setMinute(minute);
+            word.setSecond(second);
 
             Word ninjaWord = new Word();
             ninjaWord.setName(getString(R.string.word_ninja_name));
             ninjaWord.setAmPhone(getString(R.string.word_ninja_ph_am));
             ninjaWord.setEnPhone(getString(R.string.word_ninja_ph_en));
             ninjaWord.setMeans(getString(R.string.word_ninja_means));
+            ninjaWord.setArchived(false);
+            ninjaWord.setYear(year);
+            ninjaWord.setMonth(month);
+            ninjaWord.setDate(date);
+            ninjaWord.setHour(hour);
+            ninjaWord.setMinute(minute);
+            ninjaWord.setSecond(second);
 
             Word recentWord = new Word();
             recentWord.setName(getString(R.string.word_recent_name));
             recentWord.setAmPhone(getString(R.string.word_recent_ph_am));
             recentWord.setEnPhone(getString(R.string.word_recent_ph_en));
             recentWord.setMeans(getString(R.string.word_recent_means));
+            recentWord.setArchived(false);
+            recentWord.setYear(year);
+            recentWord.setMonth(month);
+            recentWord.setDate(date);
+            recentWord.setHour(hour);
+            recentWord.setMinute(minute);
+            recentWord.setSecond(second);
 
             Word archiveWord = new Word();
             archiveWord.setName(getString(R.string.word_archive_name));
             archiveWord.setAmPhone(getString(R.string.word_archive_ph_am));
             archiveWord.setEnPhone(getString(R.string.word_archive_ph_en));
             archiveWord.setMeans(getString(R.string.word_archive_means));
+            archiveWord.setArchived(false);
+            archiveWord.setYear(year);
+            archiveWord.setMonth(month);
+            archiveWord.setDate(date);
+            archiveWord.setHour(hour);
+            archiveWord.setMinute(minute);
+            archiveWord.setSecond(second);
 
             Word deleteWord = new Word();
             deleteWord.setName(getString(R.string.word_delete_name));
             deleteWord.setAmPhone(getString(R.string.word_delete_ph_am));
             deleteWord.setEnPhone(getString(R.string.word_delete_ph_en));
             deleteWord.setMeans(getString(R.string.word_delete_means));
+            deleteWord.setArchived(false);
+            deleteWord.setYear(year);
+            deleteWord.setMonth(month);
+            deleteWord.setDate(date);
+            deleteWord.setHour(hour);
+            deleteWord.setMinute(minute);
+            deleteWord.setSecond(second);
 
             Word unarchiveWord = new Word();
             unarchiveWord.setName(getString(R.string.word_unarchive_name));
@@ -113,6 +163,12 @@ public class MainActivity extends AppCompatActivity
             unarchiveWord.setEnPhone(getString(R.string.word_unarchive_ph_en));
             unarchiveWord.setMeans(getString(R.string.word_unarchive_means));
             unarchiveWord.setArchived(true);
+            unarchiveWord.setYear(year);
+            unarchiveWord.setMonth(month);
+            unarchiveWord.setDate(date);
+            unarchiveWord.setHour(hour);
+            unarchiveWord.setMinute(minute);
+            unarchiveWord.setSecond(second);
 
             Word delete2Word = new Word();
             delete2Word.setName(getString(R.string.word_delete2_name));
@@ -120,6 +176,13 @@ public class MainActivity extends AppCompatActivity
             delete2Word.setEnPhone(getString(R.string.word_delete2_ph_en));
             delete2Word.setMeans(getString(R.string.word_delete2_means));
             delete2Word.setArchived(true);
+            delete2Word.setYear(year);
+            delete2Word.setMonth(month);
+            delete2Word.setDate(date);
+            delete2Word.setHour(hour);
+            delete2Word.setMinute(minute);
+            delete2Word.setSecond(second);
+
 
             List<Word> words = new ArrayList<>();
             words.add(delete2Word);
@@ -132,6 +195,7 @@ public class MainActivity extends AppCompatActivity
 
             WordManger.get(getApplicationContext()).insertWords(words);
 
+
         } else {
             setupFragment(new RecentWordFragment());
             setTitle(getString(R.string.menu_recent_words));
@@ -139,7 +203,21 @@ public class MainActivity extends AppCompatActivity
 
         startClipboardService();
         showToast("单词忍者正在监听");
+        try {
+            if (!prefs.getBoolean(SharedPref.INSTALL_SHORTCUT, false)) {
+                addShortcut();
+                prefs.edit().putBoolean(SharedPref.INSTALL_SHORTCUT, true).apply();
+            }
+        } catch (Exception e) {
+            showToast(R.string.message_failed_install_shortcut);
+        }
+
+        countRunTimes();
+        if (isToShowRateDialog()) {
+            showRateDialog();
+        }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -203,13 +281,15 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.help) {
             setupFragment(new HelpFragment());
             setTitle(R.string.menu_help);
+        } else if (id == R.id.rate) {
+            rateUs();
         } else if (id == R.id.share) {
             shareByIntent();
         } else if (id == R.id.contact_us) {
             sendMailByIntent();
         } else if (id == R.id.about) {
             setupFragment(new AboutFragment());
-            setTitle(R.string.about);
+            setTitle(R.string.title_about);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -258,6 +338,23 @@ public class MainActivity extends AppCompatActivity
         return isRunning;
     }
 
+    private void openWebPage(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(url);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
+    private void rateUs() {
+        try {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse("market://details?id=" + getPackageName()));
+            startActivity(i);
+        } catch (Exception e) {
+            showToast(getString(R.string.message_cannot_find_app_market));
+        }
+    }
+
     private void shareByIntent() {
         Intent intent = new Intent(Intent.ACTION_SEND);
 
@@ -284,7 +381,72 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    void showToast(String info) {
+    private void addShortcut() {
+        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
+        shortcut.putExtra("duplicate", false);
+
+        Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
+        shortcutIntent.setClassName(this, this.getClass().getName());
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        Intent.ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(this, R.drawable.ic_launcher512_512_round);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        sendBroadcast(shortcut);
+    }
+
+    private boolean hasRated() {
+        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        return pref.getBoolean(SharedPref.RATED, false);
+    }
+
+    private void setRated() {
+        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        pref.edit().putBoolean(SharedPref.RATED, true).apply();
+    }
+
+    private boolean isToShowRateDialog() {
+        return !hasRated() && getRunTimes() > 5;
+    }
+
+    private void showRateDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_rate))
+                .setMessage(getString(R.string.message_rate))
+                .setPositiveButton(getString(R.string.button_yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        rateUs();
+                        setRated();
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.button_no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setRated();
+                    }
+                })
+                .show();
+    }
+
+    private void countRunTimes() {
+        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        int count = pref.getInt(SharedPref.RUN_TIMES, 0);
+        count++;
+        pref.edit().putInt(SharedPref.RUN_TIMES, count).apply();
+    }
+
+    private int getRunTimes() {
+        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        return pref.getInt(SharedPref.RUN_TIMES, 0);
+    }
+
+
+    private void showToast(int resourceId) {
+        Toast.makeText(getApplicationContext(), getString(resourceId), Toast.LENGTH_SHORT).show();
+    }
+
+    private void showToast(String info) {
         Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
     }
 }

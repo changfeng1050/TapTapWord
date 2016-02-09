@@ -128,16 +128,13 @@ public class RecentWordFragment extends Fragment {
                         cardItemView.setBackgroundColor(Color.WHITE);
                     } else {
                         selectedWords.add(mRecentWords.get(i));
-                        cardItemView.setBackgroundColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+                        cardItemView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     }
                 } else {
                     currentWord = mRecentWords.get(i);
                     Intent intent = new Intent(getActivity(), WordActivity.class);
                     intent.putExtra(WordActivity.EXTRA_WORD_NAME, currentWord.getName());
-                    intent.putExtra(WordActivity.EXTRA_WORD_PHONE, currentWord.getFormatPhones());
-                    intent.putExtra(WordActivity.EXTRA_WORD_MEANS, currentWord.getMeans());
-                    intent.putExtra(WordActivity.EXTRA_WORD_ARCHIVED, currentWord.isArchived());
-                    startActivityForResult(intent, REQUEST_WORD);
+                    startActivity(intent);
                 }
 
             }
@@ -150,7 +147,7 @@ public class RecentWordFragment extends Fragment {
                     selectedWords = new ArrayList<>();
                     if (!mRecentWords.isEmpty()) {
                         selectedWords.add(mRecentWords.get(i));
-                        cardItemView.setBackgroundColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+                        cardItemView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
                     }
                 }
             }
@@ -159,53 +156,10 @@ public class RecentWordFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.d(TAG, "OnActivityResult() called" + " requestCode:" + requestCode + " resultCode:" + resultCode);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-
-        if (requestCode == REQUEST_WORD) {
-
-
-            currentWord.setName(data.getStringExtra(WordActivity.EXTRA_WORD_NAME));
-            currentWord.setArchived(data.getBooleanExtra(WordActivity.EXTRA_WORD_ARCHIVED, false));
-            currentWord.setMeans(data.getStringExtra(WordActivity.EXTRA_WORD_MEANS));
-            String phone = data.getStringExtra(WordActivity.EXTRA_WORD_PHONE).trim();
-
-            String amPhone = phone.substring(phone.indexOf('[') + 1, phone.indexOf(']'));
-            String emPhone = phone.substring(phone.lastIndexOf('[') + 1, phone.lastIndexOf(']'));
-            currentWord.setAmPhone(amPhone);
-            currentWord.setEnPhone(emPhone);
-
-            WordManger.get(getActivity()).updateWord(currentWord);
-            if (currentWord.isArchived()) {
-                mRecentWords.remove(currentWord);
-            }
-            showToast(getString(R.string.message_edit_success), Toast.LENGTH_SHORT);
-//                Log.d(TAG, word.getName() + " " + word.getAmPhone() + " " + word.getEnPhone() + " " + word.getMeans());
-        }
-
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fratment_new_word, menu);
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.menu_item_new_word:
-//                Intent i = new Intent(getActivity(), ConsultWordActivity.class);
-//                startActivity(i);
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
-
 
     private void updateListView(int color) {
         materialListView.removeAllViews();
@@ -218,8 +172,8 @@ public class RecentWordFragment extends Fragment {
             card.setTag("SIMPLE_CARD");
             card.setDismissible(true);
             card.setBackgroundColor(color);
-            card.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
-            card.setDescriptionColor(Color.parseColor(MainActivity.WORD_TEXT_COLOR));
+            card.setTitleColor(getResources().getColor(R.color.colorGreen));
+            card.setDescriptionColor(getResources().getColor(R.color.colorGrey));
             materialListView.add(card);
         } else {
             for (Word word : mRecentWords) {
@@ -228,24 +182,22 @@ public class RecentWordFragment extends Fragment {
 
                 StringBuilder description = new StringBuilder();
 
-                if (!word.getAmPhone().isEmpty()) {
-                    description.append(word.getFormatAmPhone());
-                }
-                if (!word.getEnPhone().isEmpty()) {
-                    description.append(word.getFormatEnPhone());
-                }
-                description.append("\n\n");
-                if (!word.getMeans().isEmpty()) {
-                    description.append(word.getMeans());
+                if (!word.getFormatPhones().isEmpty()) {
+                    description.append(word.getFormatPhones());
                 }
 
-                card.setDescription(description.toString());
+                if (!word.getMeans().isEmpty()) {
+                    description.append("\n\n").append(word.getMeans());
+                }
+                if (!description.toString().isEmpty()) {
+                    card.setDescription(description.toString());
+                }
 
                 card.setTag("SIMPLE_CARD");
                 card.setDismissible(false);
                 card.setBackgroundColor(color);
-                card.setTitleColor(Color.parseColor(MainActivity.SELECTED_COLOR));
-                card.setDescriptionColor(Color.parseColor(MainActivity.WORD_TEXT_COLOR));
+                card.setTitleColor(getResources().getColor(R.color.colorGreen));
+                card.setDescriptionColor(getResources().getColor(R.color.colorGrey));
                 materialListView.add(card);
             }
         }
@@ -286,7 +238,7 @@ public class RecentWordFragment extends Fragment {
         if (mRecentWords.isEmpty()) {
             return;
         }
-        materialListView.setBackgroundColor(Color.parseColor(MainActivity.SELECTED_COLOR));
+        materialListView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
 
     }
 

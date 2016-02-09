@@ -30,11 +30,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_BACKUP_FILE = 1;
     private static final String FILE_KEY_WORD = "word_ninja";
 
-    public static final String SHARED_PREFERENCE_NAME = "settings";
-    public static final String SHARED_PREFERENCE_YOUDAO_DICT = "youdao_dict";
-    public static final String SHARED_PREFERENCE_WEB_EXPLAIN = "web_explain";
-    public static final String SHARED_PREFERENCE_YOUDAO_TRANSLATE = "youdao_translate";
-    public static final String SHARED_PREFERENCE_DAIDU_TRANSLATE = "baidu_translate";
 
 
     @Bind(R.id.select_youdao_dict)
@@ -42,26 +37,26 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @OnClick(R.id.select_youdao_dict)
     public void selectYoudaoDict() {
-        setSettings(SHARED_PREFERENCE_YOUDAO_DICT, youdaoDictCheckBox.isChecked());
+        setSettings(SharedPref.PREFERENCE_YOUDAO_DICT, youdaoDictCheckBox.isChecked());
     }
 
     @Bind(R.id.select_web_explain)
     CheckBox webExplainCheckBox;
     @OnClick(R.id.select_web_explain)
     public void selectWebExplain() {
-        setSettings(SHARED_PREFERENCE_WEB_EXPLAIN, webExplainCheckBox.isChecked());
+        setSettings(SharedPref.PREFERENCE_WEB_EXPLAIN, webExplainCheckBox.isChecked());
     }
     @Bind(R.id.select_youdao_translate)
     CheckBox youdaoTranslateCheckBox;
     @OnClick(R.id.select_youdao_translate)
     public void selectYoudaotranslate() {
-        setSettings(SHARED_PREFERENCE_YOUDAO_TRANSLATE, youdaoTranslateCheckBox.isChecked());
+        setSettings(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, youdaoTranslateCheckBox.isChecked());
     }
     @Bind(R.id.select_baidu_translate)
     CheckBox baiduTranslateCheckBox;
     @OnClick(R.id.select_baidu_translate)
     public void selectBaiduTranslate() {
-        setSettings(SHARED_PREFERENCE_DAIDU_TRANSLATE, baiduTranslateCheckBox.isChecked());
+        setSettings(SharedPref.PREFERENCE_DAIDU_TRANSLATE, baiduTranslateCheckBox.isChecked());
     }
 
     @Bind(R.id.reset_all_data)
@@ -81,7 +76,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferencesEditor = getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
+        sharedPreferencesEditor = getActivity().getSharedPreferences(SharedPref.PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
     }
 
     @Override
@@ -97,15 +92,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         restoreDataTextView.setOnClickListener(this);
         clearBackupDataTextView.setOnClickListener(this);
 
-        sharedPreferences = getActivity().getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
-        youdaoDictCheckBox.setChecked(getSettings(SHARED_PREFERENCE_YOUDAO_DICT, true));
-        webExplainCheckBox.setChecked(getSettings(SHARED_PREFERENCE_WEB_EXPLAIN, true));
-        youdaoTranslateCheckBox.setChecked(getSettings(SHARED_PREFERENCE_YOUDAO_TRANSLATE, true));
-        baiduTranslateCheckBox.setChecked(getSettings(SHARED_PREFERENCE_DAIDU_TRANSLATE, true));
-        setSettings(SHARED_PREFERENCE_YOUDAO_DICT, youdaoTranslateCheckBox.isChecked());
-        setSettings(SHARED_PREFERENCE_WEB_EXPLAIN, webExplainCheckBox.isChecked());
-        setSettings(SHARED_PREFERENCE_YOUDAO_TRANSLATE, youdaoTranslateCheckBox.isChecked());
-        setSettings(SHARED_PREFERENCE_DAIDU_TRANSLATE, baiduTranslateCheckBox.isChecked());
+        sharedPreferences = getActivity().getSharedPreferences(SharedPref.PREFERENCE_NAME, Context.MODE_PRIVATE);
+        youdaoDictCheckBox.setChecked(getSettings(SharedPref.PREFERENCE_YOUDAO_DICT, true));
+        webExplainCheckBox.setChecked(getSettings(SharedPref.PREFERENCE_WEB_EXPLAIN, true));
+        youdaoTranslateCheckBox.setChecked(getSettings(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, true));
+        baiduTranslateCheckBox.setChecked(getSettings(SharedPref.PREFERENCE_DAIDU_TRANSLATE, true));
+        setSettings(SharedPref.PREFERENCE_YOUDAO_DICT, youdaoTranslateCheckBox.isChecked());
+        setSettings(SharedPref.PREFERENCE_WEB_EXPLAIN, webExplainCheckBox.isChecked());
+        setSettings(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, youdaoTranslateCheckBox.isChecked());
+        setSettings(SharedPref.PREFERENCE_DAIDU_TRANSLATE, baiduTranslateCheckBox.isChecked());
 
         return view;
     }
@@ -148,9 +143,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (WordManger.get(getActivity()).copyDbToSdcard()) {
-                                    showToast(getString(R.string.message_data_backupped), Toast.LENGTH_SHORT);
+                                    showToast(R.string.message_data_backupped);
                                 } else {
-                                    showToast(getString(R.string.message_data_backupped_failed), Toast.LENGTH_SHORT);
+                                    showToast(R.string.message_data_backupped_failed);
                                 }
                             }
                         })
@@ -235,6 +230,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
     private boolean getSettings(String key, boolean defaultValue) {
         return  sharedPreferences.getBoolean(key, defaultValue);
+    }
+
+    private void showToast(int resourceId) {
+        Toast.makeText(getActivity(), getString(resourceId), Toast.LENGTH_SHORT).show();
     }
     private void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
