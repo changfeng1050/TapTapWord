@@ -75,6 +75,14 @@ public class WordManger {
         return mHelper.loadArchivedWords();
     }
 
+    public ArrayList<Word> getWords(boolean archived) {
+        if (archived) {
+            return mHelper.loadArchivedWords();
+        } else {
+            return mHelper.loadUnarchivedWords();
+        }
+    }
+
     public ArrayList<Word> getUnarchivedWords() {
         return mHelper.loadUnarchivedWords();
     }
@@ -92,6 +100,16 @@ public class WordManger {
     }
 
     public void updateWord(Word word) {
+        mHelper.updateWord(word);
+    }
+
+    public void archiveWord(Word word) {
+        word.setArchived(true);
+        mHelper.updateWord(word);
+    }
+
+    public void unarchiveWord(Word word) {
+        word.setArchived(false);
         mHelper.updateWord(word);
     }
 

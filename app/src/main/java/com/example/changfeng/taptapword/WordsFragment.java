@@ -1,38 +1,25 @@
 package com.example.changfeng.taptapword;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
-import android.util.Log;
-import android.view.ActionMode;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.dexafree.materialList.cards.SimpleCard;
-import com.dexafree.materialList.cards.SmallImageCard;
-import com.dexafree.materialList.controller.OnDismissCallback;
-import com.dexafree.materialList.controller.RecyclerItemClickListener;
-import com.dexafree.materialList.model.Card;
-import com.dexafree.materialList.model.CardItemView;
-import com.dexafree.materialList.view.MaterialListView;
+import com.example.changfeng.taptapword.adapter.RecyclerViewAdapter;
+import com.example.changfeng.taptapword.listener.WordItemArchivedListener;
+import com.example.changfeng.taptapword.listener.WordItemClickListener;
+import com.example.changfeng.taptapword.listener.WordItemDeleteListener;
+import com.example.changfeng.taptapword.listener.WordItemLongClickListener;
+import com.example.changfeng.taptapword.listener.WordItemUnArchivedListener;
+import com.example.changfeng.taptapword.util.Attributes;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,215 +27,86 @@ import butterknife.ButterKnife;
 /**
  * Created by changfeng on 2015/4/17.
  */
-public class WordsFragment extends Fragment {
+public class WordsFragment extends Fragment implements WordItemClickListener, WordItemLongClickListener, WordItemArchivedListener, WordItemUnArchivedListener, WordItemDeleteListener {
 
     private static final String TAG = "WordsFragment";
 
-    private Word currentWord;
-    private ArrayList<Word> selectedWords;
-    private ArrayList<Word> mArchivedWords = new ArrayList<>();
-    private boolean isActionMode = false;
+    public static final String ARG_ARCHIVED = "archived";
 
-    @Bind(R.id.material_list_view)
-    MaterialListView materialListView;
+    private List<Word> words;
+
+    @Bind(R.id.word_recycler_view)
+    RecyclerView recyclerView;
+
+    RecyclerViewAdapter adapter;
+
+    protected boolean archived = false;
+
 
     @Override
     public void onResume() {
         super.onResume();
-        mArchivedWords = WordManger.get(getActivity()).getArchivedWords();
-        updateListView();
+        words = WordManger.get(getActivity()).getWords(archived);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "OnCreateView() called");
-        View view = inflater.inflate(R.layout.material_list_view, container, false);
+        super.onCreate(savedInstanceState);
+
+        View view = inflater.inflate(R.layout.fragment_word_recycler_view, container, false);
         ButterKnife.bind(this, view);
-        mArchivedWords = WordManger.get(getActivity()).getArchivedWords();
-        materialListView.addOnItemTouchListener(new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(CardItemView cardItemView, int i) {
-                if (mArchivedWords.isEmpty()) {
-                    Toast.makeText(getActivity(), getString(R.string.title_no_archived_words), Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-                if (isActionMode) {
-                    if (selectedWords.contains(mArchivedWords.get(i))) {
-                        selectedWords.remove(mArchivedWords.get(i));
-                        cardItemView.setBackgroundColor(Color.WHITE);
-                    } else {
-                        selectedWords.add(mArchivedWords.get(i));
-                        cardItemView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                    }
-                } else {
-                    currentWord = mArchivedWords.get(i);
-                    Intent intent = new Intent(getActivity(), WordActivity.class);
-                    intent.putExtra(WordActivity.EXTRA_WORD_NAME, currentWord.getName());
-                    startActivity(intent);
-                }
-            }
 
-            @Override
-            public void onItemLongClick(CardItemView cardItemView, int i) {
-                if (!isActionMode) {
-                    isActionMode = true;
-                    getActivity().startActionMode(mActionModeCallback);
-                    selectedWords = new ArrayList<>();
-                    if (!mArchivedWords.isEmpty()) {
-                        selectedWords.add(mArchivedWords.get(i));
-                        cardItemView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-                    }
-                }
-            }
-        });
+        words = WordManger.get(getActivity()).getWords(archived);
+        adapter = new RecyclerViewAdapter(getActivity(), words, archived);
 
-        materialListView.setOnDismissCallback(new OnDismissCallback() {
-            @Override
-            public void onDismiss(Card card, int position) {
-                if (!mArchivedWords.isEmpty()) {
-                    WordManger.get(getActivity()).deleteWord(mArchivedWords.get(position));
-                    mArchivedWords.remove(position);
-                    showToast(getString(R.string.message_delete_success), Toast.LENGTH_SHORT);
-                }
-                updateListView();
-            }
-        });
+        adapter.setMode(Attributes.Mode.Single);
+        adapter.setOnItemClickListener(this);
+        adapter.setOnItemLongClickListener(this);
+        adapter.setOnItemArchiveListener(this);
+        adapter.setOnItemUnarchivedListener(this);
+        adapter.setOnItemDeleteListener(this);
+        recyclerView.setAdapter(adapter);
+
         return view;
     }
 
 
-    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            isActionMode = true;
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.context_words_menu, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_delete:
-                    if (!selectedWords.isEmpty()) {
-                        deleteWords();
-                        showToast(getString(R.string.message_delete_success), Toast.LENGTH_SHORT);
-                    }
-                    mode.finish();
-                    break;
-                case R.id.action_unarchive:
-                    if (!selectedWords.isEmpty()) {
-                        unArchiveWords();
-                        showToast(getString(R.string.message_unarchive_success), Toast.LENGTH_SHORT);
-                    }
-                    mode.finish();
-                    break;
-                case R.id.action_select_all:
-                    selectAll();
-                    checkAll();
-                    break;
-                default:
-                    return false;
-            }
-            return true;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-//            Log.d(TAG, "OnDestroyActionMode() called");
-            updateListView();
-            isActionMode = false;
-        }
-    };
-
-
-    private void updateListView() {
-        materialListView.removeAllViews();
-        materialListView.clear();
-
-        if (mArchivedWords.isEmpty()) {
-            SimpleCard card = new SmallImageCard(getActivity());
-            card.setTitle(getString(R.string.title_no_archived_words));
-            card.setDescription(getString(R.string.description_no_archived_words));
-            card.setTag("SIMPLE_CARD");
-            card.setDismissible(true);
-            card.setBackgroundColor(Color.WHITE);
-            card.setTitleColor(getResources().getColor(R.color.colorGreen));
-            card.setDescriptionColor(getResources().getColor(R.color.colorGrey));
-            materialListView.add(card);
-        } else {
-            for (Word word : mArchivedWords) {
-                SimpleCard card = new SmallImageCard(getActivity());
-                card.setTitle(word.getName());
-                StringBuilder description = new StringBuilder();
-                if (!word.getFormatPhones().isEmpty()) {
-                    description.append(word.getFormatPhones());
-                }
-
-                if (!word.getMeans().isEmpty()) {
-                    description.append("\n\n").append(word.getMeans());
-                }
-
-                if (!description.toString().isEmpty()) {
-                    card.setDescription(description.toString());
-                }
-
-                card.setTag("SIMPLE_CARD");
-                card.setDismissible(false);
-                card.setBackgroundColor(Color.WHITE);
-                card.setTitleColor(getResources().getColor(R.color.colorGreen));
-                card.setDescriptionColor(getResources().getColor(R.color.colorGrey));
-                materialListView.add(card);
-            }
-        }
-        materialListView.setBackgroundColor(Color.WHITE);
+    @Override
+    public void onItemClick(View view, int position) {
+        Intent intent = new Intent(getActivity(), WordActivity.class);
+        intent.putExtra(WordActivity.EXTRA_WORD_NAME, words.get(position).getName());
+        startActivity(intent);
     }
 
-    private void unArchiveWords() {
-        if (selectedWords.isEmpty()) {
-            return;
-        }
-
-        for (Word word : selectedWords) {
-            word.setArchived(false);
-            WordManger.get(getActivity()).updateWord(word);
-        }
-        mArchivedWords.removeAll(selectedWords);
+    @Override
+    public void onItemLongClick(View view, int position) {
     }
 
-    private void deleteWords() {
-//        Log.d(TAG,"deleteWords() called positions:" + positions);
-        if (selectedWords.isEmpty()) {
-            return;
-        }
-        for (Word word : selectedWords) {
-            WordManger.get(getActivity()).deleteWord(word);
-        }
-        mArchivedWords.removeAll(selectedWords);
+    @Override
+    public void onItemArchived(View view, int position) {
+        WordManger.get(getActivity()).archiveWord(words.get(position));
+        words = WordManger.get(getActivity()).getWords(archived);
     }
 
-    private void selectAll() {
-        if (mArchivedWords.isEmpty()) {
-            return;
-        }
-        selectedWords = mArchivedWords;
+    @Override
+    public void onItemUnArchived(View view, int position) {
+        WordManger.get(getActivity()).unarchiveWord(words.get(position));
+        words = WordManger.get(getActivity()).getWords(archived);
     }
 
-    private void checkAll() {
-        if (mArchivedWords.isEmpty()) {
-            return;
-        }
-        materialListView.setBackgroundColor(getResources().getColor(R.color.colorGreen));
-
+    @Override
+    public void onItemDelete(View view, int position) {
+        WordManger.get(getActivity()).deleteWord(words.get(position));
+        words = WordManger.get(getActivity()).getWords(archived);
     }
 
-    private void showToast(String message, int duration) {
-        Toast.makeText(getActivity(), message, duration).show();
+    private void showToast(int resourceId) {
+        Toast.makeText(getActivity(), getString(resourceId), Toast.LENGTH_SHORT).show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

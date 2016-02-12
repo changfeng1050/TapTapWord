@@ -26,6 +26,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.changfeng.taptapword.ui.ArchivedWordsFragment;
+import com.example.changfeng.taptapword.ui.UnArchiveWordsFragment;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -197,7 +200,7 @@ public class MainActivity extends AppCompatActivity
 
 
         } else {
-            setupFragment(new RecentWordFragment());
+            setupFragment(new UnArchiveWordsFragment());
             setTitle(getString(R.string.menu_recent_words));
         }
 
@@ -253,18 +256,18 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.recent_words) {
-            setupFragment(new RecentWordFragment());
+            setupFragment(new UnArchiveWordsFragment());
             setTitle(getString(R.string.menu_recent_words));
 
         } else if (id == R.id.archive_words) {
-            setupFragment(new WordsFragment());
+            setupFragment(new ArchivedWordsFragment());
             setTitle(getString(R.string.menu_words));
         } else if (id == R.id.watch) {
             if (!isWatchOn) {
@@ -290,13 +293,15 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.about) {
             setupFragment(new AboutFragment());
             setTitle(R.string.title_about);
+        } else if (id == R.id.test) {
+            Intent intent = new Intent(this, RecyclerViewExample.class);;
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     private void setupFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -330,7 +335,7 @@ public class MainActivity extends AppCompatActivity
             return false;
         }
         for (int i = 0; i < serviceList.size(); i++) {
-            if (serviceList.get(i).service.getClassName().equals(className) == true) {
+            if (serviceList.get(i).service.getClassName().equals(className)) {
                 isRunning = true;
                 break;
             }

@@ -67,13 +67,11 @@ public class ClipboardService extends Service {
             return false;
         }
         // 判断是是否是网址
-        Pattern httpPattern = Pattern.compile("(http://|https://){1}[//w//.//-/:]+");
+        Pattern httpPattern = Pattern.compile("(http://|https://)+");
         if (httpPattern.matcher(word).find()) {
             return false;
         }
         return true;
-//        Pattern specialPattern = Pattern.compile("[`~!@#$%^&*()+=|{}':;',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]");
-//        return !specialPattern.matcher(word).matches();
     }
 
 

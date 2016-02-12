@@ -50,6 +50,8 @@
         <activity
             android:name=".ConsultWordActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
+
+        <activity android:name=".RecyclerViewExample"/>
     </application>
 
 </manifest>

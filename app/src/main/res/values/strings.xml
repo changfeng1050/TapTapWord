@@ -17,9 +17,11 @@
     <string name="menu_share">分享</string>
     <string name="menu_contact_us">联系我们</string>
     <string name="menu_about">关于</string>
+    <string name="menu_test">测试</string>
     <string name="requesting_result_from_internet">正在进行在线查询，请稍候…</string>
     <string name="hint_please_input_your_note">在这里输入笔记</string>
     <string name="title_about">关于单词忍者</string>
+    <string name="title_test">测试</string>
     <string name="message_about">Powered by changfeng\nchangfeng1050@hotmail.com</string>
     <string name="check_box_add_to_words">归档</string>
     <string name="button_save_word">保存</string>
@@ -68,6 +70,7 @@
     <string name="mail_text">changfeng1050, 你好！ 我正在使用单词忍者，我想要反馈…</string>
 
 
+
     <string name="action_settings">设置</string>
     <string name="action_delete">删除</string>
     <string name="action_archive">归档</string>
@@ -102,37 +105,37 @@
     <string name="word_ninja_name">Ninja</string>
     <string name="word_ninja_ph_am">"'nɪndʒə"</string>
     <string name="word_ninja_ph_en">"'nɪndʒə"</string>
-    <string name="word_ninja_means">n.\n忍者（受过日本传统打斗和轻功训练的人）\nn.\n请将忍者监听打开，以便忍者在你阅读的时候窃取单词</string>
+    <string name="word_ninja_means">n.忍者（受过日本传统打斗和轻功训练的人）\nv.请将忍者监听打开，以便忍者在你阅读的时候窃取单词</string>
 
     <string name="word_recent_name">recent</string>
     <string name="word_recent_ph_am">"'risənt"</string>
     <string name="word_recent_ph_en">"'riːs(ə)nt"</string>
-    <string name="word_recent_means">adj.\n最近的；新近的;\nadj.\n这里存放单词忍者窃取的单词</string>
+    <string name="word_recent_means">adj.最近的；新近的;\nadj.这里存放单词忍者窃取的单词</string>
 
     <string name="word_word_name">word</string>
     <string name="word_word_ph_am">"wɜrd"</string>
     <string name="word_word_ph_en">"wɜː(r)d"</string>
-    <string name="word_word_means">n.\n词；单词；字；消息\nv.\n措辞；用词\nint.\n说得对 \nn.\n单词忍者窃取的单词都会保存在这里，你可以对长按单词卡片进行删除或者归档</string>
+    <string name="word_word_means">n.词；单词；字；消息\nv.措辞；用词\nint.说得对 \nv.单词忍者窃取的单词都会保存在这里，你可以对长按单词卡片进行删除或者归档</string>
 
     <string name="word_archive_name">archive</string>
     <string name="word_archive_ph_am">"'ɑr.kaɪv"</string>
     <string name="word_archive_ph_en">"'ɑː(r)kaɪv"</string>
-    <string name="word_archive_means">n\n档案；档案馆；档案室\n\v.把…存档；把…归档；将（不常用消息）存档\nv.\n长按单词卡片进行归档</string>
+    <string name="word_archive_means">n.档案；档案馆；档案室\nv.把…存档；把…归档；将（不常用消息）存档\nv.长按单词卡片进行归档</string>
 
     <string name="word_unarchive_name">unarchive</string>
     <string name="word_unarchive_ph_am">"ʌn'ɑː(r)kaɪv"</string>
     <string name="word_unarchive_ph_en">"ʌn'ɑː(r)kaɪv"</string>
-    <string name="word_unarchive_means">n.\n取消存档；反归档\nv.\n长按单词卡片，然后按右上角“取消归档”，可将单词移到最近单词</string>
+    <string name="word_unarchive_means">v.取消存档；反归档\nv.长按单词卡片，然后按右上角“取消归档”，可将单词移到最近单词</string>
 
     <string name="word_delete2_name">delete</string>
     <string name="word_delete2_ph_am">"dɪ'lit"</string>
     <string name="word_delete2_ph_en">"dɪ'liːt"</string>
-    <string name="word_delete2_means">v.\n删去；删除\nv.\n长按单词卡片进行删除</string>
+    <string name="word_delete2_means">v.删去；删除\nv.长按单词卡片进行删除</string>
 
     <string name="word_delete_name">delete</string>
     <string name="word_delete_ph_am">"dɪ'lit"</string>
     <string name="word_delete_ph_en">"dɪ'lit"</string>
-    <string name="word_delete_means">v.\n删去；删除\nv.\n长按单词卡片，然后按右上角“删除”进行删除</string>
+    <string name="word_delete_means">v.删去；删除\nv.长按单词卡片，然后按右上角“删除”进行删除</string>
 
     <string name="msg_not_support_other_language">抱歉，单词忍者暂时无法窃取英文以外的情报</string>
 
@@ -169,9 +172,14 @@
 
     <string name="button_ok">确定</string>
     <string name="button_yes">好</string>
-    <string name="button_no">不</string>
+    <string name="button_no">不好</string>
     <string name="button_add_note">+</string>
     <string name="button_add_word">+</string>
+
+    <string name="message_select_operation">选择操作</string>
+    <string name="archive">归档</string>
+    <string name="unarchive">取消归档</string>
+    <string name="delete">删除</string>
 
     <string name="developer_mail_address">changfeng1050@hotmail.com</string>
 
