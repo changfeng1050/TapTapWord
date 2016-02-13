@@ -40,6 +40,8 @@ public class ConsultWordActivity extends Activity {
     String query;
     Gson gson = new Gson();
 
+    boolean responsed = false;
+
     @Bind(R.id.word_consult_layout)
     LinearLayout wordConsultLayout;
 
@@ -96,6 +98,7 @@ public class ConsultWordActivity extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_WHAT_WORD_RESULT:
+                    responsed = true;
                     if (youdaoResult == null && baiduResult == null) {
                         resultInfoTextView.setText(getString(R.string.message_cannot_find_word_result));
                         return;
@@ -169,11 +172,14 @@ public class ConsultWordActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        saveWord();
+        if (responsed) {
+            saveWord();
+        }
         super.onDestroy();
     }
 
     private void sendRequestWithHttpClient(final String query, final String from, final String to) {
+        responsed = false;
         this.query = query;
         new Thread(new Runnable() {
             @Override
