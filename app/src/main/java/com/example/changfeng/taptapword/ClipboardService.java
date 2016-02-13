@@ -50,60 +50,33 @@ public class ClipboardService extends Service {
         MyLog.d(TAG, "onDestroy()");
     }
 
-    private Boolean isEnglishWord(String word) {
 
+    ClipboardManager.OnPrimaryClipChangedListener cbListener = new ClipboardManager.OnPrimaryClipChangedListener() {
+        @Override
+        public void onPrimaryClipChanged() {
+            if (cb.hasPrimaryClip()) {
+                for (int i = 0; i < cb.getPrimaryClip().getItemCount(); i++) {
 
-       // 判断是否有汉字
-        char[] array = word.toCharArray();
-        for (char a : array) {
-            if ((char) (byte) a != a) {
-                return false;
+                    if (cb.getPrimaryClip().getItemAt(i).getText() != null && cb.getPrimaryClip().getItemAt(i).getText().length() > 0) {
+                        if (!cb.getPrimaryClip().getItemAt(i).getText().toString().trim().isEmpty()) {
+                            String clipboardItem = cb.getPrimaryClip().getItemAt(i).getText().toString().trim();
+
+                            if (!Utils.isEnglishWord(clipboardItem)) {
+                                break;
+                            }
+
+                            Intent intent = new Intent(getApplicationContext(), ConsultWordActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra(clipboardText, clipboardItem);
+                            intent.putExtra(ConsultWordActivity.TYPE, ConsultWordActivity.TYPE_COPY);
+                            startActivity(intent);
+                            break;
+                        }
+                    }
+                }
             }
         }
-
-        // 判断是否有数字
-        Pattern digitPattern = Pattern.compile("[\\+\\-=0-9.\\(\\)<>\\|\\[\\]\\s\\\\!\\?@#\\$%\\^&\\*,\\./~`]+");
-        if (digitPattern.matcher(word).matches()) {
-            return false;
-        }
-        // 判断是是否是网址
-        Pattern httpPattern = Pattern.compile("(http://|https://)+");
-        if (httpPattern.matcher(word).find()) {
-            return false;
-        }
-        return true;
-    }
-
-
-
-   ClipboardManager.OnPrimaryClipChangedListener cbListener = new ClipboardManager.OnPrimaryClipChangedListener() {
-       @Override
-       public void onPrimaryClipChanged() {
-           if (cb.hasPrimaryClip()) {
-               for (int i = 0; i < cb.getPrimaryClip().getItemCount(); i++) {
-
-                   if (cb.getPrimaryClip().getItemAt(i).getText() != null && cb.getPrimaryClip().getItemAt(i).getText().length() > 0) {
-                       if (!cb.getPrimaryClip().getItemAt(i).getText().toString().trim().isEmpty()) {
-                           String clipboardItem = cb.getPrimaryClip().getItemAt(i).getText().toString().trim();
-
-                           if (!isEnglishWord(clipboardItem)) {
-                               break;
-                           }
-
-
-
-                           Intent intent = new Intent();
-                           intent.setClassName("com.example.changfeng.taptapword", "com.example.changfeng.taptapword.ResultActivity");
-                           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                           intent.putExtra(clipboardText, clipboardItem);
-                           startActivity(intent);
-                           break;
-                       }
-                   }
-               }
-           }
-       }
-   };
+    };
 
     void showToast(String info) {
         Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();

@@ -2,212 +2,152 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.changfeng.taptapword.SettingsFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.changfeng.taptapword.SettingsFragment">
 
-    <LinearLayout
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:paddingTop="20dp"
-                android:longClickable="false"
-                android:text="@string/title_reset_preferences"
-                android:textColor="#4caf50"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4caf50" />
-
-            <TextView
-                android:id="@+id/reset_all_data"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="@string/reset_all_data"
-                android:textSize="20sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#1bbc9b"/>
-
-            <TextView
-                android:id="@+id/reset_all_preferences"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="@string/reset_all_preference"
-                android:textSize="20sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#1bbc9b"/>
-
-        </LinearLayout>
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardPreventCornerOverlap="true"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:paddingTop="20dp"
-                android:longClickable="false"
                 android:text="@string/title_translate_select"
-                android:textColor="#4caf50"/>
+                android:textColor="@color/colorGreen" />
 
-            <View
+            <Switch
+                android:id="@+id/youdao_dict_switch"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#4caf50" />
-
-            <CheckBox
-                android:id="@+id/select_youdao_dict"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
                 android:text="@string/youdao_dict"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#1bbc9b"/>
+                android:background="@color/colorLightGray" />
 
-            <CheckBox
-                android:id="@+id/select_web_explain"
-                android:layout_weight="1"
+            <Switch
+                android:id="@+id/web_explain_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
                 android:text="@string/web_explain"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#1bbc9b"/>
+                android:background="@color/colorLightGray" />
 
-            <CheckBox
-                android:id="@+id/select_youdao_translate"
-                android:layout_weight="1"
+            <Switch
+                android:id="@+id/youdao_translate_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
                 android:text="@string/youdao_translate"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#1bbc9b"/>
+                android:background="@color/colorLightGray" />
 
-            <CheckBox
-                android:id="@+id/select_baidu_translate"
-                android:layout_weight="1"
+            <Switch
+                android:id="@+id/baidu_translate_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
+                android:layout_gravity="center_horizontal"
+                android:padding="10dp"
                 android:text="@string/baidu_translate"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#1bbc9b"/>
+                android:background="@color/colorLightGray" />
+
 
         </LinearLayout>
 
-        <TextView
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardPreventCornerOverlap="true"
+        card_view:cardUseCompatPadding="true"
+        card_view:contentPadding="10dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:paddingTop="20dp"
-            android:longClickable="false"
-            android:text="@string/title_backup_and_restore"
-            android:textColor="#4caf50"/>
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_backup_and_restore"
+                android:textColor="@color/colorGreen" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#4caf50" />
+            <TextView
+                android:id="@+id/backup_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/backup"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/backup_data"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:text="@string/backup"
-            android:textSize="20sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorLightGray" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#1bbc9b"/>
+            <TextView
+                android:id="@+id/restore_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/restore"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/restore_data"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:text="@string/restore"
-            android:textSize="20sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorLightGray" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#1bbc9b"/>
+            <TextView
+                android:id="@+id/clear_backup_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="@string/clear_backup_data"
+                android:textSize="15sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorLightGray" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/clear_backup_data"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:text="@string/clear_backup_data"
-            android:textSize="20sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#1bbc9b"/>
-
-
-    </LinearLayout>
-
+    </android.support.v7.widget.CardView>
 </LinearLayout>

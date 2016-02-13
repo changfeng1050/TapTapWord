@@ -6,6 +6,8 @@
     <color name="colorGreen">#4caf50</color>
     <color name="colorGrey">#293835</color>
     <color name="colorLightGreen">#7e9bc8</color>
+    <color name="colorLightGray">#4F050505</color>
+    <color name="colorBlack">#000000</color>
 
     <color name="backgroundColor">#E8E8E0</color>
     <color name="backgroundColorPress">#DBDBD3</color>

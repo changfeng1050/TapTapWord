@@ -9,8 +9,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
 
-        versionCode 16
-        versionName "2.2.2"
+        versionCode 17
+        versionName "2.3.0"
     }
     buildTypes {
         release {
@@ -25,7 +25,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.github.dexafree:materiallist:2.4.0'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.squareup.okhttp3:okhttp:3.0.0-RC1'
     compile 'com.jakewharton:butterknife:7.0.1'

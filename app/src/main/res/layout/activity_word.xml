@@ -37,13 +37,13 @@
             android:id="@+id/date_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="end"
             android:layout_weight="1"
             android:gravity="end"
             android:paddingBottom="5dp"
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
             android:paddingTop="10dp"
-            android:layout_gravity="end"
 
             android:text=""
             android:textColor="@color/colorLightGreen"
@@ -96,7 +96,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen"/>
+        android:textColor="@color/colorGreen" />
 
     <TextView
         android:id="@+id/means_label"
@@ -118,7 +118,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen"/>
+        android:textColor="@color/colorGreen" />
 
     <TextView
         android:id="@+id/web_explains_label"
@@ -140,7 +140,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen"/>
+        android:textColor="@color/colorGreen" />
 
     <TextView
         android:id="@+id/note_label"
@@ -163,7 +163,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen"/>
+        android:textColor="@color/colorGreen" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -179,7 +179,7 @@
             android:paddingStart="30dp"
             android:paddingTop="5dp"
             android:text="@string/button_cancel"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/save"
@@ -190,7 +190,7 @@
             android:paddingStart="30dp"
             android:paddingTop="10dp"
             android:text="@string/button_save_word"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorPrimary" />
 
 
     </LinearLayout>

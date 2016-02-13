@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.changfeng.taptapword.R;
 import com.example.changfeng.taptapword.Word;
+import com.example.changfeng.taptapword.WordManger;
 import com.example.changfeng.taptapword.listener.WordItemArchivedListener;
 import com.example.changfeng.taptapword.listener.WordItemClickListener;
 import com.example.changfeng.taptapword.listener.WordItemDeleteListener;
@@ -23,7 +23,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapter.SimpleViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
@@ -65,8 +64,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
 
         private WordItemClickListener listener;
         private WordItemLongClickListener longClickListener;
-
-        public SimpleViewHolder(final View itemView, WordItemClickListener listener, WordItemLongClickListener longClickListener) {
+         public SimpleViewHolder(final View itemView, WordItemClickListener listener, WordItemLongClickListener longClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.listener = listener;
@@ -91,6 +89,7 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
             return true;
         }
     }
+
     public RecyclerViewAdapter(Context context, List<Word> words, boolean archived) {
         this.mContext = context;
         this.words = words;
@@ -114,11 +113,11 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
                     mItemManger.removeShownLayouts(viewHolder.swipeLayout);
+                    WordManger.get().archiveWord(words.get(position));
                     words.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, words.size());
                     mItemManger.closeAllItems();
-                    Toast.makeText(v.getContext(), "Archived: " + viewHolder.wordNameTextView.getText().toString() + "!", Toast.LENGTH_SHORT).show();
                     if (itemArchivedListener != null) {
                         itemArchivedListener.onItemArchived(v, position);
                     }
@@ -134,11 +133,11 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
                 @Override
                 public void onClick(View v) {
                     mItemManger.removeShownLayouts(viewHolder.swipeLayout);
+                    WordManger.get().unarchiveWord(words.get(position));
                     words.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, words.size());
                     mItemManger.closeAllItems();
-                    Toast.makeText(v.getContext(), "Unarchived: " + viewHolder.wordNameTextView.getText().toString() + "!", Toast.LENGTH_SHORT).show();
                     if (itemUnArchivedListener != null) {
                         itemUnArchivedListener.onItemUnArchived(v, position);
                     }
@@ -152,11 +151,11 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 mItemManger.removeShownLayouts(viewHolder.swipeLayout);
+                WordManger.get().deleteWord(words.get(position));
                 words.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, words.size());
                 mItemManger.closeAllItems();
-                Toast.makeText(view.getContext(), "Deleted " + viewHolder.wordNameTextView.getText().toString() + "!", Toast.LENGTH_SHORT).show();
                 if (itemDeleteListener != null) {
                     itemDeleteListener.onItemDelete(view, position);
                 }
@@ -196,6 +195,19 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
         return R.id.swipe;
     }
 
+    public void removeAll() {
+
+
+        for (int i = 0; i < getOpenLayouts().size(); i++) {
+            removeShownLayouts(getOpenLayouts().get(i));
+            notifyItemRemoved(i);
+            words.remove(i);
+            notifyItemRangeChanged(i, words.size());
+        }
+
+        mItemManger.closeAllItems();
+
+    }
 
     public void setOnItemClickListener(WordItemClickListener listener) {
         itemClickListener = listener;
@@ -216,4 +228,5 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
     public void setOnItemDeleteListener(WordItemDeleteListener listener) {
         itemDeleteListener = listener;
     }
+
 }

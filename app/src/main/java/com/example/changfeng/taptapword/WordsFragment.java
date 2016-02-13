@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,10 @@ public class WordsFragment extends Fragment implements WordItemClickListener, Wo
 
     @Bind(R.id.word_recycler_view)
     RecyclerView recyclerView;
+    @Bind(R.id.no_recent_words_card_view)
+    CardView noRecentWordsCardView;
+    @Bind(R.id.no_archived_words_card_view)
+    CardView noArchivedWordsCardView;
 
     RecyclerViewAdapter adapter;
 
@@ -46,7 +52,8 @@ public class WordsFragment extends Fragment implements WordItemClickListener, Wo
     @Override
     public void onResume() {
         super.onResume();
-        words = WordManger.get(getActivity()).getWords(archived);
+        setRecyclerAdapter();
+
     }
 
     @Override
@@ -56,19 +63,6 @@ public class WordsFragment extends Fragment implements WordItemClickListener, Wo
         View view = inflater.inflate(R.layout.fragment_word_recycler_view, container, false);
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        words = WordManger.get(getActivity()).getWords(archived);
-        adapter = new RecyclerViewAdapter(getActivity(), words, archived);
-
-        adapter.setMode(Attributes.Mode.Single);
-        adapter.setOnItemClickListener(this);
-        adapter.setOnItemLongClickListener(this);
-        adapter.setOnItemArchiveListener(this);
-        adapter.setOnItemUnarchivedListener(this);
-        adapter.setOnItemDeleteListener(this);
-        recyclerView.setAdapter(adapter);
-
         return view;
     }
 
@@ -86,27 +80,66 @@ public class WordsFragment extends Fragment implements WordItemClickListener, Wo
 
     @Override
     public void onItemArchived(View view, int position) {
-        WordManger.get(getActivity()).archiveWord(words.get(position));
-        words = WordManger.get(getActivity()).getWords(archived);
+        update();
+        showToast(R.string.message_archive_success);
     }
 
     @Override
     public void onItemUnArchived(View view, int position) {
-        WordManger.get(getActivity()).unarchiveWord(words.get(position));
-        words = WordManger.get(getActivity()).getWords(archived);
+        update();
+        showToast(R.string.message_unarchive_success);
     }
 
     @Override
     public void onItemDelete(View view, int position) {
-        WordManger.get(getActivity()).deleteWord(words.get(position));
-        words = WordManger.get(getActivity()).getWords(archived);
+        update();
+        showToast(R.string.message_delete_success);
     }
 
-    private void showToast(int resourceId) {
+    public void setRecyclerAdapter() {
+        words = WordManger.get(getActivity()).getWords(archived);
+        adapter = new RecyclerViewAdapter(getActivity(), words, archived);
+
+        adapter.setMode(Attributes.Mode.Single);
+        adapter.setOnItemClickListener(this);
+        adapter.setOnItemLongClickListener(this);
+        adapter.setOnItemArchiveListener(this);
+        adapter.setOnItemUnarchivedListener(this);
+        adapter.setOnItemDeleteListener(this);
+        recyclerView.setAdapter(adapter);
+        update();
+    }
+
+    private void update() {
+        words = WordManger.get(getActivity()).getWords(archived);
+        if (words.isEmpty()) {
+            if (archived) {
+                if (noArchivedWordsCardView.getVisibility() != View.VISIBLE) {
+                    noArchivedWordsCardView.setVisibility(View.VISIBLE);
+                }
+            } else {
+                if (noRecentWordsCardView.getVisibility() != View.VISIBLE) {
+                    noRecentWordsCardView.setVisibility(View.VISIBLE);
+                }
+            }
+        } else {
+            if (archived) {
+                if (noArchivedWordsCardView.getVisibility() != View.GONE) {
+                    noArchivedWordsCardView.setVisibility(View.GONE);
+                }
+            } else {
+                if (noRecentWordsCardView.getVisibility() != View.GONE) {
+                    noRecentWordsCardView.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    public void showToast(int resourceId) {
         Toast.makeText(getActivity(), getString(resourceId), Toast.LENGTH_SHORT).show();
     }
 
-    private void showToast(String message) {
+    public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

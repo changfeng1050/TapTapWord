@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.changfeng.taptapword.WordActivity">
+    <item
+        android:id="@+id/unarchive_all_words"
+        android:orderInCategory="100"
+        android:title="@string/action_unarchive_all_words"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/delete_all_archive_words"
+        android:orderInCategory="100"
+        android:title="@string/action_delete_all_archived_words"
+        app:showAsAction="never" />
+</menu>

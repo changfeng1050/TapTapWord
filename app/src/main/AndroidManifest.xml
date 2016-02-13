@@ -36,11 +36,6 @@
             android:exported="true" />
 
         <activity
-            android:name=".ResultActivity"
-            android:finishOnCloseSystemDialogs="true"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Holo.Dialog" />
-        <activity
             android:name=".WordActivity"
             android:label="@string/title_activity_word" />
         <activity

@@ -22,8 +22,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.changfeng.taptapword.ui.ArchivedWordsFragment;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     @OnClick(R.id.fab)
     public void addWord() {
         Intent i = new Intent(getApplicationContext(), ConsultWordActivity.class);
+        i.putExtra(ConsultWordActivity.TYPE, ConsultWordActivity.TYPE_CONSULT);
         startActivity(i);
     }
 
@@ -199,10 +200,8 @@ public class MainActivity extends AppCompatActivity
             WordManger.get(getApplicationContext()).insertWords(words);
 
 
-        } else {
-            setupFragment(new UnArchiveWordsFragment());
-            setTitle(getString(R.string.menu_recent_words));
         }
+        setupFragment(getLastFragmentId());
 
         startClipboardService();
         showToast("单词忍者正在监听");
@@ -232,43 +231,24 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            setupFragment(new SettingsFragment());
-            setTitle(R.string.menu_settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.recent_words) {
-            setupFragment(new UnArchiveWordsFragment());
-            setTitle(getString(R.string.menu_recent_words));
+        setupFragment(id);
+        return true;
+    }
 
-        } else if (id == R.id.archive_words) {
+    private void setupFragment(int id) {
+        if (id != R.id.recent_words) {
+            addFab.setVisibility(View.GONE);
+        }
+        if (id == R.id.archive_words) {
             setupFragment(new ArchivedWordsFragment());
             setTitle(getString(R.string.menu_words));
+            saveLastFragementId(id);
         } else if (id == R.id.watch) {
             if (!isWatchOn) {
                 startClipboardService();
@@ -281,9 +261,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.settings) {
             setupFragment(new SettingsFragment());
             setTitle(getString(R.string.menu_settings));
+            saveLastFragementId(id);
         } else if (id == R.id.help) {
             setupFragment(new HelpFragment());
             setTitle(R.string.menu_help);
+            saveLastFragementId(id);
         } else if (id == R.id.rate) {
             rateUs();
         } else if (id == R.id.share) {
@@ -293,14 +275,17 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.about) {
             setupFragment(new AboutFragment());
             setTitle(R.string.title_about);
-        } else if (id == R.id.test) {
-            Intent intent = new Intent(this, RecyclerViewExample.class);;
-            startActivity(intent);
+            saveLastFragementId(id);
+        } else {
+            setupFragment(new UnArchiveWordsFragment());
+            setTitle(getString(R.string.menu_recent_words));
+            if (addFab.getVisibility() != View.VISIBLE) {
+                addFab.setVisibility(View.VISIBLE);
+            }
+            saveLastFragementId(R.id.recent_words);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private void setupFragment(Fragment fragment) {
@@ -381,7 +366,7 @@ public class MainActivity extends AppCompatActivity
         if (activities.size() > 0) {
             startActivity(Intent.createChooser(intent, "请选择你的邮箱应用"));
         } else {
-            showToast(getString(R.string.msg_no_email_apps_found));
+            showToast(getString(R.string.message_no_email_apps_found));
         }
 
     }
@@ -446,6 +431,15 @@ public class MainActivity extends AppCompatActivity
         return pref.getInt(SharedPref.RUN_TIMES, 0);
     }
 
+    private void saveLastFragementId(int fragmentId) {
+        SharedPreferences.Editor editor = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE).edit();
+        editor.putInt(SharedPref.LAST_FRAGMENT_ID, fragmentId).apply();
+    }
+
+    private int getLastFragmentId() {
+        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        return pref.getInt(SharedPref.LAST_FRAGMENT_ID, SharedPref.INVALID_FRAGMENT_ID);
+    }
 
     private void showToast(int resourceId) {
         Toast.makeText(getApplicationContext(), getString(resourceId), Toast.LENGTH_SHORT).show();

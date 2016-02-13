@@ -18,7 +18,7 @@
     <string name="menu_contact_us">联系我们</string>
     <string name="menu_about">关于</string>
     <string name="menu_test">测试</string>
-    <string name="requesting_result_from_internet">正在进行在线查询，请稍候…</string>
+    <string name="requesting_result_from_internet">正在进行联网查询，请稍候…</string>
     <string name="hint_please_input_your_note">在这里输入笔记</string>
     <string name="title_about">关于单词忍者</string>
     <string name="title_test">测试</string>
@@ -70,6 +70,14 @@
     <string name="mail_text">changfeng1050, 你好！ 我正在使用单词忍者，我想要反馈…</string>
 
 
+    <string name="title_confirm_delete">是否确定删除</string>
+    <string name="message_confirm_delete">删除的单词不能恢复！</string>
+
+
+    <string name="action_delete_all_unarchived_words">删除所有最近单词</string>
+    <string name="action_delete_all_archived_words">删除所有归档单词</string>
+    <string name="action_archived_all_words">归档所有单词</string>
+    <string name="action_unarchive_all_words">取消归档所有单词</string>
 
     <string name="action_settings">设置</string>
     <string name="action_delete">删除</string>
@@ -101,6 +109,8 @@
     <string name="title_tutorThree">3.复制单词</string>
     <string name="title_tutorFour">4.查阅单词的网络释义</string>
     <string name="title_tutorFive">5.在单词忍者中查看单词</string>
+
+    <string name="message_cannot_find_word_result">没有找到结果！</string>
 
     <string name="word_ninja_name">Ninja</string>
     <string name="word_ninja_ph_am">"'nɪndʒə"</string>
@@ -137,11 +147,11 @@
     <string name="word_delete_ph_en">"dɪ'lit"</string>
     <string name="word_delete_means">v.删去；删除\nv.长按单词卡片，然后按右上角“删除”进行删除</string>
 
-    <string name="msg_not_support_other_language">抱歉，单词忍者暂时无法窃取英文以外的情报</string>
+    <string name="message_not_support_other_language">抱歉，单词忍者暂时无法窃取英文以外的情报</string>
 
     <string name="uri_download_wandoujia">http://www.wandoujia.com/apps/com.example.changfeng.taptapword</string>
 
-    <string name="msg_no_email_apps_found">没有找到邮箱应用，你可以到应用市场下载邮箱应用</string>
+    <string name="message_no_email_apps_found">没有找到邮箱应用，你可以到应用市场下载邮箱应用</string>
 
     <string name="new_word">添加单词</string>
 
@@ -181,6 +191,12 @@
     <string name="unarchive">取消归档</string>
     <string name="delete">删除</string>
 
+    <string name="label_version">Version:</string>
+    <string name="about_description">"Spy into words for you!</string>
+    <string name="power_by">Powered by changfeng</string>
+    <string name="label_email">Email:</string>
     <string name="developer_mail_address">changfeng1050@hotmail.com</string>
+    <string name="label_qq">QQ:</string>
+    <string name="developer_qq">623348941</string>
 
 </resources>

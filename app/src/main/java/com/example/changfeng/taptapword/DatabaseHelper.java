@@ -181,7 +181,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 getWritableDatabase().delete(TABLE_WORD, COLUMN_NAME + "=?", new String[]{word.getName()});
             } while (cursor.moveToPrevious());
         }
-
     }
 
     public static class WordCursor extends CursorWrapper {

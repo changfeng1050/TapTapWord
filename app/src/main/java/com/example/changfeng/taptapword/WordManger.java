@@ -87,6 +87,36 @@ public class WordManger {
         return mHelper.loadUnarchivedWords();
     }
 
+    public void deleteUnArchivedWords() {
+        List<Word> words = getUnarchivedWords();
+        for (Word word : words) {
+            deleteWord(word);
+        }
+    }
+
+    public void deleteArchivedWords() {
+        List<Word> words = getArchivedWords();
+        for (Word word : words) {
+            deleteWord(word);
+        }
+    }
+
+    public void archiveAllWords() {
+        List<Word> words = getUnarchivedWords();
+        for (Word word : words) {
+            word.setArchived(true);
+            updateWord(word);
+        }
+    }
+
+    public void unArchiveAllWords() {
+        List<Word> words = getArchivedWords();
+        for (Word word : words) {
+            word.setArchived(false);
+            updateWord(word);
+        }
+    }
+
     public Word getWord(String name) {
         try {
             return mHelper.getWord(name).get(0);
