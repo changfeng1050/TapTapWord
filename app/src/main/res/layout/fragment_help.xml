@@ -69,11 +69,16 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableBottom="@drawable/open_reading_app"
-                        android:drawablePadding="10dp"
+                        android:padding="10dp"
                         android:text="@string/title_tutorOne"
                         android:textColor="@color/colorGreen"
                         android:textSize="20sp" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/open_reading_app" />
 
                     <View
                         android:layout_width="match_parent"
@@ -100,13 +105,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableBottom="@drawable/select_word"
-                        android:drawablePadding="10dp"
                         android:padding="10dp"
                         android:text="@string/title_tutorTwo"
                         android:textColor="@color/colorGreen"
                         android:textSize="20sp" />
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/select_word" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -132,13 +141,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableBottom="@drawable/copy_word"
-                        android:drawablePadding="10dp"
                         android:padding="10dp"
                         android:text="@string/title_tutorThree"
                         android:textColor="@color/colorGreen"
                         android:textSize="20sp" />
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/copy_word" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -164,13 +177,17 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableBottom="@drawable/result_word"
-                        android:drawablePadding="10dp"
                         android:padding="10dp"
                         android:text="@string/title_tutorFour"
                         android:textColor="@color/colorGreen"
                         android:textSize="20sp" />
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/result_word" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -196,12 +213,16 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableBottom="@drawable/refer_word"
-                        android:drawablePadding="10dp"
                         android:padding="10dp"
                         android:text="@string/title_tutorFive"
                         android:textColor="@color/colorGreen"
                         android:textSize="20sp" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/refer_word" />
 
                     <View
                         android:layout_width="match_parent"
