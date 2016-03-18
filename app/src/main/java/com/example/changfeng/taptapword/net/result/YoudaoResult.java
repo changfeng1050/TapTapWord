@@ -1,9 +1,11 @@
-package com.example.changfeng.taptapword;
+package com.example.changfeng.taptapword.net.result;
+
+import com.squareup.moshi.Json;
 
 import java.util.List;
 
 /**
- * Created by changfeng on 2016/1/1.
+ * Created by changfeng on 2016/3/17.
  */
 public class YoudaoResult {
     public static final String TAG = "YoudaoResult";
@@ -21,20 +23,20 @@ public class YoudaoResult {
     public static final int ERROR_CODE_NOT_NOT_SUPPORTED_LANGUAGE = 40;
     public static final int ERROR_CODE_INVALID_KEY = 50;
     public static final int ERROR_CODE_NO_RESULT_IN_DICT = 60;
-
-    public static String convertDashToUnderLineInPhonetic(String result) {
-        if (result == null) {
-            return "";
-        }
-        return result.replace("\"" + ORIGIN_UK_PHONETIC + "\"", "\"" + NEW_UK_PHONETIC + "\"")
-                .replace("\"" + ORIGIN_US_PHONETIC + "\"", "\"" + NEW_US_PHONETIC + "\"");
-
-    }
-
-    public static final String ORIGIN_UK_PHONETIC = "uk-phonetic";
-    public static final String ORIGIN_US_PHONETIC = "us-phonetic";
-    public static final String NEW_UK_PHONETIC = "uk_phonetic";
-    public static final String NEW_US_PHONETIC = "us_phonetic";
+//
+//    public static String convertDashToUnderLineInPhonetic(String result) {
+//        if (result == null) {
+//            return "";
+//        }
+//        return result.replace("\"" + ORIGIN_UK_PHONETIC + "\"", "\"" + NEW_UK_PHONETIC + "\"")
+//                .replace("\"" + ORIGIN_US_PHONETIC + "\"", "\"" + NEW_US_PHONETIC + "\"");
+//
+//    }
+//
+//    public static final String ORIGIN_UK_PHONETIC = "uk-phonetic";
+//    public static final String ORIGIN_US_PHONETIC = "us-phonetic";
+//    public static final String NEW_UK_PHONETIC = "uk_phonetic";
+//    public static final String NEW_US_PHONETIC = "us_phonetic";
 
     private int errorCode;
     private String query;
@@ -43,15 +45,15 @@ public class YoudaoResult {
     private List<Web> web;
 
     public String getUkPhonetic() {
-        if (basic != null && basic.getUk_phonetic() != null) {
-            return basic.getUk_phonetic();
+        if (basic != null && basic.getUsPhonetic() != null) {
+            return basic.getUkPhonetic();
         }
         return "";
     }
 
     public String getUsPhonetic() {
-        if (basic != null && basic.getUs_phonetic() != null) {
-            return basic.getUs_phonetic();
+        if (basic != null && basic.getUsPhonetic() != null) {
+            return basic.getUsPhonetic();
         }
         return "";
     }
@@ -99,20 +101,22 @@ public class YoudaoResult {
 
     public static class Basic {
         private String phonetic;
-        private String uk_phonetic;
-        private String us_phonetic;
+        @Json(name = "uk-phonetic")
+        private String ukPhonetic;
+        @Json(name = "us-phonetic")
+        private String usPhonetic;
         private List<String> explains;
 
         public String getPhonetic() {
             return phonetic;
         }
 
-        public String getUk_phonetic() {
-            return uk_phonetic;
+        public String getUkPhonetic() {
+            return ukPhonetic;
         }
 
-        public String getUs_phonetic() {
-            return us_phonetic;
+        public String getUsPhonetic() {
+            return usPhonetic;
         }
 
         public List<String> getExplains() {
@@ -122,7 +126,7 @@ public class YoudaoResult {
         public String toString() {
             StringBuilder result = new StringBuilder();
             try {
-                result.append("UK:[").append(uk_phonetic).append("] ").append("US:[").append(us_phonetic).append(']');
+                result.append("UK:[").append(ukPhonetic).append("] ").append("US:[").append(usPhonetic).append(']');
             } catch (NullPointerException e) {
 
             }

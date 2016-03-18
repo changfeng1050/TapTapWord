@@ -10,6 +10,10 @@
             android:id="@+id/archive_words"
             android:icon="@drawable/ic_word"
             android:title="@string/menu_words" />
+        <!--<item-->
+            <!--android:id="@+id/achievement"-->
+            <!--android:icon="@drawable/ic_achievement"-->
+            <!--android:title="@string/menu_achievement" />-->
         <item
             android:id="@+id/watch"
             android:icon="@drawable/ic_watch"
@@ -44,9 +48,9 @@
             android:title="@string/menu_about" />
 
         <!--<item-->
-            <!--android:id="@+id/test"-->
-            <!--android:icon="@drawable/ic_about"-->
-            <!--android:title="@string/menu_test" />-->
+        <!--android:id="@+id/test"-->
+        <!--android:icon="@drawable/ic_about"-->
+        <!--android:title="@string/menu_test" />-->
 
 
     </group>

@@ -11,6 +11,7 @@
     <string name="menu_turn_tap_watching_on_off">开启/关闭忍者监听</string>
     <string name="menu_recent_words">最近单词</string>
     <string name="menu_words">已归档</string>
+    <string name="menu_achievement">我的成就</string>
     <string name="menu_settings">设置</string>
     <string name="menu_help">帮助</string>
     <string name="menu_rate">评价</string>
@@ -125,27 +126,27 @@
     <string name="word_word_name">word</string>
     <string name="word_word_ph_am">"wɜrd"</string>
     <string name="word_word_ph_en">"wɜː(r)d"</string>
-    <string name="word_word_means">n.词；单词；字；消息\nv.措辞；用词\nint.说得对 \nv.单词忍者窃取的单词都会保存在这里，你可以对长按单词卡片进行删除或者归档</string>
+    <string name="word_word_means">n.词；单词；字；消息\nv.措辞；用词\nint.说得对 \nv.单词忍者窃取的单词都会保存在这里，你可以对左划单词卡片，点击删除或者归档菜单，进行删除或者归档</string>
 
     <string name="word_archive_name">archive</string>
     <string name="word_archive_ph_am">"'ɑr.kaɪv"</string>
     <string name="word_archive_ph_en">"'ɑː(r)kaɪv"</string>
-    <string name="word_archive_means">n.档案；档案馆；档案室\nv.把…存档；把…归档；将（不常用消息）存档\nv.长按单词卡片进行归档</string>
+    <string name="word_archive_means">n.档案；档案馆；档案室\nv.把…存档；把…归档；将（不常用消息）存档\nv.左划单词卡片，点击归档菜单进行归档</string>
 
     <string name="word_unarchive_name">unarchive</string>
     <string name="word_unarchive_ph_am">"ʌn'ɑː(r)kaɪv"</string>
     <string name="word_unarchive_ph_en">"ʌn'ɑː(r)kaɪv"</string>
-    <string name="word_unarchive_means">v.取消存档；反归档\nv.长按单词卡片，然后按右上角“取消归档”，可将单词移到最近单词</string>
+    <string name="word_unarchive_means">v.取消存档；反归档\nv.左划长按单词卡片，点击“取消归档”，可将单词移到最近单词</string>
 
     <string name="word_delete2_name">delete</string>
     <string name="word_delete2_ph_am">"dɪ'lit"</string>
     <string name="word_delete2_ph_en">"dɪ'liːt"</string>
-    <string name="word_delete2_means">v.删去；删除\nv.长按单词卡片进行删除</string>
+    <string name="word_delete2_means">v.删去；删除\nv.左划单词卡片，点击删除菜单进行删除</string>
 
     <string name="word_delete_name">delete</string>
     <string name="word_delete_ph_am">"dɪ'lit"</string>
     <string name="word_delete_ph_en">"dɪ'lit"</string>
-    <string name="word_delete_means">v.删去；删除\nv.长按单词卡片，然后按右上角“删除”进行删除</string>
+    <string name="word_delete_means">v.删去；删除\nv.左划单词卡片，点击删除菜单进行删除</string>
 
     <string name="message_not_support_other_language">抱歉，单词忍者暂时无法窃取英文以外的情报</string>
 

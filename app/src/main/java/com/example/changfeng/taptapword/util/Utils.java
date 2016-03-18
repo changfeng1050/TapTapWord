@@ -1,4 +1,4 @@
-package com.example.changfeng.taptapword;
+package com.example.changfeng.taptapword.util;
 
 import java.util.regex.Pattern;
 

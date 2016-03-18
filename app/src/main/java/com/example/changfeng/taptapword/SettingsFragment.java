@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
@@ -172,19 +170,19 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void readSettings(){
-        SharedPreferences pref  = getActivity().getSharedPreferences(SharedPref.PREFERENCE_NAME, Context.MODE_PRIVATE);
-        youdaoDictSwitch.setChecked(pref.getBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, true));
-        webExplainSwitch.setChecked(pref.getBoolean(SharedPref.PREFERENCE_WEB_EXPLAIN, true));
-        youdaoTranslateSwitch.setChecked(pref.getBoolean(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, true));
-        baiduTranslateSwitch.setChecked(pref.getBoolean(SharedPref.PREFERENCE_DAIDU_TRANSLATE, true));
+        SharedPreferences pref  = getActivity().getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE);
+        youdaoDictSwitch.setChecked(pref.getBoolean(SharedPref.YOUDAO_DICT, true));
+        webExplainSwitch.setChecked(pref.getBoolean(SharedPref.WEB_EXPLAIN, true));
+        youdaoTranslateSwitch.setChecked(pref.getBoolean(SharedPref.YOUDAO_TRANSLATE, true));
+        baiduTranslateSwitch.setChecked(pref.getBoolean(SharedPref.BAIDU_TRANSLATE, true));
     }
 
     private void saveSettings() {
-        SharedPreferences.Editor editor = getActivity().getSharedPreferences(SharedPref.PREFERENCE_NAME, Context.MODE_PRIVATE).edit();
-        editor.putBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, youdaoDictSwitch.isChecked())
-                .putBoolean(SharedPref.PREFERENCE_WEB_EXPLAIN, webExplainSwitch.isChecked())
-                .putBoolean(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, youdaoTranslateSwitch.isChecked())
-                .putBoolean(SharedPref.PREFERENCE_DAIDU_TRANSLATE, baiduTranslateSwitch.isChecked())
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(SharedPref.YOUDAO_DICT, youdaoDictSwitch.isChecked())
+                .putBoolean(SharedPref.WEB_EXPLAIN, webExplainSwitch.isChecked())
+                .putBoolean(SharedPref.YOUDAO_TRANSLATE, youdaoTranslateSwitch.isChecked())
+                .putBoolean(SharedPref.BAIDU_TRANSLATE, baiduTranslateSwitch.isChecked())
                 .apply();
     }
 

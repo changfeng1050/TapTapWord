@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
 
-import java.util.regex.Pattern;
+import com.example.changfeng.taptapword.util.Utils;
 
 public class ClipboardService extends Service {
 

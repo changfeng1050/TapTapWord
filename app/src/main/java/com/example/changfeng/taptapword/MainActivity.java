@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(SharedPref.FIRST_TIME, true);
 
-            editor.putBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, true);
-            editor.putBoolean(SharedPref.PREFERENCE_WEB_EXPLAIN, true);
-            editor.putBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, true);
-            editor.putBoolean(SharedPref.PREFERENCE_DAIDU_TRANSLATE, true);
+            editor.putBoolean(SharedPref.YOUDAO_DICT, true);
+            editor.putBoolean(SharedPref.WEB_EXPLAIN, true);
+            editor.putBoolean(SharedPref.YOUDAO_DICT, true);
+            editor.putBoolean(SharedPref.BAIDU_TRANSLATE, true);
 
             editor.apply();
 
@@ -248,7 +248,11 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.archive_words) {
             setupFragment(new ArchivedWordsFragment());
             setTitle(getString(R.string.menu_words));
-            saveLastFragementId(id);
+            saveLastPageId(id);
+//        } else if (id == R.id.achievement) {
+//            Intent intent = new Intent(this, AchievementActivity.class);
+//            startActivity(intent);
+//            saveLastPageId(R.id.achievement);
         } else if (id == R.id.watch) {
             if (!isWatchOn) {
                 startClipboardService();
@@ -258,14 +262,18 @@ public class MainActivity extends AppCompatActivity
                 showToast("单词忍者停止监听");
             }
             isWatchOn = !isWatchOn;
-        } else if (id == R.id.settings) {
+        } else if (id == R.id.settings)
+
+        {
             setupFragment(new SettingsFragment());
             setTitle(getString(R.string.menu_settings));
-            saveLastFragementId(id);
-        } else if (id == R.id.help) {
+            saveLastPageId(id);
+        } else if (id == R.id.help)
+
+        {
             setupFragment(new HelpFragment());
             setTitle(R.string.menu_help);
-            saveLastFragementId(id);
+            saveLastPageId(id);
         } else if (id == R.id.rate) {
             rateUs();
         } else if (id == R.id.share) {
@@ -275,15 +283,16 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.about) {
             setupFragment(new AboutFragment());
             setTitle(R.string.title_about);
-            saveLastFragementId(id);
+            saveLastPageId(id);
         } else {
             setupFragment(new UnArchiveWordsFragment());
             setTitle(getString(R.string.menu_recent_words));
             if (addFab.getVisibility() != View.VISIBLE) {
                 addFab.setVisibility(View.VISIBLE);
             }
-            saveLastFragementId(R.id.recent_words);
+            saveLastPageId(R.id.recent_words);
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
@@ -385,12 +394,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private boolean hasRated() {
-        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(SharedPref.NAME, MODE_PRIVATE);
         return pref.getBoolean(SharedPref.RATED, false);
     }
 
     private void setRated() {
-        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(SharedPref.NAME, MODE_PRIVATE);
         pref.edit().putBoolean(SharedPref.RATED, true).apply();
     }
 
@@ -420,25 +429,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void countRunTimes() {
-        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(SharedPref.NAME, MODE_PRIVATE);
         int count = pref.getInt(SharedPref.RUN_TIMES, 0);
         count++;
         pref.edit().putInt(SharedPref.RUN_TIMES, count).apply();
     }
 
     private int getRunTimes() {
-        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences(SharedPref.NAME, MODE_PRIVATE);
         return pref.getInt(SharedPref.RUN_TIMES, 0);
     }
 
-    private void saveLastFragementId(int fragmentId) {
-        SharedPreferences.Editor editor = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE).edit();
-        editor.putInt(SharedPref.LAST_FRAGMENT_ID, fragmentId).apply();
+    private void saveLastPageId(int id) {
+        SharedPreferences.Editor editor = getSharedPreferences(SharedPref.NAME, MODE_PRIVATE).edit();
+        editor.putInt(SharedPref.LAST_PAGE_ID, id).apply();
     }
 
     private int getLastFragmentId() {
-        SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
-        return pref.getInt(SharedPref.LAST_FRAGMENT_ID, SharedPref.INVALID_FRAGMENT_ID);
+        SharedPreferences pref = getSharedPreferences(SharedPref.NAME, MODE_PRIVATE);
+        return pref.getInt(SharedPref.LAST_PAGE_ID, SharedPref.INVALID_FRAGMENT_ID);
     }
 
     private void showToast(int resourceId) {

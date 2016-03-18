@@ -1,11 +1,12 @@
-package com.example.changfeng.taptapword;
+package com.example.changfeng.taptapword.net.result;
 
 import java.util.List;
 
 /**
- * Created by changfeng on 2015/12/27.
+ * Created by changfeng on 2016/3/17.
  */
 public class BaiduResult {
+
     public static final String TAG = "BaiduResult";
 
     public static final String ERROR_CODE_SUCCESS = "52000";

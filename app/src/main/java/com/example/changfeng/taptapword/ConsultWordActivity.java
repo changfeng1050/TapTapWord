@@ -1,46 +1,42 @@
 package com.example.changfeng.taptapword;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.example.changfeng.taptapword.net.ApiClient;
+import com.example.changfeng.taptapword.util.Utils;
 
 import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.internal.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class ConsultWordActivity extends Activity {
 
     private static final String TAG = "ConsultWordActivity";
 
-    public static final int MSG_WHAT_WORD_RESULT = 1;
     public static final String TYPE = "type";
     public static final int TYPE_CONSULT = 1;
     public static final int TYPE_COPY = 2;
     private int type = TYPE_CONSULT;
 
-    BaiduResult baiduResult;
-    YoudaoResult youdaoResult;
+    com.example.changfeng.taptapword.net.result.BaiduResult baiduResult;
+    com.example.changfeng.taptapword.net.result.YoudaoResult youdaoResult;
     String query;
-    Gson gson = new Gson();
 
-    boolean responsed = false;
+    boolean foundResult = false;
 
     @Bind(R.id.word_consult_layout)
     LinearLayout wordConsultLayout;
@@ -56,7 +52,7 @@ public class ConsultWordActivity extends Activity {
         resultInfoTextView.setVisibility(View.VISIBLE);
         if (Utils.isEnglishWord(word)) {
             resultInfoTextView.setText(getString(R.string.requesting_result_from_internet));
-            sendRequestWithHttpClient(word, "en", "zh");
+            getResult(word);
         } else {
             resultInfoTextView.setText(getString(R.string.message_not_support_other_language));
         }
@@ -91,66 +87,6 @@ public class ConsultWordActivity extends Activity {
     @Bind(R.id.note_edit_text)
     EditText noteEditText;
 
-
-    private Handler handler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_WHAT_WORD_RESULT:
-                    responsed = true;
-                    if (youdaoResult == null && baiduResult == null) {
-                        resultInfoTextView.setText(getString(R.string.message_cannot_find_word_result));
-                        return;
-                    }
-                    resultInfoTextView.setText("");
-
-                    wordNameTextView.setText(query);
-                    try {
-                        wordPhonesTextView.setText(youdaoResult.getFormatPhones());
-                    } catch (Exception e) {
-
-                    }
-                    SharedPreferences pref = getSharedPreferences(SharedPref.PREFERENCE_NAME, MODE_PRIVATE);
-                    if (pref.getBoolean(SharedPref.PREFERENCE_YOUDAO_DICT, true)) {
-                        try {
-                            wordMeansTextView.setText(youdaoResult.getParsedExplains());
-                        } catch (Exception e) {
-
-                        }
-                    }
-
-                    if (pref.getBoolean(SharedPref.PREFERENCE_WEB_EXPLAIN, true)) {
-                        try {
-                            wordWebExplainsTextView.setText(youdaoResult.getParseWebTranslate());
-                        } catch (Exception e) {
-
-                        }
-                    }
-
-                    if (pref.getBoolean(SharedPref.PREFERENCE_YOUDAO_TRANSLATE, true)) {
-                        try {
-                            youdaoTranslateTextView.setText(youdaoResult.getTranslateResult());
-                        } catch (Exception e) {
-
-                        }
-                    }
-
-                    if (pref.getBoolean(SharedPref.PREFERENCE_DAIDU_TRANSLATE, true)) {
-                        try {
-                            baiduTranslateTextView.setText(baiduResult.getResult());
-                        } catch (Exception e) {
-
-                        }
-                    }
-                    updateViewVisibility();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +100,7 @@ public class ConsultWordActivity extends Activity {
             resultInfoTextView.setVisibility(View.VISIBLE);
             resultInfoTextView.setText(getString(R.string.requesting_result_from_internet));
             String clip = getIntent().getStringExtra(ClipboardService.clipboardText).trim();
-            sendRequestWithHttpClient(clip, "en", "zh");
+            getResult(clip);
         }
 
         updateViewVisibility();
@@ -172,40 +108,74 @@ public class ConsultWordActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (responsed) {
+        if (foundResult) {
             saveWord();
         }
         super.onDestroy();
     }
 
-    private void sendRequestWithHttpClient(final String query, final String from, final String to) {
-        responsed = false;
+    private void getResult(final String query) {
+        foundResult = false;
         this.query = query;
-        new Thread(new Runnable() {
+        ApiClient apiClient = new ApiClient();
+        final SharedPreferences pref = getSharedPreferences(SharedPref.NAME, MODE_PRIVATE);
+        if (pref.getBoolean(SharedPref.BAIDU_TRANSLATE, true)) {
+            apiClient.getBaiduResult(query, new Callback<com.example.changfeng.taptapword.net.result.BaiduResult>() {
+                @Override
+                public void onResponse(Call<com.example.changfeng.taptapword.net.result.BaiduResult> call, Response<com.example.changfeng.taptapword.net.result.BaiduResult> response) {
+                    baiduResult = response.body();
+                    baiduTranslateTextView.setText(baiduResult.getResult());
+                    updateViewVisibility();
+                    foundResult = true;
+                }
+
+                @Override
+                public void onFailure(Call<com.example.changfeng.taptapword.net.result.BaiduResult> call, Throwable t) {
+                    resultInfoTextView.setText(getString(R.string.message_cannot_find_word_result));
+                }
+            });
+        }
+
+        apiClient.getYoudaoResult(query, new Callback<com.example.changfeng.taptapword.net.result.YoudaoResult>() {
             @Override
-            public void run() {
+            public void onResponse(Call<com.example.changfeng.taptapword.net.result.YoudaoResult> call, Response<com.example.changfeng.taptapword.net.result.YoudaoResult> response) {
+                youdaoResult = response.body();
+                resultInfoTextView.setText("");
+                if (pref.getBoolean(SharedPref.YOUDAO_DICT, true)) {
+                    try {
+                        wordPhonesTextView.setText(youdaoResult.getFormatPhones());
+                        wordMeansTextView.setText(youdaoResult.getParsedExplains());
+                    } catch (Exception e) {
 
-                TranslateHelper translateHelper = new TranslateHelper();
-
-                try {
-                    youdaoResult = gson.fromJson(translateHelper.getYoudaoResult(query), YoudaoResult.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    youdaoResult = null;
+                    }
                 }
 
-                try {
-                    baiduResult = gson.fromJson(translateHelper.getBaiduResult(query), BaiduResult.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    baiduResult = null;
+                if (pref.getBoolean(SharedPref.WEB_EXPLAIN, true)) {
+                    try {
+                        wordWebExplainsTextView.setText(youdaoResult.getParseWebTranslate());
+                    } catch (Exception e) {
+
+                    }
                 }
 
-                Message message = new Message();
-                message.what = MSG_WHAT_WORD_RESULT;
-                handler.sendMessage(message);
+                if (pref.getBoolean(SharedPref.YOUDAO_TRANSLATE, true)) {
+                    try {
+                        youdaoTranslateTextView.setText(youdaoResult.getTranslateResult());
+                    } catch (Exception e) {
+
+                    }
+                }
+                updateViewVisibility();
+                foundResult = true;
             }
-        }).start();
+
+            @Override
+            public void onFailure(Call<com.example.changfeng.taptapword.net.result.YoudaoResult> call, Throwable t) {
+                resultInfoTextView.setText(getString(R.string.message_cannot_find_word_result));
+            }
+        });
+
+
     }
 
     void showToast(String info) {
@@ -313,4 +283,6 @@ public class ConsultWordActivity extends Activity {
         resultInfoTextView.setText("");
         updateViewVisibility();
     }
+
+
 }

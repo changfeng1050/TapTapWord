@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class WordManger {
 
-    private static final String TAG = "RunManager";
+    private static final String TAG = "WordManger";
 
     private static WordManger wordManger;
     private static String dataBase = "Words.db";
