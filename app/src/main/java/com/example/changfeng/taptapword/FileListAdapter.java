@@ -52,7 +52,7 @@ public class FileListAdapter extends ArrayAdapter<FileInfo> {
         }
 
         TextView filename = (TextView) view.findViewById(R.id.list_item);
-        filename.setText(fileInfo.fileName);
+        filename.setText(fileInfo.getFileName());
         return view;
     }
 }

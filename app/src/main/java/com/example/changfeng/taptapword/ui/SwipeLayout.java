@@ -659,7 +659,7 @@ public class SwipeLayout extends FrameLayout {
     }
 
     /**
-     * {@link android.view.View.OnLayoutChangeListener} added in API 11. I need
+     * {@link OnLayoutChangeListener} added in API 11. I need
      * to support it from API 8.
      */
     public interface OnLayout {
@@ -723,7 +723,7 @@ public class SwipeLayout extends FrameLayout {
                 gravity = Gravity.BOTTOM;
                 break;
         }
-        if (params instanceof FrameLayout.LayoutParams) {
+        if (params instanceof LayoutParams) {
             ((LayoutParams) params).gravity = gravity;
         }
         addView(child, 0, params);

@@ -151,7 +151,7 @@ public class WordManger {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String destinationFile = Environment.getExternalStorageDirectory() + File.separator + "word_ninja_" + timeStamp;
-            return MyFile.copyFile(mAppContext.getDatabasePath(dataBase).getAbsolutePath(), destinationFile);
+            return MyFile.Companion.copyFile(mAppContext.getDatabasePath(dataBase).getAbsolutePath(), destinationFile);
         } else {
             return false;
         }
@@ -159,7 +159,7 @@ public class WordManger {
     }
 
     public boolean restoreDb(String filename) {
-        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && MyFile.copyFile(filename, mAppContext.getDatabasePath(dataBase).getAbsolutePath());
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && MyFile.Companion.copyFile(filename, mAppContext.getDatabasePath(dataBase).getAbsolutePath());
     }
 
 }

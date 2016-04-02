@@ -21,7 +21,6 @@
     <string name="menu_test">测试</string>
     <string name="requesting_result_from_internet">正在进行联网查询，请稍候…</string>
     <string name="hint_please_input_your_note">在这里输入笔记</string>
-    <string name="title_about">关于单词忍者</string>
     <string name="title_test">测试</string>
     <string name="message_about">Powered by changfeng\nchangfeng1050@hotmail.com</string>
     <string name="check_box_add_to_words">归档</string>
@@ -64,7 +63,7 @@
     <string name="filepath_no_backup_file_found">""</string>
 
     <string name="share_subject">分享单词忍者</string>
-    <string name="share_text">Hi，朋友们，我正在使用单词忍者！它可以在读文章或者网页的时候，选中需要翻译的单词之后复制，直接返回翻译结果！Enjoy it！</string>
+    <string name="share_text">Hi，朋友们，我正在使用单词忍者！它可以在读文章或者网页的时候，选中需要翻译的单词之后复制，直接返回翻译结果！Enjoy it！ %1$s</string>
 
     <string name="mail_address">changfeng1050@hotmail.com</string>
     <string name="mail_subject">单词忍者的反馈</string>

@@ -44,8 +44,7 @@
         <activity
             android:name=".ConsultWordActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
-        <activity android:name=".RecyclerViewExample" />
-        <activity android:name=".ui.AchievementActivity"></activity>
+        <activity android:name=".ui.AchievementActivity"/>
     </application>
 
 </manifest>
