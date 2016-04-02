@@ -20,7 +20,7 @@ import java.util.ArrayList
 /**
  * Created by changfeng on 2015/3/4.
  */
-class FileListActivity : Activity(), AdapterView.OnItemClickListener {
+class FileListActivity : Activity(){
 
     var fileInfoList: MutableList<FileInfo> ?= null
 
@@ -31,8 +31,6 @@ class FileListActivity : Activity(), AdapterView.OnItemClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_file_list)
 
-
-        val intent = intent
         fileInfoList = getFileList(intent.getStringExtra(FILE_KEY_WORD))
         fileInfoList?.let {
             if (fileInfoList!!.isEmpty()) {
@@ -42,22 +40,20 @@ class FileListActivity : Activity(), AdapterView.OnItemClickListener {
 
 
         val adapter = FileListAdapter(this@FileListActivity,
-                R.layout.file_list_item, fileInfoList)
+                R.layout.file_list_item, fileInfoList!!)
 
         val listView = find<ListView>(R.id.file_list_view)
         listView.adapter = adapter
-        listView.onItemClickListener = this
-
-    }
-
-    override fun onItemClick(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        fileInfoList?.let {
-            val fileInfo = fileInfoList!![position]
-            if (fileInfo.fileName != getString(R.string.filename_no_backup_file_found)) {
-                setResults(fileInfo)
+        listView.onItemClick { adapterView, view, i, l ->
+            fileInfoList?.let {
+                val fileInfo = fileInfoList!![i]
+                if (fileInfo.fileName != getString(R.string.filename_no_backup_file_found)) {
+                    setResults(fileInfo)
+                }
             }
+            finish()
         }
-        finish()
+
     }
 
     private fun setResults(fileInfo: FileInfo) {

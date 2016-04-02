@@ -5,23 +5,31 @@ package com.example.changfeng.taptapword.net.result
  */
 class BaiduResult {
 
-    var erro: String? =null
-    var error_msg: String ?= null
+    var erro: String? = null
+    var error_msg: String ? = null
 
     private val from: String? = null
     private val to: String? = null
     internal var trans_result: List<Result>? = null
 
-    internal inner class Result {
+    class Result {
         val src: String? = null
         val dst: String? = null
+
+        override fun toString() =
+                try {
+                    "$src $dst;"
+                } catch (e: Exception) {
+                    ""
+                }
     }
 
     val result: String
-        get() =
-            if (trans_result != null) {
-                "百度翻译 " + if (trans_result != null) {"\n" + trans_result!!.joinToString("\n")} else ""
+        get() = if (trans_result == null) "" else {
+            "百度翻译 " + if (trans_result != null) {
+                "\n" + trans_result!!.joinToString("\n")
             } else ""
+        }
 
     companion object {
 

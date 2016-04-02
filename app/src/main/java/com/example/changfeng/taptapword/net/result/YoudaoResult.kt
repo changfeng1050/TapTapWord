@@ -28,160 +28,70 @@ class YoudaoResult {
         val explains: List<String>? = null
 
         override fun toString(): String {
-            val result = StringBuilder()
             try {
-                result.append("UK:[").append(ukPhonetic).append("] ").append("US:[").append(usPhonetic).append(']')
+                return "美:[$usPhonetic] 英:[$ukPhonetic]\n\n${explains!!.joinToString("\n")}"
             } catch (e: NullPointerException) {
-
+                return ""
             }
-
-            result.append("\n")
-            for (explain in explains!!) {
-                result.append("\n").append(explain)
-            }
-            return result.toString()
         }
     }
 
-    class Web {
-        val key: String? = null
-        val values: List<String>? = null
+        class Web {
+            val key: String? = null
+            val value: List<String>? = null
 
-        override fun toString(): String {
-            val result = StringBuilder()
-            result.append(key).append(" ")
-            for (i in values!!.indices) {
-                result.append(values[i] + ";")
-            }
-            return result.toString()
-        }
-    }
-
-    val dictResult: String
-        get() {
-            if (errorCode != ERROR_CODE_SUCCESS) {
-                return ""
-            }
-            if (basic != null) {
-                return "有道词典\n" + basic!!.toString()
-            } else {
-                return ""
-            }
-        }
-
-    val webInterpretationResult: String
-        get() {
-            if (errorCode != ERROR_CODE_SUCCESS) {
-                return ""
-            }
-
-            if (web != null) {
+            override fun toString(): String {
                 val result = StringBuilder()
-                result.append("网络释义")
-                for (w in web!!) {
-                    result.append("\n").append(w.toString())
+                result.append(key).append(" ")
+                for (i in value!!.indices) {
+                    result.append(value[i] + ";")
                 }
                 return result.toString()
+            }
+        }
+
+        val translateResult: String
+            get() = if (errorCode != ERROR_CODE_SUCCESS) {
+                ""
             } else {
-                return ""
-            }
-        }
-
-    val translateResult: String
-        get() {
-            if (errorCode != ERROR_CODE_SUCCESS) {
-                return ""
-            }
-            val result = StringBuilder()
-
-            if (translation != null) {
-                result.append("有道翻译")
-                for (t in translation!!) {
-                    result.append("\n").append(t)
-                }
-            }
-            return result.toString()
-        }
-
-
-    val result: String
-        get() {
-            if (errorCode != ERROR_CODE_SUCCESS) {
-                return ""
-            }
-            val result = StringBuilder()
-            val dictResult = dictResult
-            val webInterpretationResult = webInterpretationResult
-            val translateResult = translateResult
-
-            if (!dictResult.isEmpty()) {
-                result.append("\n\n").append(dictResult)
-            }
-            if (!webInterpretationResult.isEmpty()) {
-                result.append("\n\n").append(webInterpretationResult)
-            }
-            if (!translateResult.isEmpty()) {
-                result.append("\n\n").append(translateResult)
+                if (translation != null) {
+                    "有道翻译\n ${translation!!.joinToString("\n")}"
+                } else
+                    ""
             }
 
-            return result.toString()
-        }
-
-    val parsedExplains: String
-        get() {
-            try {
-                val explainString = StringBuilder()
-                basic?.explains?.let {
-                    for (i in 0..basic!!.explains!!.size - 1) {
-                        if (i != 0) {
-                            explainString.append("\n")
-                        }
-                        explainString.append(basic!!.explains?.get(i) + ";")
-                    }
-                }
-
-                return explainString.toString()
+        val parsedExplains: String
+            get() = try {
+                "有道词典\n ${basic!!.explains!!.joinToString(";\n")}"
             } catch (e: NullPointerException) {
-                return ""
+                ""
             }
 
-        }
-
-    val parseWebTranslate: String
-        get() {
-            try {
-                val webTranslate = StringBuilder()
-                for (i in web!!.indices) {
-                    if (i != 0) {
-                        webTranslate.append("\n")
-                    }
-                    webTranslate.append(web!![i])
-                }
-                return webTranslate.toString()
-            } catch (e: NullPointerException) {
-                return ""
+        val parseWebTranslate: String
+            get() = try {
+                "网络释义\n${web!!.joinToString("\n")}"
+            } catch(e: NullPointerException) {
+                ""
             }
 
+        val formatPhones: String
+            get() = if (usPhonetic.isNullOrBlank()) "" else "美:[$usPhonetic] " + if (ukPhonetic.isNullOrBlank()) "" else "英:[$usPhonetic]"
+
+        companion object {
+            val TAG = "YoudaoResult"
+
+            //    errorCode：
+            // 　0 ­ 正常
+            // 　20 ­ 要翻译的文本过长
+            // 　30 ­ 无法进行有效的翻译
+            // 　40 ­ 不支持的语言类型
+            // 　50 ­ 无效的key
+            // 　60 ­ 无词典结果，仅在获取词典结果生效
+            val ERROR_CODE_SUCCESS = 0
+            val ERROR_CODE_TEXT_TOO_LONG = 20
+            val ERROR_CODE_CANNOT_TRANSLATE_PROPER = 30
+            val ERROR_CODE_NOT_NOT_SUPPORTED_LANGUAGE = 40
+            val ERROR_CODE_INVALID_KEY = 50
+            val ERROR_CODE_NO_RESULT_IN_DICT = 60
         }
-
-    val formatPhones: String
-        get() = if(usPhonetic.isNullOrBlank()) "" else "美:[$usPhonetic] " + if (ukPhonetic.isNullOrBlank()) "" else "英:[$usPhonetic]"
-
-    companion object {
-        val TAG = "YoudaoResult"
-
-        //    errorCode：
-        // 　0 ­ 正常
-        // 　20 ­ 要翻译的文本过长
-        // 　30 ­ 无法进行有效的翻译
-        // 　40 ­ 不支持的语言类型
-        // 　50 ­ 无效的key
-        // 　60 ­ 无词典结果，仅在获取词典结果生效
-        val ERROR_CODE_SUCCESS = 0
-        val ERROR_CODE_TEXT_TOO_LONG = 20
-        val ERROR_CODE_CANNOT_TRANSLATE_PROPER = 30
-        val ERROR_CODE_NOT_NOT_SUPPORTED_LANGUAGE = 40
-        val ERROR_CODE_INVALID_KEY = 50
-        val ERROR_CODE_NO_RESULT_IN_DICT = 60
     }
-}

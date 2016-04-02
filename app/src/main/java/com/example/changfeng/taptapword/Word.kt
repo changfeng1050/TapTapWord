@@ -28,32 +28,13 @@ class Word {
     var second: Int = 0
 
     val formatPhones: String
-        get() {
-            val phone = StringBuilder()
-            if (amPhone != null && !amPhone!!.isEmpty()) {
-                phone.append("美:[$amPhone] ")
-            }
-            if (enPhone != null && !enPhone!!.isEmpty()) {
-                phone.append("英:[$enPhone]")
-            }
-            return phone.toString()
-        }
+        get() = "$formatEnPhone $formatAmPhone".trim()
 
     val formatEnPhone: String
-        get() {
-            if (enPhone != null && !enPhone!!.isEmpty()) {
-                return "英:[$enPhone] "
-            }
-            return ""
-        }
+        get()  = if (enPhone.isNullOrEmpty()) "" else "英:[$enPhone]"
 
     val formatAmPhone: String
-        get() {
-            if (amPhone != null && !amPhone!!.isEmpty()) {
-                return "美:[$enPhone] "
-            }
-            return ""
-        }
+        get() = if (amPhone.isNullOrEmpty()) "" else "美:[$amPhone]"
 
     init {
         uuid = UUID.randomUUID()

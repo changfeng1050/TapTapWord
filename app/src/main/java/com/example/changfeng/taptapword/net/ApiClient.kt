@@ -1,6 +1,7 @@
 package com.example.changfeng.taptapword.net
 
 
+import android.util.Log
 import com.example.changfeng.taptapword.Config
 import com.example.changfeng.taptapword.util.MD5Utils
 import com.example.changfeng.taptapword.util.Utils
@@ -26,27 +27,25 @@ class ApiClient {
     internal var youdaoFanyiService = youdaoRetrofit.create(YoudaoFanyiService::class.java)
 
     fun getBaiduResult(query: String, callback: Callback<BaiduResult>) {
-        var query = query
-        query = query.replace(" ".toRegex(), "%20")
         try {
             val salt = Utils.getToken()
             val sign = MD5Utils.getMd5(Config.baiduTranslateAppId + query + salt + Config.baiduTranslateAppKey)
             val call = baiduFanyiService.getResult(query, "en", "zh", Config.baiduTranslateAppId, salt, sign)
+            Log.i(TAG, "getBaiduResult() " + call.request().url())
             call.enqueue(callback)
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
 
     }
 
     fun getYoudaoResult(query: String, callback: Callback<YoudaoResult>) {
-        var query = query
-        query = query.replace(" ".toRegex(), "%20")
         try {
             val call = youdaoFanyiService.getResult(Config.youdaoDictKeyfrom, Config.youdaoDictApiKey, "data", "json", "1.1", query)
+            Log.i(TAG, "getYoudaoResult() " + call.request().url())
             call.enqueue(callback)
         } catch (e: Exception) {
-
+            e.printStackTrace()
         }
 
     }

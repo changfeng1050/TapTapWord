@@ -3,6 +3,7 @@ package com.example.changfeng.taptapword
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.EditText
@@ -119,7 +120,9 @@ class ConsultWordActivity : Activity() {
 
         apiClient.getYoudaoResult(query, object : Callback<com.example.changfeng.taptapword.net.result.YoudaoResult> {
             override fun onResponse(call: Call<com.example.changfeng.taptapword.net.result.YoudaoResult>, response: Response<com.example.changfeng.taptapword.net.result.YoudaoResult>) {
+
                 youdaoResult = response.body()
+                wordNameTextView?.text = query
                 resultInfoTextView?.text = ""
                 if (pref.getBoolean(SharedPref.YOUDAO_DICT, true)) {
                     try {
@@ -135,7 +138,7 @@ class ConsultWordActivity : Activity() {
                     try {
                         wordWebExplainsTextView?.text = youdaoResult?.parseWebTranslate
                     } catch (e: Exception) {
-
+                        e.printStackTrace()
                     }
 
                 }
@@ -144,7 +147,7 @@ class ConsultWordActivity : Activity() {
                     try {
                         youdaoTranslateTextView?.text = youdaoResult?.translateResult
                     } catch (e: Exception) {
-
+                        e.printStackTrace()
                     }
 
                 }

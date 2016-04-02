@@ -42,6 +42,7 @@ class ClipboardService : Service() {
 
 
     internal var cbListener: ClipboardManager.OnPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener {
+
         if (cb!!.hasPrimaryClip()) {
             for (i in 0..cb!!.primaryClip.itemCount - 1) {
 
