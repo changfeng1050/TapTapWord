@@ -1,8 +1,11 @@
 package com.example.changfeng.taptapword
 
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.NotificationCompat
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -12,7 +15,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.changfeng.taptapword.net.ApiClient
 import com.example.changfeng.taptapword.util.Utils
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.find
+import org.jetbrains.anko.notificationManager
 import org.jetbrains.anko.onClick
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,60 +35,47 @@ class ConsultWordActivity : Activity() {
     var foundResult = false
 
 
-    var wordConsultLayout: LinearLayout ?= null
-    var wordEditText: TextView ?= null
-    var addNewTextView: TextView ?=null
-    var resultInfoTextView: TextView ?= null
-    var wordResultLayout: LinearLayout ? = null
-    var wordNameTextView: TextView ? = null
-    var wordPhonesTextView: TextView ?= null
-    var wordMeansTextView: TextView ?= null
-    var wordWebExplainsTextView: TextView ?= null
-    var youdaoTranslateTextView: TextView ?= null
-    var baiduTranslateTextView: TextView ?= null
-    var addNoteTextView: TextView ?= null
-    var noteEditText: TextView ?= null
+    val wordConsultLayout: LinearLayout get() = find(R.id.word_consult_layout)
+    val wordEditText: TextView get() = find(R.id.word_edit_text)
+    val addNewTextView: TextView get() = find(R.id.add_new_word_text_view)
+    val resultInfoTextView: TextView get() = find(R.id.result_info_text_view)
+    val wordResultLayout: LinearLayout get() = find(R.id.word_result_layout)
+    val wordNameTextView: TextView get() = find(R.id.word_name_text_view)
+    val wordPhonesTextView: TextView get() = find(R.id.word_phones_text_view)
+    val wordMeansTextView: TextView get() = find(R.id.word_means_text_view)
+    val wordWebExplainsTextView: TextView get() = find(R.id.word_web_explains_text_view)
+    val youdaoTranslateTextView: TextView get() = find(R.id.youdao_translate_text_view)
+    val baiduTranslateTextView: TextView get() = find(R.id.baidu_translate_text_view)
+    val addNoteTextView: TextView get() = find(R.id.add_note_text_view)
+    val noteEditText: TextView get() = find(R.id.note_edit_text)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_consult_word)
-
-        wordConsultLayout = find<LinearLayout>(R.id.word_consult_layout)
-        wordEditText = find<EditText>(R.id.word_edit_text)
-        addNewTextView = find<TextView>(R.id.add_new_word_text_view)
-        addNewTextView?.onClick {
+        addNewTextView.onClick {
             resetViews()
-            val word = wordEditText?.text.toString()
-            resultInfoTextView?.visibility = View.VISIBLE
+            val word = wordEditText.text.toString()
+            resultInfoTextView.visibility = View.VISIBLE
             if (Utils.isEnglishWord(word)) {
-                resultInfoTextView?.text = getString(R.string.requesting_result_from_internet)
+                resultInfoTextView.text = getString(R.string.requesting_result_from_internet)
                 getResult(word)
             } else {
-                resultInfoTextView?.text = getString(R.string.message_not_support_other_language)
+                resultInfoTextView.text = getString(R.string.message_not_support_other_language)
             }
         }
-        resultInfoTextView = find<TextView>(R.id.result_info_text_view)
-        wordResultLayout = find<LinearLayout>(R.id.word_result_layout)
-        wordNameTextView = find<TextView>(R.id.word_name_text_view)
-        wordPhonesTextView = find<TextView>(R.id.word_phones_text_view)
-        wordMeansTextView = find<TextView>(R.id.word_means_text_view)
-        wordWebExplainsTextView = find<TextView>(R.id.word_web_explains_text_view)
-        youdaoTranslateTextView = find<TextView>(R.id.youdao_translate_text_view)
-        baiduTranslateTextView = find<TextView>(R.id.baidu_translate_text_view)
-        addNoteTextView = find<TextView>(R.id.add_note_text_view)
-        addNoteTextView?.onClick {
-            addNoteTextView?.visibility = View.GONE
-            noteEditText?.visibility = View.VISIBLE
+
+        addNoteTextView.onClick {
+            addNoteTextView.visibility = View.GONE
+            noteEditText.visibility = View.VISIBLE
         }
-        noteEditText = find<TextView>(R.id.note_edit_text);
 
         type = intent.getIntExtra(TYPE, TYPE_CONSULT)
         if (type == TYPE_COPY) {
-            wordConsultLayout?.visibility = View.GONE
-            resultInfoTextView?.visibility = View.VISIBLE
-            resultInfoTextView?.text = getString(R.string.requesting_result_from_internet)
+            wordConsultLayout.visibility = View.GONE
+            resultInfoTextView.visibility = View.VISIBLE
+            resultInfoTextView.text = getString(R.string.requesting_result_from_internet)
             val clip = intent.getStringExtra(ClipboardService.clipboardText).trim { it <= ' ' }
             getResult(clip)
         }
@@ -91,10 +83,24 @@ class ConsultWordActivity : Activity() {
         updateViewVisibility()
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (defaultSharedPreferences.getBoolean(SharedPref.NOTIFICATION_NEW_WORD, true) && !wordNameTextView.text.isNullOrEmpty()) {
+            val notificationBuilder = NotificationCompat.Builder(this).setSmallIcon(R.drawable.image_ninja).setContentTitle(getString(R.string.app_name)).setContentText("新单词 ${wordNameTextView.text.toString()}")
+            val i = Intent(this, MainActivity::class.java).putExtra(MainActivity.NINJA_NEW_WORD, true)
+            val pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT)
+            notificationBuilder.setContentIntent(pi)
+            notificationManager.notify(1, notificationBuilder.build())
+        }
+
+    }
+
     override fun onDestroy() {
         if (foundResult) {
             saveWord()
         }
+
+
         super.onDestroy()
     }
 
@@ -102,18 +108,18 @@ class ConsultWordActivity : Activity() {
         foundResult = false
         this.query = query
         val apiClient = ApiClient()
-        val pref = getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE)
+        val pref = defaultSharedPreferences
         if (pref.getBoolean(SharedPref.BAIDU_TRANSLATE, true)) {
             apiClient.getBaiduResult(query, object : Callback<com.example.changfeng.taptapword.net.result.BaiduResult> {
                 override fun onResponse(call: Call<com.example.changfeng.taptapword.net.result.BaiduResult>, response: Response<com.example.changfeng.taptapword.net.result.BaiduResult>) {
                     baiduResult = response.body()
-                    baiduTranslateTextView?.text = baiduResult?.result
+                    baiduTranslateTextView.text = baiduResult?.result
                     updateViewVisibility()
                     foundResult = true
                 }
 
                 override fun onFailure(call: Call<com.example.changfeng.taptapword.net.result.BaiduResult>, t: Throwable) {
-                    resultInfoTextView?.text = getString(R.string.message_cannot_find_word_result)
+                    resultInfoTextView.text = getString(R.string.message_cannot_find_word_result)
                 }
             })
         }
@@ -122,12 +128,12 @@ class ConsultWordActivity : Activity() {
             override fun onResponse(call: Call<com.example.changfeng.taptapword.net.result.YoudaoResult>, response: Response<com.example.changfeng.taptapword.net.result.YoudaoResult>) {
 
                 youdaoResult = response.body()
-                wordNameTextView?.text = query
-                resultInfoTextView?.text = ""
+                wordNameTextView.text = query
+                resultInfoTextView.text = ""
                 if (pref.getBoolean(SharedPref.YOUDAO_DICT, true)) {
                     try {
-                        wordPhonesTextView?.text = youdaoResult?.formatPhones
-                        wordMeansTextView?.text = youdaoResult?.parsedExplains
+                        wordPhonesTextView.text = youdaoResult?.formatPhones
+                        wordMeansTextView.text = youdaoResult?.parsedExplains
                     } catch (e: Exception) {
 
                     }
@@ -136,7 +142,7 @@ class ConsultWordActivity : Activity() {
 
                 if (pref.getBoolean(SharedPref.WEB_EXPLAIN, true)) {
                     try {
-                        wordWebExplainsTextView?.text = youdaoResult?.parseWebTranslate
+                        wordWebExplainsTextView.text = youdaoResult?.parseWebTranslate
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -145,7 +151,7 @@ class ConsultWordActivity : Activity() {
 
                 if (pref.getBoolean(SharedPref.YOUDAO_TRANSLATE, true)) {
                     try {
-                        youdaoTranslateTextView?.text = youdaoResult?.translateResult
+                        youdaoTranslateTextView.text = youdaoResult?.translateResult
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -153,10 +159,12 @@ class ConsultWordActivity : Activity() {
                 }
                 updateViewVisibility()
                 foundResult = true
+
+
             }
 
             override fun onFailure(call: Call<com.example.changfeng.taptapword.net.result.YoudaoResult>, t: Throwable) {
-                resultInfoTextView?.text = getString(R.string.message_cannot_find_word_result)
+                resultInfoTextView.text = getString(R.string.message_cannot_find_word_result)
             }
         })
 
@@ -180,7 +188,7 @@ class ConsultWordActivity : Activity() {
 
         word.webExplains = youdaoResult?.parseWebTranslate
         word.isArchived = false
-        word.note = noteEditText?.text.toString()
+        word.note = noteEditText.text.toString()
 
         val c = Calendar.getInstance()
         word.year = c.get(Calendar.YEAR)
@@ -194,26 +202,26 @@ class ConsultWordActivity : Activity() {
     }
 
     private fun updateViewVisibility() {
-        wordNameTextView?.visibility = if(wordNameTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        wordPhonesTextView?.visibility = if (wordPhonesTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        wordMeansTextView?.visibility = if (wordMeansTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        wordWebExplainsTextView?.visibility = if (wordWebExplainsTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        youdaoTranslateTextView?.visibility = if (youdaoTranslateTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        baiduTranslateTextView?.visibility = if (baiduTranslateTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        addNewTextView?.visibility = if (addNoteTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        resultInfoTextView?.visibility = if (resultInfoTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
-        addNoteTextView?.visibility = if (wordPhonesTextView?.text!!.isEmpty() && wordMeansTextView?.text!!.isEmpty() && youdaoTranslateTextView?.text!!.isEmpty() && baiduTranslateTextView?.text!!.isEmpty()) View.GONE else View.VISIBLE
+        wordNameTextView.visibility = if(wordNameTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        wordPhonesTextView.visibility = if (wordPhonesTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        wordMeansTextView.visibility = if (wordMeansTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        wordWebExplainsTextView.visibility = if (wordWebExplainsTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        youdaoTranslateTextView.visibility = if (youdaoTranslateTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        baiduTranslateTextView.visibility = if (baiduTranslateTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        addNewTextView.visibility = if (addNoteTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        resultInfoTextView.visibility = if (resultInfoTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        addNoteTextView.visibility = if (wordPhonesTextView.text!!.isEmpty() && wordMeansTextView.text!!.isEmpty() && youdaoTranslateTextView.text!!.isEmpty() && baiduTranslateTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun resetViews() {
-        wordNameTextView?.text = ""
-        wordPhonesTextView?.text = ""
-        wordMeansTextView?.text = ""
-        wordWebExplainsTextView?.text = ""
-        youdaoTranslateTextView?.text = ""
-        baiduTranslateTextView?.text = ""
-        noteEditText?.text= ""
-        resultInfoTextView?.text = ""
+        wordNameTextView.text = ""
+        wordPhonesTextView.text = ""
+        wordMeansTextView.text = ""
+        wordWebExplainsTextView.text = ""
+        youdaoTranslateTextView.text = ""
+        baiduTranslateTextView.text = ""
+        noteEditText.text= ""
+        resultInfoTextView.text = ""
         updateViewVisibility()
     }
 

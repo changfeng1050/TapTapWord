@@ -62,6 +62,10 @@
     <string name="filename_no_backup_file_found">没有找到备份数据</string>
     <string name="filepath_no_backup_file_found">""</string>
 
+    <string name="title_notification">通知栏</string>
+    <string name="notification_ninja_watch">显示忍者监听的开关</string>
+    <string name="notification_new_word">显示新的单词</string>
+
     <string name="share_subject">分享单词忍者</string>
     <string name="share_text">Hi，朋友们，我正在使用单词忍者！它可以在读文章或者网页的时候，选中需要翻译的单词之后复制，直接返回翻译结果！Enjoy it！ %1$s</string>
 

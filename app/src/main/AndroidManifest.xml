@@ -35,6 +35,12 @@
             android:enabled="true"
             android:exported="true" />
 
+        <receiver android:name=".receiver.NinjaServiceReceiver">
+            <intent-filter>
+                <action android:name="com.example.changfeng.taptapword.ninja"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".WordActivity"
             android:label="@string/title_activity_word" />
@@ -43,6 +49,7 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity
             android:name=".ConsultWordActivity"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity android:name=".ui.AchievementActivity"/>
     </application>

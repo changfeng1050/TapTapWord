@@ -155,6 +155,7 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:paddingTop="10dp"
+            android:hint="@string/hint_please_input_your_note"
             android:visibility="gone" />
     </LinearLayout>
 

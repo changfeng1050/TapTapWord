@@ -13,25 +13,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.toast
 
 
 class SettingsFragment : Fragment(), View.OnClickListener {
-    val youdaoDictSwitch: Switch
-            get() = find(R.id.youdao_dict_switch)
-    val webExplainSwitch: Switch
-            get() = find(R.id.web_explain_switch)
-    val youdaoTranslateSwitch: Switch
-            get() = find(R.id.youdao_translate_switch)
-    val baiduTranslateSwitch: Switch
-            get() = find(R.id.baidu_translate_switch)
-    val backupDataTextView: TextView
-            get() = find(R.id.backup_data)
-    val restoreDataTextView: TextView
-            get() = find(R.id.restore_data)
-    val clearBackupDataTextView: TextView
-            get() = find(R.id.clear_backup_data)
+    val youdaoDictSwitch: Switch get() = find(R.id.youdao_dict_switch)
+    val webExplainSwitch: Switch get() = find(R.id.web_explain_switch)
+    val youdaoTranslateSwitch: Switch  get() = find(R.id.youdao_translate_switch)
+    val baiduTranslateSwitch: Switch get() = find(R.id.baidu_translate_switch)
+    val backupDataTextView: TextView get() = find(R.id.backup_data)
+    val restoreDataTextView: TextView get() = find(R.id.restore_data)
+    val clearBackupDataTextView: TextView get() = find(R.id.clear_backup_data)
+    val ninjaWatchNotificationSwitch: Switch get() = find(R.id.notification_ninja_watch)
+    val newWordNotificationSwitch: Switch get() = find(R.id.notification_new_word)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +43,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
         backupDataTextView.setOnClickListener(this)
         restoreDataTextView.setOnClickListener(this)
         clearBackupDataTextView.setOnClickListener(this)
+
     }
 
     override fun onResume() {
@@ -100,7 +97,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     private fun clearAllBackupData() {
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
             val path = Environment.getExternalStorageDirectory()
-            val files = path.listFiles { file, s -> s.contains(FILE_KEY_WORD) }.filter { it-> it.isFile }
+            val files = path.listFiles { file, s -> s.contains(FILE_KEY_WORD) }.filter { it -> it.isFile }
             for (f in files) {
                 f.delete()
             }
@@ -108,22 +105,27 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun readSettings() {
-        val pref = activity.getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE)
+        val pref = activity.defaultSharedPreferences
         youdaoDictSwitch.isChecked = pref.getBoolean(SharedPref.YOUDAO_DICT, true)
         webExplainSwitch.isChecked = pref.getBoolean(SharedPref.WEB_EXPLAIN, true)
         youdaoTranslateSwitch.isChecked = pref.getBoolean(SharedPref.YOUDAO_TRANSLATE, true)
         baiduTranslateSwitch.isChecked = pref.getBoolean(SharedPref.BAIDU_TRANSLATE, true)
+        ninjaWatchNotificationSwitch.isChecked = pref.getBoolean(SharedPref.NOTIFICATION_NINJA_WATCH, true)
+        newWordNotificationSwitch.isChecked = pref.getBoolean(SharedPref.NOTIFICATION_NEW_WORD, true)
     }
 
     private fun saveSettings() {
-        val editor = activity.getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE).edit()
+        val editor = activity.defaultSharedPreferences.edit()
         editor
                 .putBoolean(SharedPref.YOUDAO_DICT, youdaoDictSwitch.isChecked)
                 .putBoolean(SharedPref.WEB_EXPLAIN, webExplainSwitch.isChecked)
                 .putBoolean(SharedPref.YOUDAO_TRANSLATE, youdaoTranslateSwitch.isChecked)
                 .putBoolean(SharedPref.BAIDU_TRANSLATE, baiduTranslateSwitch.isChecked)
+                .putBoolean(SharedPref.NOTIFICATION_NINJA_WATCH, ninjaWatchNotificationSwitch.isChecked)
+                .putBoolean(SharedPref.NOTIFICATION_NEW_WORD, newWordNotificationSwitch.isChecked)
                 .apply()
     }
+
     companion object {
 
         private val TAG = "SettingsFragment"

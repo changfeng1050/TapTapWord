@@ -3,6 +3,7 @@ package com.example.changfeng.taptapword
 
 import android.app.ActivityManager
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.app.NotificationCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -32,6 +34,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        try {
+            val id = if (intent.getBooleanExtra(NINJA_NEW_WORD, false)) R.id.recent_words else lastFragmentId
+            saveLastPageId(id)
+        } catch(e: Exception) {
+
+        }
+
+        if (defaultSharedPreferences.getBoolean(SharedPref.NOTIFICATION_NINJA_WATCH, true)) {
+            val ninjaServiceNotificationBuilder = NotificationCompat.Builder(this).setSmallIcon(R.drawable.image_ninja).setContentTitle(getString(R.string.app_name)).setContentText("点击关闭忍者监听")
+            val ninjaIntent = PendingIntent.getBroadcast(this, RESULT_OK, Intent(NINJA_BROADCAST).putExtra(NINJA_OPEN_FLAG, true), PendingIntent.FLAG_CANCEL_CURRENT)
+
+            ninjaServiceNotificationBuilder.setContentIntent(ninjaIntent)
+            notificationManager.notify(2, ninjaServiceNotificationBuilder.build())
+        }
+
 
         addFab.onClick {
             startActivity(intentFor<ConsultWordActivity>(ConsultWordActivity.TYPE to ConsultWordActivity.TYPE_CONSULT))
@@ -326,13 +344,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun hasRated(): Boolean {
-        val pref = getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE)
-        return pref.getBoolean(SharedPref.RATED, false)
+        return defaultSharedPreferences.getBoolean(SharedPref.RATED, false)
     }
 
     private fun setRated() {
-        val pref = getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE)
-        pref.edit().putBoolean(SharedPref.RATED, true).apply()
+        defaultSharedPreferences.edit().putBoolean(SharedPref.RATED, true).apply()
     }
 
     private val isToShowRateDialog: Boolean
@@ -346,38 +362,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun countRunTimes() {
-        val pref = getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE)
-        var count = pref.getInt(SharedPref.RUN_TIMES, 0)
+        var count = defaultSharedPreferences.getInt(SharedPref.RUN_TIMES, 0)
         count++
-        pref.edit().putInt(SharedPref.RUN_TIMES, count).apply()
+        defaultSharedPreferences.edit().putInt(SharedPref.RUN_TIMES, count).apply()
     }
 
     private val runTimes: Int
-        get() {
-            val pref = getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE)
-            return pref.getInt(SharedPref.RUN_TIMES, 0)
-        }
+        get() = defaultSharedPreferences.getInt(SharedPref.RUN_TIMES, 0)
 
     private fun saveLastPageId(id: Int) {
-        val editor = getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE).edit()
-        editor.putInt(SharedPref.LAST_PAGE_ID, id).apply()
+        defaultSharedPreferences.edit().putInt(SharedPref.LAST_PAGE_ID, id).apply()
     }
 
     private val lastFragmentId: Int
-        get() {
-            val pref = getSharedPreferences(SharedPref.NAME, Context.MODE_PRIVATE)
-            return pref.getInt(SharedPref.LAST_PAGE_ID, SharedPref.INVALID_FRAGMENT_ID)
-        }
+        get() = defaultSharedPreferences.getInt(SharedPref.LAST_PAGE_ID, SharedPref.INVALID_FRAGMENT_ID)
 
     companion object {
         private val TAG = "MainActivity"
         private val FRAGMENT_TAG = "CURRENT_FRAGMENT"
 
+        val NINJA_BROADCAST = "com.example.changfeng.taptapword.ninja"
+        val NINJA_OPEN_FLAG = "ninja_open_flag"
+        val NINJA_NEW_WORD = "new_word"
+
         fun isServiceRunning(mContext: Context, className: String): Boolean {
             var isRunning = false
             val activityManager = mContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             val service = activityManager.getRunningServices(30).find { s -> s.service.className == className }
-            return service!= null
+            return service != null
         }
     }
 }

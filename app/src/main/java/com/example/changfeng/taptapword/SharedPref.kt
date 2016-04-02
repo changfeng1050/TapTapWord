@@ -9,12 +9,13 @@ object SharedPref {
     val RUN_TIMES = "run_times"
     val RATED = "rated"
     val INSTALL_SHORTCUT = "install_shortcut"
-    val NAME = "settings"
     val YOUDAO_DICT = "youdao_dict"
     val WEB_EXPLAIN = "web_explain"
     val YOUDAO_TRANSLATE = "youdao_translate"
     val BAIDU_TRANSLATE = "baidu_translate"
 
+    val NOTIFICATION_NINJA_WATCH = "ninja_watch"
+    val NOTIFICATION_NEW_WORD = "new_word"
 
     val INVALID_FRAGMENT_ID = -1
 }
