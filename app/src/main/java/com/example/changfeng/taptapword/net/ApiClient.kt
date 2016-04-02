@@ -31,7 +31,7 @@ class ApiClient {
             val salt = Utils.getToken()
             val sign = MD5Utils.getMd5(Config.baiduTranslateAppId + query + salt + Config.baiduTranslateAppKey)
             val call = baiduFanyiService.getResult(query, "en", "zh", Config.baiduTranslateAppId, salt, sign)
-            Log.i(TAG, "getBaiduResult() " + call.request().url())
+//            Log.i(TAG, "getBaiduResult() " + call.request().url())
             call.enqueue(callback)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -42,7 +42,7 @@ class ApiClient {
     fun getYoudaoResult(query: String, callback: Callback<YoudaoResult>) {
         try {
             val call = youdaoFanyiService.getResult(Config.youdaoDictKeyfrom, Config.youdaoDictApiKey, "data", "json", "1.1", query)
-            Log.i(TAG, "getYoudaoResult() " + call.request().url())
+//            Log.i(TAG, "getYoudaoResult() " + call.request().url())
             call.enqueue(callback)
         } catch (e: Exception) {
             e.printStackTrace()
