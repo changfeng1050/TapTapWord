@@ -8,6 +8,7 @@ import android.database.CursorWrapper
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.changfeng.taptapword.util.MyLog
 
 import java.util.ArrayList
 import java.util.Currency
@@ -15,7 +16,7 @@ import java.util.Currency
 /**
  * Created by changfeng on 2015/5/10.
  */
-class DatabaseHelper(private val mContent: Context, name: String, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(mContent, name, factory, version) {
+class DatabaseHelper(content: Context, name: String, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(content, name, factory, version) {
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_WORD)
@@ -73,11 +74,7 @@ class DatabaseHelper(private val mContent: Context, name: String, factory: SQLit
                 word.amPhone = cursor.getString(cursor.getColumnIndex(COLUMN_PH_AM))
                 word.enPhone = cursor.getString(cursor.getColumnIndex(COLUMN_PH_EN))
                 word.means = cursor.getString(cursor.getColumnIndex(COLUMN_MEANS))
-                if (cursor.getInt(cursor.getColumnIndex(COLUMN_ARCHIVE)) == 1) {
-                    word.isArchived = true
-                } else {
-                    word.isArchived = false
-                }
+                word.isArchived = cursor.getInt(cursor.getColumnIndex(COLUMN_ARCHIVE)) == 1
                 word.year = cursor.getInt(cursor.getColumnIndex(COLUMN_YEAR))
                 word.month = cursor.getInt(cursor.getColumnIndex(COLUMN_MONTH))
                 word.date = cursor.getInt(cursor.getColumnIndex(COLUMN_DATE))
@@ -150,11 +147,7 @@ class DatabaseHelper(private val mContent: Context, name: String, factory: SQLit
                 word.enPhone = getString(getColumnIndex(COLUMN_PH_EN))
                 word.means = getString(getColumnIndex(COLUMN_MEANS))
                 val archive = getInt(getColumnIndex(COLUMN_ARCHIVE))
-                if (archive == 1) {
-                    word.isArchived = true
-                } else {
-                    word.isArchived = false
-                }
+                word.isArchived = archive == 1
                 word.year = getInt(getColumnIndex(COLUMN_YEAR))
                 word.month = getInt(getColumnIndex(COLUMN_MONTH))
                 word.date = getInt(getColumnIndex(COLUMN_DATE))

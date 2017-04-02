@@ -59,7 +59,7 @@ open class WordsFragment : Fragment(){
             override fun onItemClick(view: View, position: Int) {
                 val name = words!![position].name
                                     name?.let {
-                                        context.startActivity(context.intentFor<WordActivity>(WordActivity.EXTRA_WORD_NAME  to name))
+                                        context.startActivity(context.intentFor<WordInfoActivity>(WordInfoActivity.EXTRA_WORD_NAME  to name))
                                     }
             }
         })

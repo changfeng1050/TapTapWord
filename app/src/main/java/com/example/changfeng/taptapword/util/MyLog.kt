@@ -1,4 +1,4 @@
-package com.example.changfeng.taptapword
+package com.example.changfeng.taptapword.util
 
 /**
  * Created by changfeng on 2015/5/10.

@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/adapter/RecyclerSwipeAdapter.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/adapter/RecyclerViewAdapter.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/adapter/util/DividerItemDecoration.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/implments/SwipeItemMangerImpl.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/interfaces/SwipeAdapterInterface.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/interfaces/SwipeItemMangerInterface.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/listener/SimpleSwipeListener.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/ui/SwipeLayout.kt" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/example/changfeng/taptapword/util/Attributes.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-mdpi/divider.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/recyclerview_item.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/values/attrs.xml" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

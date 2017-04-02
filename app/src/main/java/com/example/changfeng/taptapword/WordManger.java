@@ -2,7 +2,8 @@ package com.example.changfeng.taptapword;
 
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
+
+import com.example.changfeng.taptapword.util.MyFile;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

@@ -6,12 +6,14 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import com.example.changfeng.taptapword.util.LogUtils
+import com.umeng.analytics.MobclickAgent
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.toast
 
 
-class WordActivity : Activity() {
+class WordInfoActivity : Activity() {
 
     val wordNameEditText: TextView get() = find(R.id.word_name)
     val dateTimeTextView: TextView get() = find(R.id.date_time)
@@ -61,7 +63,7 @@ class WordActivity : Activity() {
                 phoneTextView.visibility = View.GONE
             }
 
-            if (w.means.isNullOrEmpty()){
+            if (w.means.isNullOrEmpty()) {
                 meansLabelTextView.visibility = View.GONE
                 meansTextView.visibility = View.GONE
             }
@@ -75,6 +77,18 @@ class WordActivity : Activity() {
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("单词详情界面")
+        MobclickAgent.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPause(this)
+        MobclickAgent.onPageEnd("单词详情界面")
+    }
+
     private fun updateWord() {
         word?.isArchived = archiveCheckBox.isChecked
         word?.means = meansTextView.text.toString()
@@ -84,7 +98,7 @@ class WordActivity : Activity() {
 
     companion object {
 
-        private val TAG = "WordActivity"
+        private val TAG: String = LogUtils.makeLogTag(WordInfoActivity::class.java)
 
         val EXTRA_WORD_NAME = "word_name"
     }

@@ -32,6 +32,9 @@
     <string name="title_no_archived_words">生词本没有单词</string>
     <string name="description_no_archived_words">赶紧去添加单词吧</string>
 
+    <string name="notification_service_intent_title">单词忍者</string>
+    <string name="notification_service_intent_description">正在后台监听</string>
+
     <string name="text_view_archive">归档</string>
     <string name="title_reset_preferences">Reset preferences</string>
     <string name="reset_all_data">Reset all data</string>

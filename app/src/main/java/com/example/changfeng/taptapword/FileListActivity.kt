@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
+import com.umeng.analytics.MobclickAgent
 import org.jetbrains.anko.find
 import org.jetbrains.anko.onItemClick
 
@@ -20,9 +21,9 @@ import java.util.ArrayList
 /**
  * Created by changfeng on 2015/3/4.
  */
-class FileListActivity : Activity(){
+class FileListActivity : Activity() {
 
-    var fileInfoList: MutableList<FileInfo> ?= null
+    var fileInfoList: MutableList<FileInfo>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +41,7 @@ class FileListActivity : Activity(){
 
 
         val adapter = FileListAdapter(this@FileListActivity,
-                R.layout.file_list_item, fileInfoList!!)
+            R.layout.file_list_item, fileInfoList!!)
 
         val listView = find<ListView>(R.id.file_list_view)
         listView.adapter = adapter
@@ -56,8 +57,21 @@ class FileListActivity : Activity(){
 
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("选择文件页面")
+        MobclickAgent.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("选择文件页面")
+        MobclickAgent.onPause(this)
+    }
+
     private fun setResults(fileInfo: FileInfo) {
-        setResult(Activity.RESULT_OK, Intent().putExtra(FILE_KEY_WORD,fileInfo.filePath))
+        setResult(Activity.RESULT_OK, Intent().putExtra(FILE_KEY_WORD, fileInfo.filePath))
     }
 
     private fun getFileList(fileKeyWord: String): ArrayList<FileInfo> {

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        card_view:cardCornerRadius="5dp"
         card_view:cardPreventCornerOverlap="true"
         card_view:cardUseCompatPadding="true"
         card_view:contentPadding="10dp">
@@ -49,7 +48,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        card_view:cardCornerRadius="5dp"
         card_view:cardPreventCornerOverlap="true"
         card_view:cardUseCompatPadding="true"
         card_view:contentPadding="10dp">

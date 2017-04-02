@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.changfeng.taptapword.net.ApiClient
 import com.example.changfeng.taptapword.util.Utils
+import com.umeng.analytics.MobclickAgent
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.find
 import org.jetbrains.anko.notificationManager
@@ -28,8 +29,8 @@ import java.util.*
 class ConsultWordActivity : Activity() {
     private var type = TYPE_CONSULT
 
-    var baiduResult: com.example.changfeng.taptapword.net.result.BaiduResult ?= null
-    var youdaoResult: com.example.changfeng.taptapword.net.result.YoudaoResult ?= null
+    var baiduResult: com.example.changfeng.taptapword.net.result.BaiduResult? = null
+    var youdaoResult: com.example.changfeng.taptapword.net.result.YoudaoResult? = null
     var query: String? = null
 
     var foundResult = false
@@ -83,6 +84,12 @@ class ConsultWordActivity : Activity() {
         updateViewVisibility()
     }
 
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("网络查询单词页面")
+        MobclickAgent.onResume(this)
+    }
+
     override fun onPause() {
         super.onPause()
         if (defaultSharedPreferences.getBoolean(SharedPref.NOTIFICATION_NEW_WORD, true) && !wordNameTextView.text.isNullOrEmpty()) {
@@ -93,7 +100,10 @@ class ConsultWordActivity : Activity() {
             notificationManager.notify(1, notificationBuilder.build())
         }
 
+        MobclickAgent.onPageEnd("网络查询单词页面")
+        MobclickAgent.onPause(this)
     }
+
 
     override fun onDestroy() {
         if (foundResult) {
@@ -202,7 +212,7 @@ class ConsultWordActivity : Activity() {
     }
 
     private fun updateViewVisibility() {
-        wordNameTextView.visibility = if(wordNameTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
+        wordNameTextView.visibility = if (wordNameTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
         wordPhonesTextView.visibility = if (wordPhonesTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
         wordMeansTextView.visibility = if (wordMeansTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
         wordWebExplainsTextView.visibility = if (wordWebExplainsTextView.text!!.isEmpty()) View.GONE else View.VISIBLE
@@ -220,7 +230,7 @@ class ConsultWordActivity : Activity() {
         wordWebExplainsTextView.text = ""
         youdaoTranslateTextView.text = ""
         baiduTranslateTextView.text = ""
-        noteEditText.text= ""
+        noteEditText.text = ""
         resultInfoTextView.text = ""
         updateViewVisibility()
     }

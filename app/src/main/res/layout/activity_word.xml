@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,12 +18,12 @@
             android:padding="10dp"
             android:text="@string/app_name"
             android:textColor="@color/colorGreen"
-            android:textSize="30sp" />
+            android:textSize="30sp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/colorGreen" />
+            android:background="@color/colorGreen"/>
 
     </LinearLayout>
 
@@ -47,7 +47,7 @@
 
             android:text=""
             android:textColor="@color/colorLightGreen"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
             android:paddingTop="10dp"
             android:text="@string/text_view_archive"
             android:textColor="@color/colorLightGreen"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
 
         <CheckBox
             android:id="@+id/archive"
@@ -68,10 +68,12 @@
             android:gravity="center"
             android:paddingBottom="5dp"
             android:paddingEnd="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:paddingStart="5dp"
             android:paddingTop="5dp"
             android:textColor="@color/colorLightGreen"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
 
     </LinearLayout>
 
@@ -85,7 +87,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text="@string/label_phones"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/phone"
@@ -96,7 +98,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen" />
+        android:textColor="@color/colorGreen"/>
 
     <TextView
         android:id="@+id/means_label"
@@ -107,7 +109,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text="@string/label_means"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/means"
@@ -118,7 +120,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen" />
+        android:textColor="@color/colorGreen"/>
 
     <TextView
         android:id="@+id/web_explains_label"
@@ -129,7 +131,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text="@string/label_web_explains"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"/>
 
     <TextView
         android:id="@+id/web_explains"
@@ -140,7 +142,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen" />
+        android:textColor="@color/colorGreen"/>
 
     <TextView
         android:id="@+id/note_label"
@@ -151,7 +153,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text="@string/label_note"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"/>
 
     <EditText
         android:id="@+id/note"
@@ -163,7 +165,7 @@
         android:paddingStart="30dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorGreen" />
+        android:textColor="@color/colorGreen"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -179,7 +181,7 @@
             android:paddingStart="30dp"
             android:paddingTop="5dp"
             android:text="@string/button_cancel"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/save"
@@ -190,7 +192,7 @@
             android:paddingStart="30dp"
             android:paddingTop="10dp"
             android:text="@string/button_save_word"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"/>
 
 
     </LinearLayout>

@@ -24,6 +24,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+
 public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapter.SimpleViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
     private Context mContext;
@@ -64,7 +65,8 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
 
         private WordItemClickListener listener;
         private WordItemLongClickListener longClickListener;
-         public SimpleViewHolder(final View itemView, WordItemClickListener listener, WordItemLongClickListener longClickListener) {
+
+        public SimpleViewHolder(final View itemView, WordItemClickListener listener, WordItemLongClickListener longClickListener) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             this.listener = listener;

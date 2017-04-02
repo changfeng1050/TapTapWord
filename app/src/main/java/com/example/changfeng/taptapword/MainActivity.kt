@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -21,6 +22,7 @@ import android.view.MenuItem
 import android.view.View
 import com.example.changfeng.taptapword.ui.ArchivedWordsFragment
 import com.example.changfeng.taptapword.ui.UnArchiveWordsFragment
+import com.umeng.analytics.MobclickAgent
 import org.jetbrains.anko.*
 import java.util.*
 
@@ -60,16 +62,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.setDrawerListener(toggle)
         toggle.syncState()
 
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
 
-        val prefs = defaultSharedPreferences
-        if (!prefs.getBoolean(SharedPref.FIRST_TIME, false)) {
-            val editor = prefs.edit()
+
+        if (!defaultSharedPreferences.getBoolean(SharedPref.FIRST_TIME, false)) {
+            val editor = defaultSharedPreferences.edit()
             editor.putBoolean(SharedPref.FIRST_TIME, true)
 
             editor.putBoolean(SharedPref.YOUDAO_DICT, true)
@@ -198,9 +200,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startClipboardService()
         toast("单词忍者正在监听")
         try {
-            if (!prefs.getBoolean(SharedPref.INSTALL_SHORTCUT, false)) {
+            if (!defaultSharedPreferences.getBoolean(SharedPref.INSTALL_SHORTCUT, false)) {
                 addShortcut()
-                prefs.edit().putBoolean(SharedPref.INSTALL_SHORTCUT, true).apply()
+                defaultSharedPreferences.edit().putBoolean(SharedPref.INSTALL_SHORTCUT, true).apply()
             }
         } catch (e: Exception) {
             toast(R.string.message_failed_install_shortcut)
@@ -212,6 +214,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        MobclickAgent.onPageStart("主界面")
+        MobclickAgent.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MobclickAgent.onPageEnd("主界面")
+        MobclickAgent.onPause(this)
+    }
 
     override fun onBackPressed() {
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout

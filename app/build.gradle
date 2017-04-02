@@ -7,11 +7,11 @@ android {
 
     defaultConfig {
         applicationId "com.example.changfeng.taptapword"
-        minSdkVersion 17
+        minSdkVersion 16
         targetSdkVersion 23
 
-        versionCode 23
-        versionName "2.6.0"
+        versionCode 25
+        versionName "3.1.0"
     }
     buildTypes {
         release {
@@ -37,9 +37,11 @@ dependencies {
     compile 'org.jetbrains.anko:anko-sdk15:0.8.3' // sdk19, sdk21, sdk23 are also available
     compile 'org.jetbrains.anko:anko-support-v4:0.8.3' // In case you need support-v4 bindings
     compile 'org.jetbrains.anko:anko-appcompat-v7:0.8.3' // For appcompat-v7 bindings
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 buildscript {
-    ext.kotlin_version = '1.0.1-1'
+    ext.kotlin_version = '1.1.1'
     repositories {
         mavenCentral()
     }
