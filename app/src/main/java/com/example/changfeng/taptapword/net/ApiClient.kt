@@ -42,7 +42,7 @@ class ApiClient {
     fun getYoudaoResult(query: String, callback: Callback<YoudaoResult>) {
         try {
             val call = youdaoFanyiService.getResult(Config.youdaoDictKeyfrom, Config.youdaoDictApiKey, "data", "json", "1.1", query)
-//            Log.i(TAG, "getYoudaoResult() " + call.request().url())
+            Log.i(TAG, "getYoudaoResult() " + call.request().url())
             call.enqueue(callback)
         } catch (e: Exception) {
             e.printStackTrace()

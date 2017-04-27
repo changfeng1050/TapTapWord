@@ -2,17 +2,13 @@ package com.example.changfeng.taptapword
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
-import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import com.example.changfeng.taptapword.net.ApiClient
 import com.example.changfeng.taptapword.util.Utils
 import com.umeng.analytics.MobclickAgent

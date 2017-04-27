@@ -45,7 +45,7 @@ class FileListActivity : Activity() {
 
         val listView = find<ListView>(R.id.file_list_view)
         listView.adapter = adapter
-        listView.onItemClick { adapterView, view, i, l ->
+        listView.onItemClick { _, _, i, _ ->
             fileInfoList?.let {
                 val fileInfo = fileInfoList!![i]
                 if (fileInfo.fileName != getString(R.string.filename_no_backup_file_found)) {
@@ -74,15 +74,15 @@ class FileListActivity : Activity() {
         setResult(Activity.RESULT_OK, Intent().putExtra(FILE_KEY_WORD, fileInfo.filePath))
     }
 
-    private fun getFileList(fileKeyWord: String): ArrayList<FileInfo> {
-        val list = ArrayList<FileInfo>()
+    private fun getFileList(fileKeyWord: String): MutableList<FileInfo> {
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-            val files = Environment.getExternalStorageDirectory().listFiles { file, s -> s.contains(fileKeyWord) }.filter { s -> s.isFile }
-            for (file in files) {
-                list.add(FileInfo(file.name, file.path))
-            }
+            return Environment.getExternalStorageDirectory()
+                .listFiles { _, s -> s.contains(fileKeyWord) }
+                .filter { s -> s.isFile }
+                .map { FileInfo(it.name, it.path) }.toMutableList()
+        } else {
+            return mutableListOf()
         }
-        return list
     }
 
     companion object {

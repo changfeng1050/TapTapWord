@@ -3,24 +3,20 @@ package com.example.changfeng.taptapword
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
-import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import android.os.Parcel
-import android.widget.Toast
 import com.example.changfeng.taptapword.util.LogUtils
-
-import com.example.changfeng.taptapword.util.Utils
-import org.jetbrains.anko.clipboardManager
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
+import java.util.regex.Pattern
 
-class ClipboardService : Service() {
+class ClipboardService : Service(), ClipboardManager.OnPrimaryClipChangedListener {
 
-    var cb: ClipboardManager? = null
-
+    val cb: ClipboardManager by lazy {
+        getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -43,41 +39,61 @@ class ClipboardService : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        LogUtils.LOGI(TAG, "onStartCommand()")
-        cb = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cb!!.primaryClip = ClipData.newPlainText("", "")
-        cb!!.addPrimaryClipChangedListener(cbListener)
+        cb.addPrimaryClipChangedListener(this)
         return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        cb?.removePrimaryClipChangedListener(cbListener)
-        LogUtils.LOGI(TAG, "onDestroy()")
+        cb.removePrimaryClipChangedListener(this)
     }
 
 
-    internal var cbListener: ClipboardManager.OnPrimaryClipChangedListener = ClipboardManager.OnPrimaryClipChangedListener {
-        if (cb == null || !cb!!.hasPrimaryClip()) {
-            return@OnPrimaryClipChangedListener
+    override fun onPrimaryClipChanged() {
+        if (!cb.hasPrimaryClip()) {
+            return
         }
-        for (i in 0..cb!!.primaryClip.itemCount - 1) {
-            val item = try {
-                cb!!.primaryClip.getItemAt(i).text.toString()
-            } catch(e: NullPointerException) {
-                ""
-            }
-            if (!item.isNullOrBlank()) {
-                if (!Utils.isEnglishWord(item)) {
-                    break
+
+        for (i in 0..cb.primaryClip.itemCount - 1) {
+            val item = cb.primaryClip.getItemAt(i) ?: return
+
+            val text = item.text.toString()
+
+            if (!text.isNullOrEmpty()) {
+                if (text.contains("changfeng")) {
+                    continue
                 }
-                if (clipboardText.contains("changfeng")) {
-                    return@OnPrimaryClipChangedListener
+
+                if (!text.isEnglishWord()) {
+                    continue
                 }
-                startActivity(intentFor<ConsultWordActivity>(clipboardText to item, ConsultWordActivity.TYPE to ConsultWordActivity.TYPE_COPY).newTask())
-                break
+                startActivity(intentFor<ConsultWordActivity>(clipboardText to text, ConsultWordActivity.TYPE to ConsultWordActivity.TYPE_COPY).newTask())
+                return
             }
         }
+    }
+
+    fun String.isEnglishWord(): Boolean {
+        // 判断是否有汉字
+        val array = this.toCharArray()
+
+        if (array.any { it.toByte().toChar() != it }) {
+            return false
+        }
+
+
+        // 判断是否有数字
+        val digitPattern = Pattern.compile("[\\+\\-=0-9.\\(\\)<>\\|\\[\\]\\s\\\\!\\?@#\\$%\\^&\\*,\\./~`]+")
+        if (digitPattern.matcher(this).matches()) {
+            return false
+        }
+        // 判断是是否是网址
+        val httpPattern = Pattern.compile("(http://|https://)+")
+
+        if (httpPattern.matcher(this).find()) {
+            return false
+        }
+        return true
     }
 
     companion object {

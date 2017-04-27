@@ -2,8 +2,6 @@ package com.example.changfeng.taptapword
 
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -13,7 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import org.jetbrains.anko.alert
 import org.jetbrains.anko.defaultSharedPreferences
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.toast
 
@@ -21,7 +22,7 @@ import org.jetbrains.anko.support.v4.toast
 class SettingsFragment : Fragment(), View.OnClickListener {
     val youdaoDictSwitch: Switch get() = find(R.id.youdao_dict_switch)
     val webExplainSwitch: Switch get() = find(R.id.web_explain_switch)
-    val youdaoTranslateSwitch: Switch  get() = find(R.id.youdao_translate_switch)
+    val youdaoTranslateSwitch: Switch get() = find(R.id.youdao_translate_switch)
     val baiduTranslateSwitch: Switch get() = find(R.id.baidu_translate_switch)
     val backupDataTextView: TextView get() = find(R.id.backup_data)
     val restoreDataTextView: TextView get() = find(R.id.restore_data)
@@ -59,37 +60,50 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
 
-            R.id.backup_data -> AlertDialog.Builder(activity).setTitle(R.string.backup).setMessage(R.string.message_backup_data).setPositiveButton(R.string.button_ok) { dialog, which ->
-                if (WordManger.get(activity).copyDbToSdcard()) {
-                    toast(R.string.message_data_backupped)
-                } else {
-                    toast(R.string.message_data_backupped_failed)
-                }
-            }.setCancelable(true).create().show()
-            R.id.restore_data -> AlertDialog.Builder(activity).setTitle(R.string.restore).setMessage(R.string.message_restore_data).setPositiveButton(R.string.button_ok) { dialog, which ->
-                val intent = Intent(activity, FileListActivity::class.java)
-                intent.putExtra(FileListActivity.FILE_KEY_WORD, "word_ninja")
-                startActivityForResult(intent, REQUEST_BACKUP_FILE)
-            }.setCancelable(true).create().show()
-            R.id.clear_backup_data -> AlertDialog.Builder(activity).setTitle(R.string.clear_backup_data).setMessage(R.string.message_clear_backup_data).setPositiveButton(R.string.button_ok) { dialog, which ->
-                clearAllBackupData()
-                toast(R.string.message_all_backup_data_cleared)
-            }.setCancelable(true).create().show()
-            else -> {
+            R.id.backup_data -> {
+                activity.alert(R.string.message_backup_data, R.string.backup) {
+                    yesButton {
+                        if (WordManger.get(act).copyDbToSdcard()) {
+                            toast(R.string.message_data_backupped)
+                        } else {
+                            toast(R.string.message_data_backupped_failed)
+                        }
+                    }
+                    noButton { }
+                }.show()
             }
+
+            R.id.restore_data -> {
+                activity.alert(R.string.message_restore_data, R.string.restore) {
+                    yesButton {
+                        startActivityForResult(activity.intentFor<FileListActivity>(FILE_KEY_WORD to "word_ninja"), REQUEST_BACKUP_FILE)
+                    }
+                    noButton { }
+                }.show()
+            }
+            R.id.clear_backup_data ->
+                activity.alert(R.string.message_clear_backup_data, R.string.clear_backup_data) {
+                    yesButton {
+                        clearAllBackupData()
+                        toast(R.string.message_all_backup_data_cleared)
+                    }
+                    noButton {  }
+                }.show()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                REQUEST_BACKUP_FILE -> if (WordManger.get(activity).restoreDb(data!!.extras.getString(FileListActivity.FILE_KEY_WORD))) {
-                    toast(R.string.message_data_restored)
-                } else {
-                    toast(R.string.message_data_restored_failed)
-                }
-                else -> {
-                }
+        if (resultCode != Activity.RESULT_OK) {
+            return
+        }
+
+        when (requestCode) {
+            REQUEST_BACKUP_FILE -> if (WordManger.get(activity).restoreDb(data!!.extras.getString(FileListActivity.FILE_KEY_WORD))) {
+                toast(R.string.message_data_restored)
+            } else {
+                toast(R.string.message_data_restored_failed)
+            }
+            else -> {
             }
         }
     }
@@ -97,10 +111,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     private fun clearAllBackupData() {
         if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
             val path = Environment.getExternalStorageDirectory()
-            val files = path.listFiles { file, s -> s.contains(FILE_KEY_WORD) }.filter { it -> it.isFile }
-            for (f in files) {
-                f.delete()
-            }
+            path.listFiles { _, s -> s.contains(FILE_KEY_WORD) }.filter { it -> it.isFile }.forEach { it.delete() }
         }
     }
 
@@ -117,13 +128,13 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     private fun saveSettings() {
         val editor = activity.defaultSharedPreferences.edit()
         editor
-                .putBoolean(SharedPref.YOUDAO_DICT, youdaoDictSwitch.isChecked)
-                .putBoolean(SharedPref.WEB_EXPLAIN, webExplainSwitch.isChecked)
-                .putBoolean(SharedPref.YOUDAO_TRANSLATE, youdaoTranslateSwitch.isChecked)
-                .putBoolean(SharedPref.BAIDU_TRANSLATE, baiduTranslateSwitch.isChecked)
-                .putBoolean(SharedPref.NOTIFICATION_NINJA_WATCH, ninjaWatchNotificationSwitch.isChecked)
-                .putBoolean(SharedPref.NOTIFICATION_NEW_WORD, newWordNotificationSwitch.isChecked)
-                .apply()
+            .putBoolean(SharedPref.YOUDAO_DICT, youdaoDictSwitch.isChecked)
+            .putBoolean(SharedPref.WEB_EXPLAIN, webExplainSwitch.isChecked)
+            .putBoolean(SharedPref.YOUDAO_TRANSLATE, youdaoTranslateSwitch.isChecked)
+            .putBoolean(SharedPref.BAIDU_TRANSLATE, baiduTranslateSwitch.isChecked)
+            .putBoolean(SharedPref.NOTIFICATION_NINJA_WATCH, ninjaWatchNotificationSwitch.isChecked)
+            .putBoolean(SharedPref.NOTIFICATION_NEW_WORD, newWordNotificationSwitch.isChecked)
+            .apply()
     }
 
     companion object {

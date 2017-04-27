@@ -1,15 +1,12 @@
 package com.example.changfeng.taptapword
 
-import org.json.JSONException
-import org.json.JSONObject
-
-import java.util.UUID
+import java.util.*
 
 /**
  * Created by changfeng on 2015/4/19.
  */
 class Word {
-    val uuid: UUID
+    val uuid: UUID = UUID.randomUUID()
     var id: Long = 0
     var language: String? = null
     var name: String? = null
@@ -31,12 +28,9 @@ class Word {
         get() = "$formatEnPhone $formatAmPhone".trim()
 
     val formatEnPhone: String
-        get()  = if (enPhone.isNullOrEmpty()) "" else "英:[$enPhone]"
+        get() = if (enPhone.isNullOrEmpty()) "" else "英:[$enPhone]"
 
     val formatAmPhone: String
         get() = if (amPhone.isNullOrEmpty()) "" else "美:[$amPhone]"
 
-    init {
-        uuid = UUID.randomUUID()
-    }
 }

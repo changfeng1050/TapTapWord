@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.changfeng.taptapword.ConsultWordActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                tools:context="com.example.changfeng.taptapword.ConsultWordActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,12 +28,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/new_word"
                 android:textColor="@color/colorGreen"
-                android:textSize="20sp" />
+                android:textSize="20sp"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/colorGreen" />
+                android:background="@color/colorGreen"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                     android:paddingBottom="5dp"
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
-                    android:paddingTop="10dp" />
+                    android:paddingTop="10dp"/>
 
                 <TextView
                     android:id="@+id/add_new_word_text_view"
@@ -61,7 +61,7 @@
                     android:paddingTop="10dp"
                     android:text="@string/button_add_word"
                     android:textColor="@color/colorGreen"
-                    android:textSize="30sp" />
+                    android:textSize="30sp"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -77,64 +77,71 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textColor="@color/colorGrey"
-                android:textSize="15sp" />
+                android:textSize="15sp"/>
         </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/word_result_layout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
 
-            <TextView
-                android:id="@+id/word_name_text_view"
+            <LinearLayout
+                android:id="@+id/word_result_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@color/colorBlack"
-                android:textSize="20sp" />
+                android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/word_phones_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@color/colorBlack" />
+                <TextView
+                    android:id="@+id/word_name_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="20sp"/>
 
 
-            <TextView
-                android:id="@+id/word_means_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@color/colorBlack" />
+                <TextView
+                    android:id="@+id/word_phones_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorBlack"/>
 
-            <TextView
-                android:id="@+id/word_web_explains_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@color/colorBlack" />
 
-            <TextView
-                android:id="@+id/youdao_translate_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@color/colorBlack" />
+                <TextView
+                    android:id="@+id/word_means_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorBlack"/>
 
-            <TextView
-                android:id="@+id/baidu_translate_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:textColor="@color/colorBlack"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/word_web_explains_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorBlack"/>
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/youdao_translate_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/baidu_translate_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <TextView
             android:id="@+id/add_note_text_view"
@@ -147,16 +154,16 @@
             android:text="@string/button_add_note"
             android:textColor="@color/colorGreen"
             android:textSize="20sp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/note_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/hint_please_input_your_note"
             android:inputType="textMultiLine"
             android:paddingTop="10dp"
-            android:hint="@string/hint_please_input_your_note"
-            android:visibility="gone" />
+            android:visibility="gone"/>
     </LinearLayout>
 
 </RelativeLayout>

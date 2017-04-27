@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             editor.putBoolean(SharedPref.BAIDU_TRANSLATE, true)
             editor.apply()
 
+
             setupFragment(HelpFragment())
 
             val c = Calendar.getInstance()
@@ -310,7 +311,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     internal fun startClipboardService() {
-        stopClipboardService()
         val startIntent = Intent(this@MainActivity, ClipboardService::class.java)
         startService(startIntent)
     }
@@ -399,7 +399,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val NINJA_NEW_WORD = "new_word"
 
         fun isServiceRunning(mContext: Context, className: String): Boolean {
-            var isRunning = false
             val activityManager = mContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             val service = activityManager.getRunningServices(30).find { s -> s.service.className == className }
             return service != null
