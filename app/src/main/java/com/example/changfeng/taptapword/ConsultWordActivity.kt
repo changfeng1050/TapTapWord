@@ -4,18 +4,21 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.NotificationCompat
 import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
 import com.example.changfeng.taptapword.net.ApiClient
-import com.example.changfeng.taptapword.util.Utils
+import com.example.changfeng.taptapword.net.result.BaiduResult
+import com.example.changfeng.taptapword.net.result.YoudaoResult
+import com.example.changfeng.taptapword.util.LogUtils
+import com.example.changfeng.taptapword.util.isEnglishWord
 import com.umeng.analytics.MobclickAgent
 import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.find
 import org.jetbrains.anko.notificationManager
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,8 +28,8 @@ import java.util.*
 class ConsultWordActivity : Activity() {
     private var type = TYPE_CONSULT
 
-    var baiduResult: com.example.changfeng.taptapword.net.result.BaiduResult? = null
-    var youdaoResult: com.example.changfeng.taptapword.net.result.YoudaoResult? = null
+    var baiduResult: BaiduResult? = null
+    var youdaoResult: YoudaoResult? = null
     var query: String? = null
 
     var foundResult = false
@@ -49,13 +52,14 @@ class ConsultWordActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LogUtils.LOGI(TAG, "onCreate()")
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_consult_word)
         addNewTextView.onClick {
             resetViews()
             val word = wordEditText.text.toString()
             resultInfoTextView.visibility = View.VISIBLE
-            if (Utils.isEnglishWord(word)) {
+            if (word.isEnglishWord()) {
                 resultInfoTextView.text = getString(R.string.requesting_result_from_internet)
                 getResult(word)
             } else {
@@ -69,11 +73,13 @@ class ConsultWordActivity : Activity() {
         }
 
         type = intent.getIntExtra(TYPE, TYPE_CONSULT)
+
+
         if (type == TYPE_COPY) {
             wordConsultLayout.visibility = View.GONE
             resultInfoTextView.visibility = View.VISIBLE
             resultInfoTextView.text = getString(R.string.requesting_result_from_internet)
-            val clip = intent.getStringExtra(ClipboardService.clipboardText).trim { it <= ' ' }
+            val clip = intent.getStringExtra(ClipboardService.clipboardText).trim()
             getResult(clip)
         }
 
@@ -106,42 +112,44 @@ class ConsultWordActivity : Activity() {
             saveWord()
         }
 
-
         super.onDestroy()
     }
 
     private fun getResult(query: String) {
+        LogUtils.LOGI(TAG, "getResult() $query")
         foundResult = false
         this.query = query
         val apiClient = ApiClient()
         val pref = defaultSharedPreferences
         if (pref.getBoolean(SharedPref.BAIDU_TRANSLATE, true)) {
-            apiClient.getBaiduResult(query, object : Callback<com.example.changfeng.taptapword.net.result.BaiduResult> {
-                override fun onResponse(call: Call<com.example.changfeng.taptapword.net.result.BaiduResult>, response: Response<com.example.changfeng.taptapword.net.result.BaiduResult>) {
+            apiClient.getBaiduResult(query, object : Callback<BaiduResult> {
+                override fun onResponse(call: Call<BaiduResult>, response: Response<BaiduResult>) {
                     baiduResult = response.body()
                     baiduTranslateTextView.text = baiduResult?.result
                     updateViewVisibility()
                     foundResult = true
                 }
 
-                override fun onFailure(call: Call<com.example.changfeng.taptapword.net.result.BaiduResult>, t: Throwable) {
+                override fun onFailure(call: Call<BaiduResult>, t: Throwable) {
+                    t.printStackTrace()
                     resultInfoTextView.text = getString(R.string.message_cannot_find_word_result)
                 }
             })
         }
 
-        apiClient.getYoudaoResult(query, object : Callback<com.example.changfeng.taptapword.net.result.YoudaoResult> {
-            override fun onResponse(call: Call<com.example.changfeng.taptapword.net.result.YoudaoResult>, response: Response<com.example.changfeng.taptapword.net.result.YoudaoResult>) {
+        apiClient.getYoudaoResult(query, object : Callback<YoudaoResult> {
+            override fun onResponse(call: Call<YoudaoResult>, response: Response<YoudaoResult>) {
 
                 youdaoResult = response.body()
                 wordNameTextView.text = query
                 resultInfoTextView.text = ""
                 if (pref.getBoolean(SharedPref.YOUDAO_DICT, true)) {
                     try {
+                        LogUtils.LOGI(TAG, "onResponse() $query  phone:${youdaoResult?.formatPhones}")
                         wordPhonesTextView.text = youdaoResult?.formatPhones
                         wordMeansTextView.text = youdaoResult?.parsedExplains
                     } catch (e: Exception) {
-
+                        e.printStackTrace()
                     }
 
                 }
@@ -165,11 +173,10 @@ class ConsultWordActivity : Activity() {
                 }
                 updateViewVisibility()
                 foundResult = true
-
-
             }
 
-            override fun onFailure(call: Call<com.example.changfeng.taptapword.net.result.YoudaoResult>, t: Throwable) {
+            override fun onFailure(call: Call<YoudaoResult>, t: Throwable) {
+                t.printStackTrace()
                 resultInfoTextView.text = getString(R.string.message_cannot_find_word_result)
             }
         })
@@ -233,11 +240,11 @@ class ConsultWordActivity : Activity() {
 
     companion object {
 
-        private val TAG = "ConsultWordActivity"
+        private const val TAG = "ConsultWordActivity"
 
-        val TYPE = "type"
-        val TYPE_CONSULT = 1
-        val TYPE_COPY = 2
+        const val TYPE = "type"
+        const val TYPE_CONSULT = 1
+        const val TYPE_COPY = 2
     }
 
 

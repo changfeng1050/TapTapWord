@@ -4,8 +4,8 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.support.v4.app.NotificationCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 import com.example.changfeng.taptapword.ClipboardService
 import com.example.changfeng.taptapword.MainActivity
 import com.example.changfeng.taptapword.R
@@ -20,8 +20,7 @@ class NinjaServiceReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action == MainActivity.NINJA_BROADCAST) {
-            val ninjaOpenFlag = intent?.getBooleanExtra(MainActivity.NINJA_OPEN_FLAG, true)
-            when (ninjaOpenFlag) {
+            when (intent.getBooleanExtra(MainActivity.NINJA_OPEN_FLAG, true)) {
                 true -> {
                     updateNotification(context!!,"点击开启忍者监听", false)
                     stopClipboardService(context)
@@ -37,16 +36,16 @@ class NinjaServiceReceiver : BroadcastReceiver() {
         }
     }
 
-    fun startClipboardService(context: Context) {
+    private fun startClipboardService(context: Context) {
         stopClipboardService(context)
         context.startService(context.intentFor<ClipboardService>())
     }
 
-    internal fun stopClipboardService(context: Context) {
+    private fun stopClipboardService(context: Context) {
         context.stopService(context.intentFor<ClipboardService>())
     }
 
-    fun updateNotification(context: Context, text: String, opened: Boolean) {
+    private fun updateNotification(context: Context, text: String, opened: Boolean) {
         val ninjaServiceNotificationBuilder = NotificationCompat.Builder(context).setSmallIcon(R.drawable.image_ninja).setContentTitle(context.getString(R.string.app_name)).setContentText(text)
         val ninjaIntent = PendingIntent.getBroadcast(context, AppCompatActivity.RESULT_OK, Intent(MainActivity.NINJA_BROADCAST).putExtra(MainActivity.NINJA_OPEN_FLAG, opened), PendingIntent.FLAG_CANCEL_CURRENT)
         ninjaServiceNotificationBuilder.setContentIntent(ninjaIntent)

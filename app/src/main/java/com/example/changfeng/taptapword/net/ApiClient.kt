@@ -3,28 +3,31 @@ package com.example.changfeng.taptapword.net
 
 import android.util.Log
 import com.example.changfeng.taptapword.Config
-import com.example.changfeng.taptapword.util.MD5Utils
-import com.example.changfeng.taptapword.util.Utils
 import com.example.changfeng.taptapword.net.result.BaiduResult
 import com.example.changfeng.taptapword.net.result.YoudaoResult
-
-import retrofit2.Call
+import com.example.changfeng.taptapword.util.MD5Utils
+import com.example.changfeng.taptapword.util.Utils
 import retrofit2.Callback
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * Created by changfeng on 2016/3/17.
  */
 class ApiClient {
 
-    internal var baiduRetrofit = Retrofit.Builder().baseUrl(BAIDU_BASE_URL).addConverterFactory(MoshiConverterFactory.create()).build()
+    private var baiduRetrofit = Retrofit
+            .Builder()
+            .baseUrl(BAIDU_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
 
-    internal var youdaoRetrofit = Retrofit.Builder().baseUrl(YOUDAO_BASE_URL).addConverterFactory(MoshiConverterFactory.create()).build()
+    private var youdaoRetrofit = Retrofit
+            .Builder()
+            .baseUrl(YOUDAO_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create()).build()
 
-    internal var baiduFanyiService = baiduRetrofit.create(BaiduFanyiService::class.java)
+    private var baiduFanyiService = baiduRetrofit.create(BaiduFanyiService::class.java)
 
-    internal var youdaoFanyiService = youdaoRetrofit.create(YoudaoFanyiService::class.java)
+    private var youdaoFanyiService = youdaoRetrofit.create(YoudaoFanyiService::class.java)
 
     fun getBaiduResult(query: String, callback: Callback<BaiduResult>) {
         try {
@@ -51,9 +54,9 @@ class ApiClient {
     }
 
     companion object {
-        private val TAG = "ApiClient"
-        val BAIDU_BASE_URL = "http://api.fanyi.baidu.com"
-        val YOUDAO_BASE_URL = "http://fanyi.youdao.com"
+        private const val TAG = "ApiClient"
+        const val BAIDU_BASE_URL = "http://api.fanyi.baidu.com"
+        const val YOUDAO_BASE_URL = "http://fanyi.youdao.com"
     }
 }
 

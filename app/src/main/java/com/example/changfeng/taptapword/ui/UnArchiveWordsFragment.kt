@@ -3,9 +3,7 @@ package com.example.changfeng.taptapword.ui
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
 
 import com.example.changfeng.taptapword.R
 import com.example.changfeng.taptapword.WordManger
@@ -17,20 +15,20 @@ import org.jetbrains.anko.support.v4.toast
  */
 class UnArchiveWordsFragment : WordsFragment() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         archived = false
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        activity.menuInflater.inflate(R.menu.menu_unarchived_words, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        requireActivity().menuInflater.inflate(R.menu.menu_unarchived_words, menu)
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item!!.itemId
-        when (id) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.archive_all_words -> {
                 WordManger.get(activity).archiveAllWords()
                 setRecyclerAdapter()

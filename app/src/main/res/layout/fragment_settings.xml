@@ -5,9 +5,7 @@
     android:orientation="vertical"
     tools:context="com.example.changfeng.taptapword.SettingsFragment">
 
-
-
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -15,7 +13,6 @@
         card_view:cardPreventCornerOverlap="true"
         card_view:cardUseCompatPadding="true"
         card_view:contentPadding="10dp">
-
 
 
         <LinearLayout
@@ -88,9 +85,9 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -115,8 +112,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textColor="@color/colorBlack"
                 android:text="@string/backup"
+                android:textColor="@color/colorBlack"
                 android:textSize="15sp" />
 
             <View
@@ -129,8 +126,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textColor="@color/colorBlack"
                 android:text="@string/restore"
+                android:textColor="@color/colorBlack"
                 android:textSize="15sp" />
 
             <View
@@ -143,8 +140,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textColor="@color/colorBlack"
                 android:text="@string/clear_backup_data"
+                android:textColor="@color/colorBlack"
                 android:textSize="15sp" />
 
             <View
@@ -153,9 +150,9 @@
                 android:background="@color/colorLightGray" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -206,5 +203,5 @@
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

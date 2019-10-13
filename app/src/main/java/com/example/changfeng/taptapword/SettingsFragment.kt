@@ -5,15 +5,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.defaultSharedPreferences
-import org.jetbrains.anko.intentFor
+import androidx.fragment.app.Fragment
+import org.jetbrains.anko.*
 import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.find
 import org.jetbrains.anko.support.v4.toast
@@ -30,16 +28,12 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     val ninjaWatchNotificationSwitch: Switch get() = find(R.id.notification_ninja_watch)
     val newWordNotificationSwitch: Switch get() = find(R.id.notification_new_word)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.fragment_settings, container, false)
-    }
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         backupDataTextView.setOnClickListener(this)
         restoreDataTextView.setOnClickListener(this)
@@ -61,7 +55,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
         when (v.id) {
 
             R.id.backup_data -> {
-                activity.alert(R.string.message_backup_data, R.string.backup) {
+                requireActivity().alert(R.string.message_backup_data, R.string.backup) {
                     yesButton {
                         if (WordManger.get(act).copyDbToSdcard()) {
                             toast(R.string.message_data_backupped)
@@ -74,15 +68,15 @@ class SettingsFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.restore_data -> {
-                activity.alert(R.string.message_restore_data, R.string.restore) {
+                requireActivity().alert(R.string.message_restore_data, R.string.restore) {
                     yesButton {
-                        startActivityForResult(activity.intentFor<FileListActivity>(FILE_KEY_WORD to "word_ninja"), REQUEST_BACKUP_FILE)
+                        startActivityForResult(requireActivity().intentFor<FileListActivity>(FILE_KEY_WORD to "word_ninja"), REQUEST_BACKUP_FILE)
                     }
                     noButton { }
                 }.show()
             }
             R.id.clear_backup_data ->
-                activity.alert(R.string.message_clear_backup_data, R.string.clear_backup_data) {
+                requireActivity().alert(R.string.message_clear_backup_data, R.string.clear_backup_data) {
                     yesButton {
                         clearAllBackupData()
                         toast(R.string.message_all_backup_data_cleared)
@@ -98,7 +92,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
         }
 
         when (requestCode) {
-            REQUEST_BACKUP_FILE -> if (WordManger.get(activity).restoreDb(data!!.extras.getString(FileListActivity.FILE_KEY_WORD))) {
+            REQUEST_BACKUP_FILE -> if (WordManger.get(activity).restoreDb(data!!.extras!!.getString(FileListActivity.FILE_KEY_WORD))) {
                 toast(R.string.message_data_restored)
             } else {
                 toast(R.string.message_data_restored_failed)
@@ -116,7 +110,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun readSettings() {
-        val pref = activity.defaultSharedPreferences
+        val pref = requireActivity().defaultSharedPreferences
         youdaoDictSwitch.isChecked = pref.getBoolean(SharedPref.YOUDAO_DICT, true)
         webExplainSwitch.isChecked = pref.getBoolean(SharedPref.WEB_EXPLAIN, true)
         youdaoTranslateSwitch.isChecked = pref.getBoolean(SharedPref.YOUDAO_TRANSLATE, true)
@@ -126,7 +120,7 @@ class SettingsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun saveSettings() {
-        val editor = activity.defaultSharedPreferences.edit()
+        val editor = requireActivity().defaultSharedPreferences.edit()
         editor
             .putBoolean(SharedPref.YOUDAO_DICT, youdaoDictSwitch.isChecked)
             .putBoolean(SharedPref.WEB_EXPLAIN, webExplainSwitch.isChecked)

@@ -24,13 +24,12 @@ class ArchivedWordsFragment : WordsFragment() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        activity.menuInflater.inflate(R.menu.menu_archived_words, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        requireActivity().menuInflater.inflate(R.menu.menu_archived_words, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item!!.itemId
-        when (id) {
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.unarchive_all_words -> {
                 WordManger.get(activity).unArchiveAllWords()
                 setRecyclerAdapter()

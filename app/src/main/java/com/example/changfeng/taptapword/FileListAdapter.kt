@@ -32,9 +32,11 @@ class FileListAdapter(context: Context, private val resourceId: Int,
                       objects: List<FileInfo>) : ArrayAdapter<FileInfo>(context, resourceId, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val fileInfo = getItem(position)
 
-        val view: View = convertView?: LayoutInflater.from(context).inflate(R.layout.file_list_item, parent, false)
+        val fileInfo = getItem(position)!!
+
+        val view: View = convertView
+                ?: LayoutInflater.from(context).inflate(R.layout.file_list_item, parent, false)
         view.find<TextView>(R.id.list_item).text = fileInfo.fileName
         return view
     }

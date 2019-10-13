@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/no_recent_words_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,18 +31,18 @@
                 android:id="@+id/description_no_recent_words_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
-                android:paddingEnd="10dp"
                 android:paddingStart="10dp"
                 android:paddingTop="20dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
                 android:text="@string/description_no_recent_words"
                 android:textColor="@color/dark_gray"
                 android:textSize="25sp" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/no_archived_words_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,18 +69,18 @@
                 android:id="@+id/description_no_archived_words_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="20dp"
-                android:paddingEnd="10dp"
                 android:paddingStart="10dp"
                 android:paddingTop="20dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="20dp"
                 android:text="@string/description_no_archived_words"
                 android:textColor="@color/dark_gray"
                 android:textSize="25sp" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/word_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

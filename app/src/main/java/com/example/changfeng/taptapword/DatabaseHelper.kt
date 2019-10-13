@@ -3,15 +3,11 @@ package com.example.changfeng.taptapword
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import android.database.CursorIndexOutOfBoundsException
 import android.database.CursorWrapper
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import com.example.changfeng.taptapword.util.MyLog
-
-import java.util.ArrayList
-import java.util.Currency
+import java.util.*
 
 /**
  * Created by changfeng on 2015/5/10.

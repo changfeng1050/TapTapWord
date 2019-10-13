@@ -1,13 +1,13 @@
 package com.example.changfeng.taptapword
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.CardView
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.changfeng.taptapword.adapter.RecyclerViewAdapter
 import com.example.changfeng.taptapword.listener.WordItemArchivedListener
 import com.example.changfeng.taptapword.listener.WordItemClickListener
@@ -20,7 +20,7 @@ import org.jetbrains.anko.support.v4.toast
 /**
  * Created by changfeng on 2015/4/17.
  */
-open class WordsFragment : Fragment(){
+open class WordsFragment : Fragment() {
 
     var words: List<Word>? = null
 
@@ -39,12 +39,12 @@ open class WordsFragment : Fragment(){
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
-        return inflater!!.inflate(R.layout.fragment_word_recycler_view, container, false)
+        return inflater.inflate(R.layout.fragment_word_recycler_view, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -55,23 +55,23 @@ open class WordsFragment : Fragment(){
         adapter = RecyclerViewAdapter(activity, words, archived)
         adapter?.mode = Attributes.Mode.Single
 
-        adapter?.setOnItemClickListener(object : WordItemClickListener{
+        adapter?.setOnItemClickListener(object : WordItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 val name = words!![position].name
-                                    name?.let {
-                                        context.startActivity(context.intentFor<WordInfoActivity>(WordInfoActivity.EXTRA_WORD_NAME  to name))
-                                    }
+                name?.let {
+                    requireContext().startActivity(requireContext().intentFor<WordInfoActivity>(WordInfoActivity.EXTRA_WORD_NAME to name))
+                }
             }
         })
 
-        adapter?.setOnItemArchiveListener(object : WordItemArchivedListener{
+        adapter?.setOnItemArchiveListener(object : WordItemArchivedListener {
             override fun onItemArchived(view: View, position: Int) {
                 update()
                 toast(R.string.message_archive_success)
             }
         })
 
-        adapter?.setOnItemUnarchivedListener(object : WordItemUnArchivedListener{
+        adapter?.setOnItemUnarchivedListener(object : WordItemUnArchivedListener {
             override fun onItemUnArchived(view: View, position: Int) {
                 update()
                 toast(R.string.message_archive_success)
@@ -86,15 +86,15 @@ open class WordsFragment : Fragment(){
         words = WordManger.get(activity).getWords(archived)
         if (words!!.isEmpty()) {
             if (archived) {
-                    noArchivedWordsCardView.visibility = View.VISIBLE
+                noArchivedWordsCardView.visibility = View.VISIBLE
             } else {
-                    noRecentWordsCardView.visibility = View.VISIBLE
+                noRecentWordsCardView.visibility = View.VISIBLE
             }
         } else {
             if (archived) {
-                    noArchivedWordsCardView.visibility = View.GONE
+                noArchivedWordsCardView.visibility = View.GONE
             } else {
-                    noRecentWordsCardView.visibility = View.GONE
+                noRecentWordsCardView.visibility = View.GONE
             }
         }
     }

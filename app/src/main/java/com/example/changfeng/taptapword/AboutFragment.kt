@@ -1,20 +1,19 @@
 package com.example.changfeng.taptapword
 
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 
 /**
  * Created by changfeng on 2015/4/17.
  */
 class AboutFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_about, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_about, container, false)
         val versionTextView = view?.findViewById(R.id.version_text_view) as TextView
         versionTextView.text = version
 
@@ -27,13 +26,7 @@ class AboutFragment : Fragment() {
      */
     val version: String
         get() {
-            try {
-                return activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
-            } catch (e: PackageManager.NameNotFoundException) {
-                e.printStackTrace()
-                return ""
-            }
-
+              return  requireActivity().packageManager.getPackageInfo(requireActivity().packageName, 0).versionName
         }
 
     companion object {

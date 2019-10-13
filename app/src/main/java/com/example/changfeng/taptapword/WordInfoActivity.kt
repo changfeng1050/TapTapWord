@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.example.changfeng.taptapword.util.LogUtils
 import com.umeng.analytics.MobclickAgent
 import org.jetbrains.anko.find
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 
 
@@ -35,7 +35,7 @@ class WordInfoActivity : Activity() {
 
         find<TextView>(R.id.save).onClick {
             updateWord()
-            WordManger.get(this).updateWord(word)
+            WordManger.get(this@WordInfoActivity).updateWord(word)
             toast(R.string.message_save_success)
             finish()
         }

@@ -1,13 +1,14 @@
 package com.example.changfeng.taptapword.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.changfeng.taptapword.R;
 import com.example.changfeng.taptapword.Word;
@@ -20,9 +21,6 @@ import com.example.changfeng.taptapword.listener.WordItemUnArchivedListener;
 import com.example.changfeng.taptapword.ui.SwipeLayout;
 
 import java.util.List;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
 public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapter.SimpleViewHolder> {
@@ -38,37 +36,25 @@ public class RecyclerViewAdapter extends RecyclerSwipeAdapter<RecyclerViewAdapte
 
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        @Bind(R.id.swipe)
-        SwipeLayout swipeLayout;
-        @Bind(R.id.word_card_view)
-        CardView wordCardView;
-        @Bind(R.id.word_name_text_view)
-        TextView wordNameTextView;
-        @Bind(R.id.word_phones_text_view)
-        TextView wordPhonesTextView;
-        @Bind(R.id.word_means_text_view)
-        TextView wordMeansTextView;
+        SwipeLayout swipeLayout = itemView.findViewById(R.id.swipe);
+        CardView wordCardView = itemView.findViewById(R.id.word_card_view);
+        TextView wordNameTextView = itemView.findViewById(R.id.word_name_text_view);
+        TextView wordPhonesTextView = itemView.findViewById(R.id.word_phones_text_view);
+        TextView wordMeansTextView = itemView.findViewById(R.id.word_means_text_view);
 
-        @Bind(R.id.unarchive_layout)
-        LinearLayout unArchiveLayout;
-        @Bind(R.id.archive_layout)
-        LinearLayout archiveLayout;
-        @Bind(R.id.delete_layout)
-        LinearLayout deleteLayout;
+        LinearLayout unArchiveLayout = itemView.findViewById(R.id.unarchive_layout);
+        LinearLayout archiveLayout = itemView.findViewById(R.id.archive_layout);
+        LinearLayout deleteLayout = itemView.findViewById(R.id.delete_layout);
 
-        @Bind(R.id.unarchive_text_view)
-        TextView unArchiveTextView;
-        @Bind(R.id.archive_text_view)
-        TextView archiveTextView;
-        @Bind(R.id.delete_text_view)
-        TextView deleteTextView;
+        TextView unArchiveTextView = itemView.findViewById(R.id.unarchive_text_view);
+        TextView archiveTextView = itemView.findViewById(R.id.archive_text_view);
+        TextView deleteTextView = itemView.findViewById(R.id.delete_text_view);
 
         private WordItemClickListener listener;
         private WordItemLongClickListener longClickListener;
 
         public SimpleViewHolder(final View itemView, WordItemClickListener listener, WordItemLongClickListener longClickListener) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
             this.listener = listener;
             this.longClickListener = longClickListener;
 

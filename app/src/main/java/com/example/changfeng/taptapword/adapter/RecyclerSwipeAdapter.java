@@ -1,7 +1,8 @@
 package com.example.changfeng.taptapword.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.changfeng.taptapword.implments.SwipeItemMangerImpl;
 import com.example.changfeng.taptapword.interfaces.SwipeAdapterInterface;

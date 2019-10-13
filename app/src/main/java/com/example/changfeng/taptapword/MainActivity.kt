@@ -1,37 +1,39 @@
 package com.example.changfeng.taptapword
 
-
 import android.app.ActivityManager
 import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.NavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.app.NotificationCompat
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.example.changfeng.taptapword.ui.ArchivedWordsFragment
 import com.example.changfeng.taptapword.ui.UnArchiveWordsFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.umeng.analytics.MobclickAgent
 import org.jetbrains.anko.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import java.util.*
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private var isWatchOn = false
 
-    val addFab: FloatingActionButton
+    private val addFab: FloatingActionButton
         get() = find(R.id.fab)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         try {
             val id = if (intent.getBooleanExtra(NINJA_NEW_WORD, false)) R.id.recent_words else lastFragmentId
             saveLastPageId(id)
-        } catch(e: Exception) {
+        } catch (e: Exception) {
 
         }
 
@@ -62,11 +64,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.setDrawerListener(toggle)
         toggle.syncState()
 
-        val navigationView = findViewById(R.id.nav_view) as NavigationView
+        val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
 
@@ -228,7 +230,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else {
@@ -297,7 +299,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
 
-        val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
+        val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         drawer.closeDrawer(GravityCompat.START)
     }
 
@@ -310,20 +312,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    internal fun startClipboardService() {
-        val startIntent = Intent(this@MainActivity, ClipboardService::class.java)
-        startService(startIntent)
+    private fun startClipboardService() {
+        val intent = Intent(this, ClipboardService::class.java)
+        intent.putExtra("startType", 1)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
-    internal fun stopClipboardService() {
-        val stopIntent = Intent(this@MainActivity, ClipboardService::class.java)
-        stopService(stopIntent)
+    private fun stopClipboardService() {
+        stopService(intentFor<ClipboardService>())
     }
 
     private fun rateUs() {
         try {
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse("market://details?id=" + packageName)
+            i.data = Uri.parse("market://details?id=$packageName")
             startActivity(i)
         } catch (e: Exception) {
             toast(getString(R.string.message_cannot_find_app_market))
@@ -335,7 +341,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         share(getString(R.string.share_text, getString(R.string.uri_download_wandoujia)), getString(R.string.share_subject))
     }
 
-    fun sendMailByIntent() {
+    private fun sendMailByIntent() {
         try {
             email(getString(R.string.mail_address), getString(R.string.mail_subject), getString(R.string.mail_text))
         } catch (e: Exception) {
@@ -391,17 +397,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         get() = defaultSharedPreferences.getInt(SharedPref.LAST_PAGE_ID, SharedPref.INVALID_FRAGMENT_ID)
 
     companion object {
-        private val TAG = "MainActivity"
-        private val FRAGMENT_TAG = "CURRENT_FRAGMENT"
+        private const val TAG = "MainActivity"
+        private const val FRAGMENT_TAG = "CURRENT_FRAGMENT"
 
-        val NINJA_BROADCAST = "com.example.changfeng.taptapword.ninja"
-        val NINJA_OPEN_FLAG = "ninja_open_flag"
-        val NINJA_NEW_WORD = "new_word"
-
-        fun isServiceRunning(mContext: Context, className: String): Boolean {
-            val activityManager = mContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            val service = activityManager.getRunningServices(30).find { s -> s.service.className == className }
-            return service != null
-        }
+        const val NINJA_BROADCAST = "com.example.changfeng.taptapword.ninja"
+        const val NINJA_OPEN_FLAG = "ninja_open_flag"
+        const val NINJA_NEW_WORD = "new_word"
     }
 }

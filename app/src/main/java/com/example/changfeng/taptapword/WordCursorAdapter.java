@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by changfeng on 2015/5/11.
  */
